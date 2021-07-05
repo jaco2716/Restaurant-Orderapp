@@ -1,7 +1,7 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../CalculateValues.dart';
-import '../../Model/Order.dart';
+import '../../model/Order.dart';
 import 'SingleReceiptPage.dart';
 
 class ReceiptListRow extends StatelessWidget {

@@ -1,9 +1,9 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../Model/MenuItem.dart';
-import '../../Model/Order.dart';
-import '../../Model/User.dart';
+import '../../model/MenuItem.dart';
+import '../../model/Order.dart';
+import '../../model/User.dart';
 import 'ReceiptListRow.dart';
 
 class ReceiptListPage extends StatelessWidget {

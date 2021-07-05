@@ -1,4 +1,4 @@
-import '/Model/CategoryCard.dart';
+import '/model/CategoryCard.dart';
 
 import 'MenuItem.dart';
 

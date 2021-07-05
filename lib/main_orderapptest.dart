@@ -12,7 +12,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   MealsLog.allMenus = F.allMenus;
-  // MealsLog.menuCategoryCards = F.menuCategoryCards;
+  MealsLog.menuCategoryCards = F.menuCategoryCards;
   //sadoasdo
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
     runApp(MyApp());

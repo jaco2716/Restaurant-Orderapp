@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../Model/MenuItem.dart';
+import '../model/MenuItem.dart';
 import '../flavors.dart';
 import '/MyWidgets/MyAppBar.dart';
 import '../MyWidgets/MyAlertDialog.dart';

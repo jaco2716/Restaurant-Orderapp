@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../flavors.dart';
-import '/Model/CategoryCard.dart';
-import '../../Model/MealsLog.dart';
-import '../../Model/MenuItem.dart';
+import '/model/CategoryCard.dart';
+import '../../model/MealsLog.dart';
+import '../../model/MenuItem.dart';
 
 
 

@@ -1,5 +1,7 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:restaurantorderapp/model/MenuItem.dart';
+import 'package:restaurantorderapp/model/Order.dart';
 import '../../flavors.dart';
 import '../my_home_page.dart';
 import '/Pages/OrderPageContent/OrderConfirmation.dart';
@@ -8,8 +10,7 @@ import '/../MyWidgets/MyAppBar.dart';
 import '/../CalculateValues.dart';
 // import '../../Login/LoadingCircle.dart';
 // import '../../LoginPageProvider.dart';
-import '/../Model/MenuItem.dart';
-import '/../Model/Order.dart';
+
 // import '../../OrderPageContent/OrderConfirmation.dart';
 
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../Model/MealsLog.dart';
-import '../../Model/MenuItem.dart';
+import '../../model/MealsLog.dart';
+import '../../model/MenuItem.dart';
 
 class CartPage extends StatefulWidget {
   final ValueChanged<int> notifyParent;

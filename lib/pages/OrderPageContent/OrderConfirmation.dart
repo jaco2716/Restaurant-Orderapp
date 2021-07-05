@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:restaurantorderapp/model/MenuItem.dart';
 import '../../flavors.dart';
 import '/CalculateValues.dart';
-import '/../model/MenuItem.dart';
 
 
 class OrderConfirmation extends StatelessWidget {

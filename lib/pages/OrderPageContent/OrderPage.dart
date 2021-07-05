@@ -8,12 +8,12 @@
 // import 'package:il_molino_orderapp/Login/AuthService.dart';
 // import 'package:il_molino_orderapp/Login/LoadingCircle.dart';
 // import 'package:il_molino_orderapp/Login/LoginPage.dart';
-// import 'package:il_molino_orderapp/Model/User.dart';
+// import 'package:il_molino_orderapp/model/User.dart';
 // import 'package:il_molino_orderapp/OrderPageContent/OrderConfirmation.dart';
 // import 'package:il_molino_orderapp/Retrofit/ApiValues.dart';
 // import 'package:provider/provider.dart';
 
-// import '../Model/MenuItem.dart';
+// import '../model/MenuItem.dart';
 
 // class OrderPage extends StatelessWidget {
 //   final Firestore _firestore = Firestore.instance;

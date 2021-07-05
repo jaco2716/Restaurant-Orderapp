@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 // import '../../Login/LoadingCircle.dart';
 // import '../../LoginPageProvider.dart';
-import '../../Model/ApplicationData.dart';
-import '../../Model/MenuItem.dart';
+import '../../model/ApplicationData.dart';
+import '../../model/MenuItem.dart';
 // import 'package:url_launcher/url_launcher.dart' as urlLauncher;
 import 'package:url_launcher/url_launcher.dart'  as urlLauncher;
 

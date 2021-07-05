@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../Model/MealsLog.dart';
+import '../../model/MealsLog.dart';
 
 import 'BottomCart.dart';
 import 'MenuAndCategories.dart';
