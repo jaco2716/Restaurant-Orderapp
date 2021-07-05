@@ -1,0 +1,4 @@
+flutter_icons:
+            android: true
+            ios: true
+            image_path: "assets/orderapptest/icons/appicon_orderapptest.png"

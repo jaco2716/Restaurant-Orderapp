@@ -1,0 +1,151 @@
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import '../../Model/MenuItem.dart';
+import '../../Model/Order.dart';
+import '../../Model/User.dart';
+import 'ReceiptListRow.dart';
+
+class ReceiptListPage extends StatelessWidget {
+  // final Firestore _firestore = Firestore.instance;
+  // final FirebaseUser currentUser;
+  // ReceiptListPage(this.currentUser);
+
+  @override
+  Widget build(BuildContext context) {
+    List<MenuItem> menuItems = [
+      MenuItem(
+        30,
+        'MARGHERITA',
+        'Tomat og ost',
+        65,
+        'assets/menu/temp.png',
+        1, meatChoice: [],
+      ),
+      MenuItem(
+        31,
+        'CAPRICCIOSA',
+        'Skinke og champignon',
+        75,
+        'assets/menu/temp.png',
+        1, meatChoice: [],
+      ),
+      MenuItem(
+        32,
+        'CACCIATORE',
+        'Pepperoni, oliven og friske tomater',
+        75,
+        'assets/menu/temp.png',
+        2, meatChoice: [],
+      ),
+      MenuItem(
+        33,
+        'CALZONE (INDBAGT)',
+        'Med skinke og champignon',
+        75,
+        'assets/menu/temp.png',
+        1, meatChoice: [],
+      ),
+      MenuItem(
+        34,
+        'HAWAII',
+        'Skinke og ananas',
+        75,
+        'assets/menu/temp.png',
+        2, meatChoice: [],
+      ),
+    ];
+    User user = User(email: 'email.demo@gamil.com', fullName: 'Fornavn Efternavn', phoneNr: '+45 12 34 56 78', uid: "123321");
+    List<Order> orders = [
+      Order(
+          acceptTime: '1621241246122',
+          menuOrder: menuItems,
+          orderAccepted: true,
+          orderDate: '1621241242122',
+          orderDone: true,
+          orderMessage: 'Ingen besked.',
+          restaurantMessage: 'Ingen besked fra restauranten.',
+          user: user),
+      Order(
+          acceptTime: '1621241276122',
+          menuOrder: menuItems,
+          orderAccepted: false,
+          orderDate: '1621241242122',
+          orderDone: true,
+          orderMessage: 'Ingen besked.',
+          restaurantMessage: 'Ingen besked fra restauranten.',
+          user: user),
+      Order(
+          acceptTime: '1621241396122',
+          menuOrder: menuItems,
+          orderAccepted: false,
+          orderDate: '1621241242122',
+          orderDone: false,
+          orderMessage: 'Ingen besked.',
+          restaurantMessage: 'Ingen besked fra restauranten.',
+          user: user),
+    ];
+
+    dynamic currentUser;
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Text('Demo ordrer:'),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: orders.length,
+            itemBuilder: (_, int index) {
+              print('object');
+              return ReceiptListRow(currentUser, orders[index]);
+            },
+          ),
+        ),
+
+        // StreamBuilder<QuerySnapshot>(
+        //     stream: _firestore
+        //         .collection('orders')
+        //         .where('user.uid', isEqualTo: currentUser.uid)
+        //         .orderBy('orderDate', descending: true)
+        //         .snapshots(),
+        //     builder:
+        //         (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        //       if (!snapshot.hasData)
+        //         return Expanded(
+        //           child: Center(child: Text("Indlæser...")),
+        //         );
+        //       else if (snapshot.hasError)
+        //         return Center(child: Text('Error: ${snapshot.error}'));
+        //       switch (snapshot.connectionState) {
+        //         case ConnectionState.waiting:
+        //           return Center(child: Text('Loading...'));
+        //         default:
+        //           List<Order> orders = List<Order>();
+        // // Map to list instead
+        //           snapshot.data.documents.forEach((e) {
+        //             Order dataOrder = Order.fromJson(e.data);
+        //             orders.add(dataOrder);
+        //           });
+        //           final int dataCount = orders.length;
+        //           if (dataCount == 0)
+        //             return Expanded(
+        //               child:
+        //                   Center(child: Text("Du har ingen tidligere ordre")),
+        //             );
+        //           else {
+        //             return Expanded(
+        //               child: ListView.builder(
+        //                 itemCount: dataCount,
+        //                 itemBuilder: (_, int index) {
+        //                   return ReceiptListRow(currentUser, orders[index]);
+        //                 },
+        //               ),
+        //             );
+        //           }
+        //       }
+        //     }),
+      ],
+    );
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "152859479675",
+    "project_id": "restaurant-orderapps",
+    "storage_bucket": "restaurant-orderapps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:152859479675:android:70048bd3e7942f5d6e9cde",
+        "android_client_info": {
+          "package_name": "dk.wejeo.restaurantorderapp.ilmolino"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "152859479675-ssoip31ojrl1h9nidqvtbm42o4nfvrqq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3tPb9rysfJ89BoxfdYZx77HH7xbz1MuQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "152859479675-ssoip31ojrl1h9nidqvtbm42o4nfvrqq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "152859479675-36c43u75rofbfbas09kgtsv6v0jp9j31.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dk.wejeo.firebasesetuptest"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:152859479675:android:35a7bb9fcd19abc16e9cde",
+        "android_client_info": {
+          "package_name": "dk.wejeo.restaurantorderapp.orderapptest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "152859479675-ssoip31ojrl1h9nidqvtbm42o4nfvrqq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3tPb9rysfJ89BoxfdYZx77HH7xbz1MuQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "152859479675-ssoip31ojrl1h9nidqvtbm42o4nfvrqq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "152859479675-36c43u75rofbfbas09kgtsv6v0jp9j31.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dk.wejeo.firebasesetuptest"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,39 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Flavor: IL MOLINO",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main_ilmolino.dart",
+            "args": [
+                "--flavor",
+                "ilmolino"
+            ]
+        },
+        {
+            "name": "Flavor: Orderapp Test",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main_orderapptest.dart",
+            "args": [
+                "--flavor",
+                "orderapptest"
+            ]
+        },
+        {
+            "name": "restaurantorderapp",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "restaurantorderapp (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        }
+    ]
+}
