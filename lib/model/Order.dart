@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'MenuItem.dart';
-import 'User.dart';
+import 'OrderUser.dart';
 
 class Order {
   List<MenuItem> menuOrder;
@@ -9,7 +9,7 @@ class Order {
   bool orderDone;
   bool orderAccepted;
   String acceptTime;
-  User user;
+  OrderUser user;
   String restaurantMessage;
   String orderMessage;
 
@@ -43,7 +43,7 @@ class Order {
         acceptTime = json['acceptTime'],
         restaurantMessage = json['restaurantMessage'],
         orderMessage = json['orderMessage'],
-        user = User.fromJson(json['user']);
+        user = OrderUser.fromJson(json['user']);
 
   Map<String, dynamic> toJson() => {
         'menuOrder': jsonEncode(menuOrder),

@@ -1,15 +1,17 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../model/MenuItem.dart';
 import '../../model/Order.dart';
-import '../../model/User.dart';
+import '../../model/OrderUser.dart';
 import 'ReceiptListRow.dart';
 
 class ReceiptListPage extends StatelessWidget {
-  // final Firestore _firestore = Firestore.instance;
-  // final FirebaseUser currentUser;
-  // ReceiptListPage(this.currentUser);
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final User currentUser;
+  ReceiptListPage(this.currentUser);
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +57,7 @@ class ReceiptListPage extends StatelessWidget {
         2, meatChoice: [],
       ),
     ];
-    User user = User(email: 'email.demo@gamil.com', fullName: 'Fornavn Efternavn', phoneNr: '+45 12 34 56 78', uid: "123321");
+    OrderUser user = OrderUser(email: 'email.demo@gamil.com', fullName: 'Fornavn Efternavn', phoneNr: '+45 12 34 56 78', uid: "123321");
     List<Order> orders = [
       Order(
           acceptTime: '1621241246122',

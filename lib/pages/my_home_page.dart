@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../LoginPageProvider.dart';
 import '../model/MenuItem.dart';
 import '../flavors.dart';
 import '/MyWidgets/MyAppBar.dart';
@@ -48,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
           content: _message,
           cancelText: 'Ok',
           infoDialog: true,
-          myOnPressed: (){},
+          myOnPressed: () {},
         );
       },
       context: context,
@@ -57,13 +59,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    UserInfo userinfo = UserInfo({
+      'email': 's',
+    });
+
+
     final List<Widget> pageTabs = [
       MenuPage(notifyParent: _refresh),
-      CartPage(notifyParent: _refresh,),
-      // // loginNextPage(dummyList, 'ReceiptPage'),
-      ReceiptListPage(),
+      CartPage(
+        notifyParent: _refresh,
+      ),
+      loginNextPage(dummyList, 'ReceiptPage'),
+      // ReceiptListPage(userinfo),
       SettingsPage(),
-  
     ];
 
     return Scaffold(

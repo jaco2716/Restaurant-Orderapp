@@ -1,12 +1,12 @@
-class User {
+class OrderUser {
   String uid;
   String fullName;
   String phoneNr;
   String email;
 
-  User({required this.uid, required this.fullName, required this.phoneNr, required this.email});
+  OrderUser({required this.uid, required this.fullName, required this.phoneNr, required this.email});
 
-  User.fromJson(Map<String, dynamic> json)
+  OrderUser.fromJson(Map<String, dynamic> json)
       : uid = json['uid'],
         fullName = json['fullName'],
         phoneNr = json['phoneNr'],

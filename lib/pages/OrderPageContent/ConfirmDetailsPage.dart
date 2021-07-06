@@ -12,7 +12,7 @@ import '../../model/ApplicationData.dart';
 import '../../model/MealsLog.dart';
 import '../../model/MeatChoice.dart';
 import '../../model/Order.dart';
-import '../../model/User.dart';
+import '../../model/OrderUser.dart';
 import 'OrderConfirmation.dart';
 // import 'package:ntp/ntp.dart';
 
