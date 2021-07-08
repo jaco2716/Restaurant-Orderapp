@@ -8,7 +8,7 @@ class MyApp extends StatelessWidget {
       title: 'OrderApp template',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        // primarySwatch: Colors.green,
         buttonTheme: ButtonThemeData(buttonColor: Colors.green[600], textTheme: ButtonTextTheme.primary),
       ),
       home: MyHomePage(),

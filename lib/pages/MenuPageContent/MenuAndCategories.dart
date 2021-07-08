@@ -59,7 +59,6 @@ class _MenuAndCategoriesState extends State<MenuAndCategories> {
     return Container(
       height: 100,
       child: Card(
-        // color: categoryCard.selected ? Colors.yellow[900] : Colors.brown[900],
         color: categoryCard.selected ? F.appSecondaryColor[900] : F.appPrimaryColor[900],
         child: ListTile(
             trailing: Icon(

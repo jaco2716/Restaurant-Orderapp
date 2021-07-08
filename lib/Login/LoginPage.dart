@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurantorderapp/MyWidgets/LoadingCircle.dart';
+import 'package:restaurantorderapp/flavors.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'AuthService.dart';
 import 'SignUpPage.dart';
@@ -105,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                   FlatButton(
                       textColor: Colors.blue[300],
                       onPressed: () async {
-                        await launch('https://www.termsfeed.com/live/788db393-f183-46a5-8762-315633123cd8');
+                        await launch(F.privacyPolicyURL);
                       },
                       child: Text('Privacy Policy')),
                 ],

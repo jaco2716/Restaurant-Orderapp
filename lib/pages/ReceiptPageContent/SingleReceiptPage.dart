@@ -40,7 +40,7 @@ class _SingelOrderPageState extends State<SingleReceiptPage> {
       appBar: !widget.fromMakeOrder
           ? MyAppBar('Nr: ${widget.order.orderDate}')
           : AppBar(
-              backgroundColor: Colors.green[900],
+              backgroundColor: F.appPrimaryColor[900],
               title: Text('Nr: ${widget.order.orderDate}'),
               leading: IconButton(
                 icon: Icon(Icons.close),

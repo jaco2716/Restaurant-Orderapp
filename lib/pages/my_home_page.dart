@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: F.appPrimaryColor,
+          selectedItemColor: F.appPrimaryColor[900],
           unselectedItemColor: Colors.grey,
           currentIndex: pageIndex,
           items: [

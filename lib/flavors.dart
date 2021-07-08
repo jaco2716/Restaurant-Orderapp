@@ -46,9 +46,9 @@ class F {
   static String get companyAddress {
     switch (appFlavor) {
       case Flavor.ilmolino:
-        return 'Gammel Lundtoftevej 14,\n2800 Kongs Lyngby';
+        return 'Gammel Lundtoftevej 14, 2800 Kongens Lyngby';
       case Flavor.orderappTest:
-        return 'test addresse \n noget mere';
+        return 'test addresse og noget mere';
       default:
         return 'companyAddress';
     }
@@ -112,11 +112,11 @@ class F {
   static String get baseURL {
     switch (appFlavor) {
       case Flavor.ilmolino:
-        return '';
+        return 'application/ilmolino';
       case Flavor.orderappTest:
-        return '';
+        return 'application/orderapptest';
       default:
-        return '';
+        return 'testing/';
     }
   }
 

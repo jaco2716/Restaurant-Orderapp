@@ -16,3 +16,5 @@ Future<void> main() async {
     runApp(MyApp());
   });
 }
+//Run in release mode:
+//flutter run --release --flavor ilmolino -t lib/main_ilmolino.dart
