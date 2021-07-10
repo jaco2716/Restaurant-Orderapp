@@ -39,7 +39,7 @@
 //                 width: double.infinity,
 //                 height: 50,
 //                 child: RaisedButton(
-//                     child: Text('Log out'),
+//                     child: Text('Sign out'),
 //                     color: Colors.red,
 //                     onPressed: () async {
 //                       //Navigator.pop(context);
@@ -69,7 +69,7 @@
 //                         child: RaisedButton(
 //                           padding: EdgeInsets.all(10),
                           
-//                     child: Text('Log out', textAlign: TextAlign.center),
+//                     child: Text('Sign out', textAlign: TextAlign.center),
 //                     color: Colors.red,
 //                     onPressed: () async {
 //                         //Navigator.pop(context);

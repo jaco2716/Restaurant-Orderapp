@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:restaurantorderapp/model/NextPageEnum.dart';
+import 'package:restaurantorderapp/pages/LoginPageContent/CheckLoginPage.dart';
 import '../../model/MealsLog.dart';
 import '../../model/MenuItem.dart';
 
 class CartPage extends StatefulWidget {
   final ValueChanged<int> notifyParent;
 
-  const CartPage({ required this.notifyParent});
+  const CartPage({required this.notifyParent});
 
   @override
   _CartPageState createState() => _CartPageState();
@@ -17,28 +19,15 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     cartItems.clear();
-    //TODO = DONE? ChangeTo final Static lists
     MealsLog.allMenus.forEach((element) {
       addToCart(element);
     });
-    // addToCart(MealsLog.smallMeals);
-    // addToCart(MealsLog.soups);
-    // addToCart(MealsLog.noodlesAndFriedRice);
-    // addToCart(MealsLog.mainMealWithRice);
-    // addToCart(MealsLog.specialMealsWithRice);
-    // addToCart(MealsLog.vegetaryVeganMeals);
-    // addToCart(MealsLog.salads);
-    // addToCart(MealsLog.childMeals);
-    // addToCart(MealsLog.childMeals2);
-    // addToCart(MealsLog.dersert);
-    // addToCart(MealsLog.accessoriesItems);
-    // addToCart(MealsLog.hotDrinks);
 
     int subtotal = 0;
     cartItems.forEach((element) {
       int meatChoiceTotal = 0;
       int meatTotalAmount = 0;
-      if (element.meatChoice != null) {
+      if (element.meatChoice.length != 0) {
         element.meatChoice.forEach((meat) {
           meatTotalAmount += meat.amount;
           meatChoiceTotal += meat.price * meat.amount;
@@ -71,13 +60,7 @@ class _CartPageState extends State<CartPage> {
                 onPressed: cartItems.isEmpty
                     ? null
                     : () {
-                        dynamic currentUser;
-                        // Navigator.push(context, MaterialPageRoute(builder: (context) => ConfirmDetailsPage(cartItems, currentUser)));
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) =>
-                        //             loginNextPage(cartItems, 'OrderPage')));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => CheckLoginPage(NextPage.OrderPage, 'OrderPage', cartItems)));
                       },
                 child: Text('Gå til bestilling')),
           ),
@@ -139,7 +122,7 @@ class _CartPageState extends State<CartPage> {
     int totalItemPrice = menuItem.price * menuItem.amount;
     int totalMeatChoiceAmount = 0;
     List<int> totalMeatChoicePrice = [];
-    if (menuItem.meatChoice != null) {
+    if (menuItem.meatChoice.length != 0) {
       menuItem.meatChoice.forEach((meat) {
         totalMeatChoicePrice.add(meat.price * meat.amount);
         totalMeatChoiceAmount += meat.amount;
@@ -152,7 +135,7 @@ class _CartPageState extends State<CartPage> {
         child: Column(children: [
           ListTile(
               title: Text(menuItem.title),
-              subtitle: menuItem.meatChoice != null
+              subtitle: menuItem.meatChoice.length != 0
                   ? totalMeatChoiceAmount < 1
                       ? Text('Tryk her for andet kød/vegetar.')
                       : ListView.builder(
@@ -210,7 +193,7 @@ class _CartPageState extends State<CartPage> {
           //print(modalMeatChoice.length);
           return StatefulBuilder(builder: (BuildContext context, StateSetter setModalState) {
             int totalExtraMeat = 0;
-            if (menuItem.meatChoice != null) {
+            if (menuItem.meatChoice.length != 0) {
               menuItem.meatChoice.forEach((element) {
                 totalExtraMeat += element.amount;
               });
@@ -231,10 +214,10 @@ class _CartPageState extends State<CartPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        menuItem.meatChoice == null
+                        menuItem.meatChoice.length == 0
                             ? Center()
                             : Column(children: [
-                                Text('Vælg andet end kylling'),
+                                Text('Vælg andet kød'),
                                 ListView.builder(
                                   itemCount: menuItem.meatChoice.length,
                                   itemBuilder: (BuildContext context, int index) {
@@ -361,7 +344,7 @@ class _CartPageState extends State<CartPage> {
     menuItems.forEach((element) {
       if (element.id == newItem.id) {
         element.amount = newAmount;
-        if (newAmount == 0 && element.meatChoice != null) {
+        if (newAmount == 0 && element.meatChoice.length != 0) {
           element.meatChoice.forEach((element) => element.amount = 0);
         }
       }

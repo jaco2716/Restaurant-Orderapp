@@ -12,7 +12,7 @@ class OrderConfirmation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Card(
-        elevation: 10,
+        elevation: 1,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 30),
           child: Column(
@@ -93,7 +93,7 @@ class OrderConfirmation extends StatelessWidget {
       // leading: Text(
       //   '${menuItem.amount.toString()}',
       // ),
-      subtitle: menuItem.meatChoice != null
+      subtitle: menuItem.meatChoice.length != 0
           ? ListView.builder(
               itemCount: menuItem.meatChoice.length,
               itemBuilder: (BuildContext context, int meatIndex) {
@@ -117,7 +117,7 @@ class OrderConfirmation extends StatelessWidget {
               physics: NeverScrollableScrollPhysics(),
             )
           : null,
-      trailing: Text(totalItemPrice.toString() + ' kr,-\n'),
+      trailing: Text(totalItemPrice.toString() + ' kr,-'),
       dense: true,
     );
   }

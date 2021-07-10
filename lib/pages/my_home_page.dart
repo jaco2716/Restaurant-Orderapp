@@ -1,15 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../LoginPageProvider.dart';
+import 'package:restaurantorderapp/model/NextPageEnum.dart';
 import '../model/MenuItem.dart';
 import '../flavors.dart';
 import '/MyWidgets/MyAppBar.dart';
 import '../MyWidgets/MyAlertDialog.dart';
 import '../Pages/CartPageContent/CartPage.dart';
 import '../Pages/MenuPageContent/MenuPage.dart';
-
-import '../Pages/ReceiptPageContent/ReceiptListPage.dart';
 import '../Pages/SettingsPageContent/SettingsPage.dart';
+import 'LoginPageContent/CheckLoginPage.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -47,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (context) {
         return MyAlertDialog(
           title: _title,
-          content: _message,
+          content: Text(_message, textAlign: TextAlign.center),
           cancelText: 'Ok',
           infoDialog: true,
           myOnPressed: () {},
@@ -59,18 +57,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    UserInfo userinfo = UserInfo({
-      'email': 's',
-    });
-
 
     final List<Widget> pageTabs = [
       MenuPage(notifyParent: _refresh),
       CartPage(
         notifyParent: _refresh,
       ),
-      loginNextPage(dummyList, 'ReceiptPage'),
+      CheckLoginPage(NextPage.RecieptPage, 'Sing in for at se dine ordrer.', []),
       // ReceiptListPage(userinfo),
+      // SettingsPage(),
       SettingsPage(),
     ];
 

@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class AuthService with ChangeNotifier {
+class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -17,7 +17,7 @@ class AuthService with ChangeNotifier {
   // wrapping the firebase calls
   Future logout() async {
     var result = FirebaseAuth.instance.signOut();
-    notifyListeners();
+    // notifyListeners();
     return result;
   }
 
@@ -31,12 +31,13 @@ class AuthService with ChangeNotifier {
       UserCredential result = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       print("User Logged in: ${result.user?.email}");
-      // since something changed, let's notify the listeners...
-      notifyListeners();
+      // something changed, notify the listeners...
+      // notifyListeners();
       return result.user;
     } on FirebaseAuthException catch (e) {
       // throw the Firebase AuthException that we caught
       print('Sign in error: ${e.code}');
+      throw e;
     }
   }
 

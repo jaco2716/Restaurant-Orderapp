@@ -1,66 +1,35 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:restaurantorderapp/Login/AuthService.dart';
-import 'package:restaurantorderapp/Login/LoginPage.dart';
+import 'package:restaurantorderapp/Logic/AuthService.dart';
 import 'package:restaurantorderapp/MyWidgets/LoadingCircle.dart';
-
-// import '../../Login/LoadingCircle.dart';
-// import '../../LoginPageProvider.dart';
-import '../../LoginPageProvider.dart';
+import 'package:restaurantorderapp/MyWidgets/MyAlertDialog.dart';
+import 'package:restaurantorderapp/MyWidgets/MyAppBar.dart';
+import 'package:restaurantorderapp/model/NextPageEnum.dart';
+import 'package:restaurantorderapp/pages/LoginPageContent/CheckLoginPage.dart';
 import '../../model/ApplicationData.dart';
 import '../../model/MenuItem.dart';
-// import 'package:url_launcher/url_launcher.dart' as urlLauncher;
 import 'package:url_launcher/url_launcher.dart' as urlLauncher;
 
 import '../../flavors.dart';
 
-// import '../Login/AuthService.dart';
-
-// Widget loginNextPage(List<MenuItem> cartItems, String nextPage) {
-//   return ChangeNotifierProvider<AuthService>(
-//     child: OrderPageProvider(cartItems, nextPage),
-//     create: (BuildContext context) {
-//       return AuthService();
-//     },
-//   );
-// }
-
 class SettingsPage extends StatefulWidget {
-  //final FirebaseUser currentUser;
-  //SettingsPage(this.currentUser);
-
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  AuthService _auth = AuthService();
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  AuthService _authService = AuthService();
 
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  bool _signedIn = false;
-
-  void checkLoginStatus() {
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user == null) {
-        print('User is currently signed out!');
-        setState(() {
-          _signedIn = false;
-        });
-      } else {
-        print('User is signed in!');
-        _signedIn = true;
-      }
-    });
-  }
+  User? myUser;
 
   @override
   void initState() {
+    myUser = _auth.currentUser;
+    _auth.authStateChanges().listen((User? user) => setState(() => myUser = user));
     super.initState();
-    checkLoginStatus();
   }
 
   @override
@@ -93,42 +62,6 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
           ),
-          // TextButton(
-          //     style: TextButton.styleFrom(
-          //       primary: Colors.blue,
-          //     ),
-          //     onPressed: () async {
-          //       dynamic res = await urlLauncher.launch(F.companyWebsite);
-          //       print('call: ' + res.toString());
-          //     },
-          //     child: Text(F.companyWebsite)),
-          // Padding(
-          //   padding: const EdgeInsets.only(bottom: 10.0),
-          //   child: ElevatedButton.icon(
-          //       icon: Icon(Icons.phone),
-          //       onPressed: () async {
-          //         String _url = 'tel:${F.companyPhone.replaceAll(' ', '')}';
-
-          //         dynamic res = await urlLauncher.launch(_url);
-          //         print('call: ' + res.toString());
-          //       },
-          //       label: Text(F.companyPhone)),
-          // ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 40.0),
-          //   child: Text(
-          //     F.companyAddress,
-          //     textAlign: TextAlign.center,
-          //   ),
-          // ),
-          // TextButton(
-          //     style: TextButton.styleFrom(primary: Colors.blue),
-
-          //     // textColor: Colors.blue[300],
-          //     onPressed: () async {
-          //       await urlLauncher.launch(F.privacyPolicyURL);
-          //     },
-          //     child: Text('Privacy Policy')),
           Card(
               color: F.appSecondaryColor[900],
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -228,30 +161,33 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ]),
               )),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 10),
-            child: FutureBuilder<dynamic>(
-              future: _auth.getUser(),
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.error != null) {
-                    return Text(snapshot.error.toString());
-                  }
-                  if (snapshot.hasData) {
-                    return settingsButton(Icon(Icons.lock), "Logout", _buildLogOutDialog);
-                  } else {
-                    return settingsButton(Icon(Icons.lock_open), "Login", goToPage);
-                  }
-                } else {
-                  // show loading indicator
-                  return Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Container(height: 50, child: LoadingCircle()),
-                  );
-                }
-              },
-            ),
-          ),
+          myUser == null
+              ? settingsButton(Icon(Icons.lock_open), "Sign in ", goToPage)
+              : settingsButton(Icon(Icons.lock), "Sign out", _buildLogOutDialog),
+          // Container(
+          //   padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 10),
+          //   child: FutureBuilder<dynamic>(
+          //     future: _auth.getUser(),
+          //     builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          //       if (snapshot.connectionState == ConnectionState.done) {
+          //         if (snapshot.error != null) {
+          //           return Text(snapshot.error.toString());
+          //         }
+          //         if (snapshot.hasData) {
+          //           return settingsButton(Icon(Icons.lock), "Sign out", _buildLogOutDialog);
+          //         } else {
+          //           return settingsButton(Icon(Icons.lock_open), "Sign in ", goToPage);
+          //         }
+          //       } else {
+          //         // show loading indicator
+          //         return Padding(
+          //           padding: const EdgeInsets.all(20.0),
+          //           child: Container(height: 50, child: LoadingCircle()),
+          //         );
+          //       }
+          //     },
+          //   ),
+          // ),
           // ElevatedButton(onPressed: () => createOpenHours(), child: Text('create app data')),
         ],
       ),
@@ -260,31 +196,30 @@ class _SettingsPageState extends State<SettingsPage> {
 
   goToPage() {
     List<MenuItem> dummyList = [];
-    print('login');
-    Navigator.push(context, MaterialPageRoute(builder: (context) => loginNextPage(dummyList, 'SettingsPage')));
+    print('Sign in');
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Scaffold(appBar: MyAppBar('Sign in'), body: CheckLoginPage(NextPage.SettingsPage, 'Sign in.. .', []))));
+    // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage())).then((value) {
+    //   setState(() {});
+    // });
   }
 
   _buildLogOutDialog() {
     showDialog(
       builder: (context) {
-        return AlertDialog(
-          title: Text('Log Out'),
-          content: Text('Are you sure you want to log out?'),
-          actions: <Widget>[
-            FlatButton(
-                child: Text('Cancel'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                }),
-            RaisedButton(
-                child: Text('Log Out'),
-                onPressed: () {
-                  setState(() {
-                    _auth.logout();
-                    Navigator.of(context).pop();
-                  });
-                })
-          ],
+        return MyAlertDialog(
+          title: 'Sign out',
+          content: Text('Are you sure you want to logout', textAlign: TextAlign.center),
+          cancelText: 'Cancel',
+          myOnPressed: () {
+            setState(() {
+              _authService.logout();
+              Navigator.of(context).pop();
+            });
+          },
+          confirmText: 'Confirm',
         );
       },
       context: context,
@@ -292,13 +227,14 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Widget settingsButton(Icon _tileIcon, String _tileTitle, VoidCallback _callback) {
-    return SizedBox(
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 10),
       width: double.infinity,
-      height: 50,
+      height: 70,
       child: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
           primary: F.appPrimaryColor[900],
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
         ),
         icon: _tileIcon,
         label: Text(_tileTitle),

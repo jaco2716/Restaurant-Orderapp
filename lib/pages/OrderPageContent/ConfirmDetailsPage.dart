@@ -1,26 +1,19 @@
-import 'dart:convert';
-
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:restaurantorderapp/MyWidgets/LoadingCircle.dart';
+import 'package:restaurantorderapp/model/OrderUser.dart';
 import '../../MyWidgets/MyAppBar.dart';
 import '../../model/MenuItem.dart';
-// import 'package:http/http.dart';
-import '../../CalculateValues.dart';
-import '../../model/ApplicationData.dart';
 import '../../model/MealsLog.dart';
-import '../../model/MeatChoice.dart';
 import '../../model/Order.dart';
-import '../../model/OrderUser.dart';
 import 'OrderConfirmation.dart';
-// import 'package:ntp/ntp.dart';
-
 
 class ConfirmDetailsPage extends StatefulWidget {
   final List<MenuItem> cartItems;
   // final FirebaseUser currentUser;
-  final dynamic currentUser;
+  final User currentUser;
 
   ConfirmDetailsPage(this.cartItems, this.currentUser);
 
@@ -29,18 +22,17 @@ class ConfirmDetailsPage extends StatefulWidget {
 }
 
 class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
-  // final Firestore _firestore = Firestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController myController = TextEditingController();
-  // User user = User();
+  OrderUser user = OrderUser(uid: 'uid', fullName: 'Name', phoneNr: 'Phone', email: 'E-mail');
   bool userLoaded = false;
   String orderMessage = 'Ingen kommentar til restaurenten.';
-  String serverToken ='';
+  String serverToken = '';
   bool isOpen = false;
 
   @override
   Widget build(BuildContext context) {
-    // var docRef =
-        // _firestore.collection('users').document(widget.currentUser.uid);
+    var docRef = _firestore.collection('users').doc(widget.currentUser.uid);
     return Scaffold(
       appBar: MyAppBar('Bekræft Ordre'),
       body: SingleChildScrollView(
@@ -48,40 +40,40 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
             children: [
-              // StreamBuilder<DocumentSnapshot>(
-              //   stream: docRef.snapshots(),
-              //   builder: (BuildContext streamContext,
-              //       AsyncSnapshot<DocumentSnapshot> snapshot) {
-              //     if (!snapshot.hasData)
-              //       return Container(height: 88, child: LoadingCircle());
-              //     else if (snapshot.hasError)
-              //       return Text('Error: ${snapshot.error}');
-              //     else {
-              //       user = User.fromJson(snapshot.data.data);
+              StreamBuilder<DocumentSnapshot>(
+                stream: docRef.snapshots(),
+                builder: (BuildContext streamContext,
+                    AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  if (!snapshot.hasData)
+                    return Container(height: 88, child: LoadingCircle());
+                  else if (snapshot.hasError)
+                    return Text('Error: ${snapshot.error}');
+                  else {
+                    user = OrderUser.fromJson(snapshot.data!.data() as Map<String, dynamic>);
 
-              //       if (!userLoaded) {
-              //         Future.delayed(Duration.zero, () {
-              //           setState(() {
-              //             userLoaded = true;
-              //             print('update!');
-              //           });
-              //         });
-              //       }
-              //       return ListTile(
-              //         title: Text(user.fullName),
-              //         subtitle: Text(user.phoneNr + '\n' + user.email),
-              //         isThreeLine: true,
-              //       );
-              //     }
-              //   },
-              // ),
+                    if (!userLoaded) {
+                      Future.delayed(Duration.zero, () {
+                        setState(() {
+                          userLoaded = true;
+                          print('update!');
+                        });
+                      });
+                    }
+                    return ListTile(
+                      title: Text(user.fullName),
+                      subtitle: Text(user.phoneNr + '\n' + user.email),
+                      isThreeLine: true,
+                    );
+                  }
+                },
+              ),
               OrderConfirmation(widget.cartItems),
               Container(
                 height: 60,
                 padding: EdgeInsets.all(4),
                 width: double.infinity,
                 child: RaisedButton(
-                    elevation: 10,
+                    elevation: 0,
                     child: Text('Tilføj kommentar til ordren.'),
                     color: Colors.blue,
                     onPressed: () {
@@ -91,8 +83,7 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
               Card(
                   child: Container(
                       width: double.infinity,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                       child: Column(children: [
                         Text(
                           'Kommentar:',
@@ -107,22 +98,25 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
                 height: 10,
               ),
               Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.all(4),
-                      height: 60,
-                      child: RaisedButton(
-                          onPressed: () {
-                            showDialog(context: context, builder: (context) {
-                              return AlertDialog(
-                                title: Text('Demo'),
-                                content: Text('Demo versionen kan ikke lave ordrer.'),
-                                actions: [TextButton(onPressed: ()=>Navigator.pop(context), child: Text('Ok'))],
-                              );
-                            },);
-                            // confirmOrder();
-                          },
-                          child: Text('Bekræft og send ordre')),
-                    ),
+                width: double.infinity,
+                padding: EdgeInsets.all(4),
+                height: 60,
+                child: RaisedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('Demo'),
+                            content: Text('Demo versionen kan ikke lave ordrer.'),
+                            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('Ok'))],
+                          );
+                        },
+                      );
+                      // confirmOrder();
+                    },
+                    child: Text('Bekræft og send ordre')),
+              ),
               // userLoaded
               //     ? Container(
               //         width: double.infinity,
@@ -310,8 +304,7 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
     } catch (e) {
       Navigator.of(context).pop();
       print('Error: ${e.toString()}');
-      _buildDialog(
-          context, 'Der skete en fejl', 'Der kan ikke forbindes til serveren.');
+      _buildDialog(context, 'Der skete en fejl', 'Der kan ikke forbindes til serveren.');
     }
   }
 
