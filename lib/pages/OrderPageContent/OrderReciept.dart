@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:restaurantorderapp/Logic/CalculateValues.dart';
 import 'package:restaurantorderapp/model/MenuItem.dart';
 import '../../flavors.dart';
-import '/CalculateValues.dart';
 
 
-class OrderConfirmation extends StatelessWidget {
+
+class OrderReciept extends StatelessWidget {
   final List<MenuItem> cartItems;
-  OrderConfirmation(this.cartItems);
+  OrderReciept(this.cartItems);
+  final CalculateValues _calculateValues = CalculateValues();
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +47,7 @@ class OrderConfirmation extends StatelessWidget {
                   style: totalpriceStyle(),
                 ),
                 trailing: Text(
-                  '${CalculateValues.totalPriceFromOrder(cartItems)} kr,-',
+                  '${_calculateValues.totalPriceFromOrder(cartItems)} kr,-',
                   style: totalpriceStyle(),
                 ),
               ),

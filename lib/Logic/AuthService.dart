@@ -15,10 +15,8 @@ class AuthService {
   }
 
   // wrapping the firebase calls
-  Future logout() async {
-    var result = FirebaseAuth.instance.signOut();
-    // notifyListeners();
-    return result;
+  void logout() async {
+    FirebaseAuth.instance.signOut();
   }
 
   ///
@@ -28,8 +26,7 @@ class AuthService {
   ///
   Future<User?> loginUser({required String email, required String password}) async {
     try {
-      UserCredential result = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+      UserCredential result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       print("User Logged in: ${result.user?.email}");
       // something changed, notify the listeners...
       // notifyListeners();
@@ -42,24 +39,19 @@ class AuthService {
   }
 
   // wrappinhg the firebase calls
-  Future<void> createUser(
-      {required String fullName,
-      required String email,
-      required String password,
-      required String phoneNr}) async {
-    var u = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password);
+  Future<void> createUser({required String fullName, required String email, required String password, required String phoneNr}) async {
+    var u = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
 
     await _firestore.collection('users').doc(u.user?.uid).set({
       'uid': u.user?.uid,
       'email': email,
       'fullName': fullName,
-      'phoneNr' : phoneNr,
+      'phoneNr': phoneNr,
     });
     return await u.user?.updateDisplayName(fullName);
   }
 
-  Future<void> sendForgotPasswordEmail(String email){
+  Future<void> sendForgotPasswordEmail(String email) {
     var result = FirebaseAuth.instance.sendPasswordResetEmail(email: email);
     //notifyListeners();
     return result;

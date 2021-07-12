@@ -1,17 +1,13 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:restaurantorderapp/model/MenuItem.dart';
 import 'package:restaurantorderapp/model/Order.dart';
+import 'package:restaurantorderapp/pages/OrderPageContent/OrderReciept.dart';
 import '../../flavors.dart';
 import '../my_home_page.dart';
-import '/Pages/OrderPageContent/OrderConfirmation.dart';
 import '/../MyWidgets/LoadingCircle.dart';
 import '/../MyWidgets/MyAppBar.dart';
-import '/../CalculateValues.dart';
-// import '../../Login/LoadingCircle.dart';
-// import '../../LoginPageProvider.dart';
-
-// import '../../OrderPageContent/OrderConfirmation.dart';
+import '../../Logic/CalculateValues.dart';
 
 
 class SingleReceiptPage extends StatefulWidget {
@@ -20,6 +16,7 @@ class SingleReceiptPage extends StatefulWidget {
   final bool fromMakeOrder;
 
   SingleReceiptPage(this.order, this.dateString, this.fromMakeOrder);
+
 
   @override
   _SingelOrderPageState createState() => _SingelOrderPageState();
@@ -31,6 +28,7 @@ class _SingelOrderPageState extends State<SingleReceiptPage> {
   // DocumentReference docRef;
   bool showOrderAgain = false;
   bool hasRefreshed = false;
+  final CalculateValues _calculateValues = CalculateValues();
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +110,7 @@ class _SingelOrderPageState extends State<SingleReceiptPage> {
               ),
               Divider(),
               Text('Bestilt ${widget.dateString}'),
-              OrderConfirmation(widget.order.menuOrder),
+              OrderReciept(widget.order.menuOrder),
               SizedBox(
                 height: 15,
               ),
@@ -158,7 +156,7 @@ class _SingelOrderPageState extends State<SingleReceiptPage> {
   }
 
   Widget orderConfirmed() {
-    List<String> acceptTimeString = CalculateValues.dateStringFromMili(widget.order.acceptTime).split(' ');
+    List<String> acceptTimeString = _calculateValues.dateStringFromMili(widget.order.acceptTime).split(' ');
     // acceptTimeString.forEach((element) {print(element);});
     return Padding(
       padding: const EdgeInsets.all(12.0),

@@ -8,6 +8,7 @@ class MyTextFieldWidget extends StatelessWidget {
   final void Function(String?) setValue;
   final TextInputType textInputType;
   final double horizontalPaddig;
+  final TextCapitalization textCapitalization;
 
   MyTextFieldWidget({
     required this.hintText,
@@ -17,6 +18,7 @@ class MyTextFieldWidget extends StatelessWidget {
     required this.validate,
     required this.textInputType,
     this.horizontalPaddig = 40,
+    this.textCapitalization = TextCapitalization.words,
   });
 
   @override
@@ -32,6 +34,8 @@ class MyTextFieldWidget extends StatelessWidget {
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
           hintText: hintText,
         ),
+        textCapitalization: textCapitalization,
+        autocorrect: false,
         keyboardType: textInputType,
         validator: (value) => validate(value),
         onSaved: (value) => setValue(value),

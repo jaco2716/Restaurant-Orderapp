@@ -36,7 +36,8 @@ class _CheckLoginPageState extends State<CheckLoginPage> {
   @override
   void initState() {
     myUser = _auth.currentUser;
-    _auth.authStateChanges().listen((User? user) => setState(() => myUser = user));
+    // _auth.authStateChanges().listen((User? user) => setState(() => myUser = user));
+    _auth.authStateChanges().listen((User? user) => mounted ? setState(() => myUser = user) : null);
     super.initState();
   }
 
@@ -45,35 +46,37 @@ class _CheckLoginPageState extends State<CheckLoginPage> {
     if (myUser == null) {
       return Container(
         width: double.infinity,
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.all(5),
-              height: 150,
-              width: double.infinity,
-              child: Image.asset(F.appIconPathDark),
-            ),
-            Text('Velkommen!', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                widget.title,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(5),
+                height: 150,
+                width: double.infinity,
+                child: Image.asset(F.appIconPathDark),
               ),
-            ),
-            SizedBox(height: 40),
-            MyRoundedButton(
-                title: 'SIGN IN',
-                myOnPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
-                }),
-            MyRoundedButton(
-                title: 'SIGN UP',
-                myOnPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage()));
-                }),
-          ],
+              Text('Velkommen!', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  widget.title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
+              SizedBox(height: 40),
+              MyRoundedButton(
+                  title: 'SIGN IN',
+                  myOnPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                  }),
+              MyRoundedButton(
+                  title: 'SIGN UP',
+                  myOnPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage()));
+                  }),
+            ],
+          ),
         ),
       );
     } else {

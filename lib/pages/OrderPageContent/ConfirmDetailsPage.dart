@@ -1,14 +1,22 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:restaurantorderapp/Logic/CalculateValues.dart';
 import 'package:restaurantorderapp/MyWidgets/LoadingCircle.dart';
+import 'package:restaurantorderapp/flavors.dart';
+import 'package:restaurantorderapp/model/ApplicationData.dart';
+import 'package:restaurantorderapp/model/MeatChoice.dart';
 import 'package:restaurantorderapp/model/OrderUser.dart';
+import 'package:restaurantorderapp/pages/ReceiptPageContent/SingleReceiptPage.dart';
 import '../../MyWidgets/MyAppBar.dart';
 import '../../model/MenuItem.dart';
 import '../../model/MealsLog.dart';
 import '../../model/Order.dart';
-import 'OrderConfirmation.dart';
+import 'OrderReciept.dart';
+import 'package:http/http.dart';
 
 class ConfirmDetailsPage extends StatefulWidget {
   final List<MenuItem> cartItems;
@@ -24,6 +32,7 @@ class ConfirmDetailsPage extends StatefulWidget {
 class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController myController = TextEditingController();
+  final CalculateValues _calculateValues = CalculateValues();
   OrderUser user = OrderUser(uid: 'uid', fullName: 'Name', phoneNr: 'Phone', email: 'E-mail');
   bool userLoaded = false;
   String orderMessage = 'Ingen kommentar til restaurenten.';
@@ -67,7 +76,7 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
                   }
                 },
               ),
-              OrderConfirmation(widget.cartItems),
+              OrderReciept(widget.cartItems),
               Container(
                 height: 60,
                 padding: EdgeInsets.all(4),
@@ -97,42 +106,42 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
               SizedBox(
                 height: 10,
               ),
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(4),
-                height: 60,
-                child: RaisedButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text('Demo'),
-                            content: Text('Demo versionen kan ikke lave ordrer.'),
-                            actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('Ok'))],
-                          );
-                        },
-                      );
-                      // confirmOrder();
-                    },
-                    child: Text('Bekræft og send ordre')),
-              ),
-              // userLoaded
-              //     ? Container(
-              //         width: double.infinity,
-              //         padding: EdgeInsets.all(4),
-              //         height: 60,
-              //         child: RaisedButton(
-              //             onPressed: () {
-              //               // confirmOrder();
-              //             },
-              //             child: Text('Bekræft og send ordre')),
-              //       )
-              //     : Container(
-              //         height: 60,
-              //         child: Center(
-              //           child: Text('Venter på bruger...'),
-              //         )),
+              // Container(
+              //   width: double.infinity,
+              //   padding: EdgeInsets.all(4),
+              //   height: 60,
+              //   child: RaisedButton(
+              //       onPressed: () {
+              //         showDialog(
+              //           context: context,
+              //           builder: (context) {
+              //             return AlertDialog(
+              //               title: Text('Demo'),
+              //               content: Text('Demo versionen kan ikke lave ordrer.'),
+              //               actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('Ok'))],
+              //             );
+              //           },
+              //         );
+              //         // confirmOrder();
+              //       },
+              //       child: Text('Bekræft og send ordre')),
+              // ),
+              userLoaded
+                  ? Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(4),
+                      height: 60,
+                      child: RaisedButton(
+                          onPressed: () {
+                            confirmOrder();
+                          },
+                          child: Text('Bekræft og send ordre')),
+                    )
+                  : Container(
+                      height: 60,
+                      child: Center(
+                        child: Text('Venter på bruger...'),
+                      )),
               SizedBox(
                 height: 30,
               )
@@ -220,87 +229,87 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
     );
     try {
       // DateTime currentDate = await NTP.now();
-      //DateTime currentDate = DateTime(2020, 09, 25, 11, 02);
-      // isOpen = await CalculateValues.checkIfWithinOpenHours(currentDate);
+      DateTime currentDate = DateTime(2020, 09, 25, 11, 02);
+      isOpen = await _calculateValues.checkIfWithinOpenHours(currentDate);
 
-      // DocumentSnapshot applicationDataSnapshot =
-      //     await _firestore.collection('applications').document('LeosWok').get();
-      // ApplicationData appData =
-      //     ApplicationData.fromJson(applicationDataSnapshot.data);
+      DocumentSnapshot applicationDataSnapshot =
+          await _firestore.doc('${F.firestoreCollection}').get();
+      ApplicationData appData =
+          ApplicationData.fromJson(applicationDataSnapshot.data as Map<String, dynamic>);
 
-      // if (isOpen && appData.versionId == 1) {
-      //   //Create Order
-      //   String orderDate = DateTime.now().millisecondsSinceEpoch.toString();
-      //   Order finalOrder = Order(
-      //       menuOrder: widget.cartItems,
-      //       user: user,
-      //       orderDate: orderDate,
-      //       orderDone: false,
-      //       orderAccepted: false,
-      //       acceptTime: '0',
-      //       restaurantMessage: 'No message',
-      //       orderMessage: orderMessage);
-      //   finalOrder.menuOrder.forEach((mo) {
-      //     List<MeatChoice> newMeatchoice = List<MeatChoice>();
-      //     if (mo.meatChoice != null) {
-      //       mo.meatChoice.forEach((mc) {
-      //         newMeatchoice.add(MeatChoice.clone(mc));
-      //       });
-      //       mo.meatChoice = newMeatchoice;
-      //     }
-      //   });
+      if (isOpen && appData.versionId == 1) {
+        //Create Order
+        String orderDate = DateTime.now().millisecondsSinceEpoch.toString();
+        Order finalOrder = Order(
+            menuOrder: widget.cartItems,
+            user: user,
+            orderDate: orderDate,
+            orderDone: false,
+            orderAccepted: false,
+            acceptTime: '0',
+            restaurantMessage: 'No message',
+            orderMessage: orderMessage);
+        finalOrder.menuOrder.forEach((mo) {
+          List<MeatChoice> newMeatchoice = [];
+          if (mo.meatChoice.length != 0) {
+            mo.meatChoice.forEach((mc) {
+              newMeatchoice.add(MeatChoice.clone(mc));
+            });
+            mo.meatChoice = newMeatchoice;
+          }
+        });
 
-      //   //Order finalOrder = Order.clone(tempFinalOrder);
+        //Order finalOrder = Order.clone(tempFinalOrder);
 
-      //   // print('Order copy: ${finalOrder.orderDone.toString()} - ${newOrderfinal.orderDone.toString()}');
-      //   // finalOrder.orderDone = true;
-      //   // print('copy after change: ${finalOrder.orderDone.toString()} - ${newOrderfinal.orderDone.toString()}');
+        // print('Order copy: ${finalOrder.orderDone.toString()} - ${newOrderfinal.orderDone.toString()}');
+        // finalOrder.orderDone = true;
+        // print('copy after change: ${finalOrder.orderDone.toString()} - ${newOrderfinal.orderDone.toString()}');
 
-      //   // widget.cartItems.forEach((e) {
-      //   //   finalOrder.menuOrder.add(MenuItem(
-      //   //       e.id, e.title, e.description, e.price, e.image, e.amount,
-      //   //       meatChoice: e.meatChoice??null));
-      //   // });
+        // widget.cartItems.forEach((e) {
+        //   finalOrder.menuOrder.add(MenuItem(
+        //       e.id, e.title, e.description, e.price, e.image, e.amount,
+        //       meatChoice: e.meatChoice??null));
+        // });
 
-      //   String dateString = CalculateValues.dateStringFromMili(orderDate);
+        String dateString = _calculateValues.dateStringFromMili(orderDate);
 
-      //   await postToFireStore(finalOrder, orderDate);
-      //   await sendAndRetrieveMessage(orderDate, appData.deviceToken);
+        await postToFireStore(finalOrder, orderDate);
+        await sendAndRetrieveMessage(orderDate, appData.deviceToken);
 
-      //   MealsLog.pageIndex = 2;
-      //   // print('Before make order: ' + finalOrder.menuOrder[0].toString());
-      //   // finalOrder.menuOrder[0].meatChoice.forEach((element) {
-      //   //   print('before meat amount' + element.amount.toString());
-      //   // });
+        MealsLog.pageIndex = 2;
+        // print('Before make order: ' + finalOrder.menuOrder[0].toString());
+        // finalOrder.menuOrder[0].meatChoice.forEach((element) {
+        //   print('before meat amount' + element.amount.toString());
+        // });
 
-      //   resetMenuItems();
+        resetMenuItems();
 
-      //   // print('Make Order with: ' + finalOrder.menuOrder[0].toString());
-      //   // finalOrder.menuOrder[0].meatChoice.forEach((element) {
-      //   //   print('after meat amount' + element.amount.toString());
-      //   // });
-      //   Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //           builder: (context) =>
-      //               SingleReceiptPage(finalOrder, dateString, true),
-      //           fullscreenDialog: true));
+        // print('Make Order with: ' + finalOrder.menuOrder[0].toString());
+        // finalOrder.menuOrder[0].meatChoice.forEach((element) {
+        //   print('after meat amount' + element.amount.toString());
+        // });
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    SingleReceiptPage(finalOrder, dateString, true),
+                fullscreenDialog: true));
 
-      //   // Future.delayed(Duration(seconds: 4), () {
-      //   //   resetMenuItems();
-      //   // });
-      // } else if (!isOpen) {
-      //   // Navigator.of(context).pushAndRemoveUntil(
-      //   //     MaterialPageRoute(builder: (context) => MyHomePage()),
-      //   //     (Route<dynamic> route) => false);
-      //   Navigator.of(context).pop();
-      //   _buildDialog(context, 'Restauranten er lukket',
-      //       'Se åbningstider på info siden.');
-      // } else {
-      //   Navigator.of(context).pop();
-      //   _buildDialog(context, 'Din app er outdated',
-      //       'Du skal opdatere din app til den nyeste version, inden du kan lave en bestilling.');
-      // }
+        // Future.delayed(Duration(seconds: 4), () {
+        //   resetMenuItems();
+        // });
+      } else if (!isOpen) {
+        // Navigator.of(context).pushAndRemoveUntil(
+        //     MaterialPageRoute(builder: (context) => MyHomePage()),
+        //     (Route<dynamic> route) => false);
+        Navigator.of(context).pop();
+        _buildDialog(context, 'Restauranten er lukket',
+            'Se åbningstider på info siden.');
+      } else {
+        Navigator.of(context).pop();
+        _buildDialog(context, 'Din app er outdated',
+            'Du skal opdatere din app til den nyeste version, inden du kan lave en bestilling.');
+      }
     } catch (e) {
       Navigator.of(context).pop();
       print('Error: ${e.toString()}');
@@ -364,41 +373,41 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
   }
 
 //Send post norification to client app with device id
-  // Future<bool> sendAndRetrieveMessage(
-  //     String orderDate, String deviceToken) async {
-  //   print(deviceToken);
-  //   await post(
-  //     config.baseURL + '/fcm/send',
-  //     headers: <String, String>{
-  //       'Content-Type': 'application/json',
-  //       'Authorization': 'key=${config.serverToken}',
-  //     },
-  //     body: jsonEncode(
-  //       <String, dynamic>{
-  //         'notification': <String, dynamic>{
-  //           'title': 'Ny Ordre!',
-  //           'body': 'Ordre fra ${user.fullName}, tlf: ${user.phoneNr}',
-  //           'sound': 'LeosWokSound.caf',
-  //           'badge': '1',
-  //         },
-  //         'priority': 'high',
-  //         'data': <String, dynamic>{
-  //           'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-  //           'id': orderDate,
-  //           'status': 'done'
-  //         },
-  //         'to': deviceToken,
-  //       },
-  //     ),
-  //   ).then((value) {
-  //     print('notification sucess');
-  //     return true;
-  //   }).catchError((error) {
-  //     print(error);
-  //     return false;
-  //   });
-  //   return false;
-  // }
+  Future<bool> sendAndRetrieveMessage(
+      String orderDate, String deviceToken) async {
+    print(deviceToken);
+    await post(
+      Uri.parse(F.baseURL + '/fcm/send'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'key=${F.serverToken}',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'notification': <String, dynamic>{
+            'title': 'Ny Ordre!',
+            'body': 'Ordre fra ${user.fullName}, tlf: ${user.phoneNr}',
+            'sound': 'OrderSound.caf',
+            'badge': '1',
+          },
+          'priority': 'high',
+          'data': <String, dynamic>{
+            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+            'id': orderDate,
+            'status': 'done'
+          },
+          'to': deviceToken,
+        },
+      ),
+    ).then((value) {
+      print('notification sucess');
+      return true;
+    }).catchError((error) {
+      print(error);
+      return false;
+    });
+    return false;
+  }
 
 //Send order to database
   Future<bool> postToFireStore(Order finalOrder, String orderDate) async {

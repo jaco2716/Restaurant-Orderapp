@@ -52,7 +52,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   hintText: 'Fulde navn',
                     icon: Icon(Icons.person),
                   obscureText: false,
-                  textInputType: TextInputType.name,
+                  textInputType: TextInputType.text,
                   validate: (value) => _validateValues.validateString(value),
                   setValue: (value) => _fullName = value,
                 ),

@@ -1,6 +1,6 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../CalculateValues.dart';
+import '../../Logic/CalculateValues.dart';
 import '../../model/Order.dart';
 import 'SingleReceiptPage.dart';
 
@@ -10,15 +10,17 @@ class ReceiptListRow extends StatelessWidget {
   // final FirebaseUser currentUser;
   final dynamic currentUser;
   ReceiptListRow(this.currentUser, this.order);
+  final CalculateValues _calculateValues = CalculateValues();
+
 
   @override
   Widget build(BuildContext context) {
     String orderDateString =
-        CalculateValues.dateStringFromMili(order.orderDate);
+        _calculateValues.dateStringFromMili(order.orderDate);
     Icon orderIcon = Icon(Icons.watch_later, size: 35, color: Colors.grey,);
     String acceptTimeString = 'Venter...';
     if (order.orderAccepted){
-      acceptTimeString = CalculateValues.dateStringFromMili(order.acceptTime);
+      acceptTimeString = _calculateValues.dateStringFromMili(order.acceptTime);
       orderIcon = Icon(Icons.check_circle, size: 35, color: Colors.green,);
     } else if (order.orderDone) {
       orderIcon = Icon(Icons.cancel, size: 35, color: Colors.red,);

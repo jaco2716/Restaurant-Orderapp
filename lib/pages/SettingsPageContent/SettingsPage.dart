@@ -28,7 +28,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     myUser = _auth.currentUser;
-    _auth.authStateChanges().listen((User? user) => setState(() => myUser = user));
+    _auth.authStateChanges().listen((User? user) => mounted ? setState(() => myUser = user) : null);
     super.initState();
   }
 
@@ -38,12 +38,19 @@ class _SettingsPageState extends State<SettingsPage> {
         child: SingleChildScrollView(
       child: Column(
         children: [
-          Container(
-            padding: EdgeInsets.all(5),
-            height: 150,
-            width: double.infinity,
-            child: Image.asset(F.appIconPathDark),
-          ),
+          myUser == null
+              ? Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(top: 5),
+                      height: 100,
+                      width: double.infinity,
+                      child: Image.asset(F.appIconPathDark),
+                    ),
+                    settingsButton(Icon(Icons.lock_open), "Sign in ", goToPage)
+                  ],
+                )
+              : userInfoTile(),
           Container(
             child: GridView.count(
               childAspectRatio: 2.5,
@@ -99,7 +106,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         SizedBox(width: 10),
                         Container(height: 110, width: 1, color: Colors.white),
                         FutureBuilder<DocumentSnapshot>(
-                          future: _firestore.doc('${F.baseURL}').get(),
+                          future: _firestore.doc('${F.firestoreCollection}').get(),
                           //initialData: Text('Henter...'),
                           builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                             if (!snapshot.hasData)
@@ -161,9 +168,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ]),
               )),
-          myUser == null
-              ? settingsButton(Icon(Icons.lock_open), "Sign in ", goToPage)
-              : settingsButton(Icon(Icons.lock), "Sign out", _buildLogOutDialog),
+          // myUser == null
+          //     ? settingsButton(Icon(Icons.lock_open), "Sign in ", goToPage)
+          //     : settingsButton(Icon(Icons.lock), "Sign out", _buildLogOutDialog),
           // Container(
           //   padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 10),
           //   child: FutureBuilder<dynamic>(
@@ -214,15 +221,50 @@ class _SettingsPageState extends State<SettingsPage> {
           content: Text('Are you sure you want to logout', textAlign: TextAlign.center),
           cancelText: 'Cancel',
           myOnPressed: () {
-            setState(() {
-              _authService.logout();
-              Navigator.of(context).pop();
-            });
+            _authService.logout();
+            Navigator.of(context).pop();
+            // setState(() {
+            // });
           },
           confirmText: 'Confirm',
         );
       },
       context: context,
+    );
+  }
+
+  Widget userInfoTile() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Text(
+              'Logged ind som:',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ),
+          infoGridButton(
+            '${myUser?.displayName ?? 'Navn'}',
+            'url',
+            Icon(
+              Icons.person,
+              color: Colors.white,
+            ),
+            subtitle: '${myUser?.email ?? 'E-mail'}                                                                                                               ',
+            canTap: false,
+            trailing: IconButton(onPressed: () => _buildLogOutDialog(), icon: Icon(Icons.logout_rounded, color: Colors.black)),
+          ),
+          Divider(
+            thickness: 1,
+          )
+        ],
+      ),
     );
   }
 
@@ -249,24 +291,28 @@ class _SettingsPageState extends State<SettingsPage> {
   //       openingHours: [1100, 1100, 1100, 1100, 1100, 1100, 1100],
   //       versionId: 1,
   //       deviceToken: '123');
-  //   _firestore.doc('${F.baseURL}').set(appDataTemp.toJson());
+  //   _firestore.doc('${F.firestoreCollection}').set(appDataTemp.toJson());
   // }
 
-  Widget infoGridButton(String title, String url, Icon icon, {String? subtitle}) {
+  Widget infoGridButton(String title, String url, Icon icon, {String? subtitle, bool canTap = true, Widget? trailing}) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
           primary: Colors.white,
+          onSurface: Colors.white,
           elevation: 0,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           padding: EdgeInsets.all(5),
         ),
-        onPressed: () async {
-          bool canLaunch = await urlLauncher.canLaunch(url);
-          if (canLaunch) {
-            await urlLauncher.launch(url);
-          }
-        },
+        onPressed: canTap
+            ? () async {
+                bool canLaunch = await urlLauncher.canLaunch(url);
+                if (canLaunch) {
+                  await urlLauncher.launch(url);
+                }
+              }
+            : null,
         child: Row(
+          mainAxisSize: MainAxisSize.max,
           children: [
             Container(
               height: 50,
@@ -296,6 +342,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
             ),
+            trailing == null ? Center() : trailing,
           ],
         ));
   }
