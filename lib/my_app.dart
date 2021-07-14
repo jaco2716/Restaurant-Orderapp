@@ -8,14 +8,22 @@ class MyApp extends StatelessWidget {
       title: 'OrderApp template',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          // primarySwatch: Colors.green,
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            ),
+          ),
+          textTheme: TextTheme(
+            subtitle1: TextStyle(color: Colors.grey[800], fontWeight: FontWeight.w700, fontSize: 15),
+            bodyText2: TextStyle(fontSize: 13),
+          ),
           buttonTheme: ButtonThemeData(
-            buttonColor: Colors.green[600],
             textTheme: ButtonTextTheme.primary,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           ),
           cardTheme: CardTheme(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            elevation: 0,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           )),
       home: MyHomePage(),
     );

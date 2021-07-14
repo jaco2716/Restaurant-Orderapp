@@ -261,13 +261,13 @@ class F {
           [
             MenuItem(90, 'Cola, Cola Zero, Sprite, Fanta', '', 27, '', 0, meatChoice: []),
             MenuItem(91, 'Økologisk hyldeblomst eller solbær', '', 29, '', 0, meatChoice: []),
-            MenuItem(92, 'San Pellegrino med brus 0, meatChoice: []5 l.', '', 35, '', 0, meatChoice: []),
-            MenuItem(93, 'Limonade 0, meatChoice: []5 l.', '', 35, '', 0, meatChoice: []),
-            MenuItem(94, 'Aranciate Rossa (blodappelsin) 0, meatChoice: []5 l.', '', 35, '', 0, meatChoice: []),
-            MenuItem(95, 'Italiensk øl (Peroni)', '', 35, '', 0, meatChoice: []),
+            MenuItem(92, 'San Pellegrino med brus', '0,5 l.', 35, '', 0, meatChoice: []),
+            MenuItem(93, 'Limonade', '0,5 l.', 35, '', 0, meatChoice: []),
+            MenuItem(94, 'Aranciate Rossa', 'Blodappelsin 0,5 l.', 35, '', 0, meatChoice: []),
+            MenuItem(95, 'Italiensk øl', 'Peroni', 35, '', 0, meatChoice: []),
             MenuItem(96, 'Tuborg profil', '', 30, '', 0, meatChoice: []),
             MenuItem(97, 'La Rossa Moretti', '', 29, '', 0, meatChoice: []),
-            MenuItem(98, 'Italiensk kildevand,-', '', 22, '', 0, meatChoice: []),
+            MenuItem(98, 'Italiensk kildevand', '', 22, '', 0, meatChoice: []),
           ],
 
           //VARME DRIKKE

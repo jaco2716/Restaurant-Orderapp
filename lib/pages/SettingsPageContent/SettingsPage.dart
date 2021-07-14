@@ -69,105 +69,108 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
           ),
-          Card(
-              color: F.appSecondaryColor[900],
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-              elevation: 0,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 20),
-                child: Column(children: [
-                  Text(
-                    'Åbningstider:',
-                    style: TextStyle(fontWeight: FontWeight.w300, color: Colors.white, fontSize: 22),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(5),
-                    height: 1,
-                    width: 220,
-                    color: Colors.white,
-                  ),
-                  Container(
-                    width: 200,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Mandag\nTirsdag\nOnsdag\nTorsdag\nFredag\nLørdag\nSøndag',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(width: 10),
-                        Container(height: 110, width: 1, color: Colors.white),
-                        FutureBuilder<DocumentSnapshot>(
-                          future: _firestore.doc('${F.firestoreCollection}').get(),
-                          //initialData: Text('Henter...'),
-                          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                            if (!snapshot.hasData)
-                              return Text(
-                                'Login for at\nse åbningstider',
-                                style: TextStyle(color: Colors.white),
-                              );
-                            else if (snapshot.hasError)
-                              return Text(
-                                'Der skete en fejl,\nLogin og prøv igen.',
-                                style: TextStyle(color: Colors.white),
-                              );
-                            else if (snapshot.connectionState == ConnectionState.waiting)
-                              return SizedBox(
-                                width: 100,
-                                child: LoadingCircle(
-                                  color: Colors.white,
-                                ),
-                              );
-                            else if (snapshot.data!.data() == null)
-                              return Text(
-                                'Der skete en fejl.',
-                                style: TextStyle(color: Colors.white),
-                              );
-                            else {
-                              //TODO create easy open hours...
-
-                              ApplicationData appData = ApplicationData.fromJson(snapshot.data!.data() as Map<String, dynamic>);
-
-                              return Container(
-                                width: 100,
-                                child: ListView.builder(
-                                  itemCount: appData.openingHours.length,
-                                  itemBuilder: (BuildContext context, int index) {
-                                    String openHour;
-                                    String closeHour;
-                                    double openhourDouble = (appData.openingHours[index] / 100);
-                                    appData.openingHours[index] < 1000 ? openHour = '0' : openHour = '';
-                                    openHour += openhourDouble.toStringAsFixed(2).replaceAll('.', ':');
-                                    double closehourDouble = (appData.closingHours[index] / 100);
-                                    appData.closingHours[index] < 1000 ? closeHour = '0' : closeHour = '';
-                                    closeHour += closehourDouble.toStringAsFixed(2).replaceAll('.', ':');
-                                    String finalOpenHour = '$openHour - $closeHour';
-                                    return Text(
-                                      finalOpenHour != '00:00 - 00:00' ? finalOpenHour : 'Lukket',
-                                      textAlign: TextAlign.right,
-                                      style: TextStyle(color: Colors.white),
-                                    );
-                                  },
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                ),
-                              );
-                            }
-                          },
-                        )
-                      ],
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            width: double.infinity,
+            child: Card(
+                color: F.appSecondaryColor[900],
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                elevation: 0,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 20),
+                  child: Column(children: [
+                    Text(
+                      'Åbningstider:',
+                      style: TextStyle(fontWeight: FontWeight.w300, color: Colors.white, fontSize: 22),
                     ),
-                  ),
-                ]),
-              )),
+                    Divider(
+                      color: Colors.white,
+                      thickness: 2,
+                    ),
+                    Container(
+                      width: 200,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Mandag  \nTirsdag  \nOnsdag  \nTorsdag  \nFredag  \nLørdag  \nSøndag',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.end,
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 10),
+                          // Container(height: 110, width: 1, color: Colors.white70),
+                          FutureBuilder<DocumentSnapshot>(
+                            future: _firestore.doc('${F.firestoreCollection}').get(),
+                            //initialData: Text('Henter...'),
+                            builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                              if (!snapshot.hasData)
+                                return Text(
+                                  'Login for at\nse åbningstider',
+                                  style: TextStyle(color: Colors.white),
+                                );
+                              else if (snapshot.hasError)
+                                return Text(
+                                  'Der skete en fejl,\nLogin og prøv igen.',
+                                  style: TextStyle(color: Colors.white),
+                                );
+                              else if (snapshot.connectionState == ConnectionState.waiting)
+                                return SizedBox(
+                                  width: 100,
+                                  child: LoadingCircle(
+                                    color: Colors.white,
+                                  ),
+                                );
+                              else if (snapshot.data!.data() == null)
+                                return Text(
+                                  'Der skete en fejl.',
+                                  style: TextStyle(color: Colors.white),
+                                );
+                              else {
+                                //TODO create easy open hours...
+
+                                ApplicationData appData = ApplicationData.fromJson(snapshot.data!.data() as Map<String, dynamic>);
+
+                                return Container(
+                                  width: 100,
+                                  child: ListView.builder(
+                                    itemCount: appData.openingHours.length,
+                                    itemBuilder: (BuildContext context, int index) {
+                                      String openHour;
+                                      String closeHour;
+                                      double openhourDouble = (appData.openingHours[index] / 100);
+                                      appData.openingHours[index] < 1000 ? openHour = '0' : openHour = '';
+                                      openHour += openhourDouble.toStringAsFixed(2).replaceAll('.', ':');
+                                      double closehourDouble = (appData.closingHours[index] / 100);
+                                      appData.closingHours[index] < 1000 ? closeHour = '0' : closeHour = '';
+                                      closeHour += closehourDouble.toStringAsFixed(2).replaceAll('.', ':');
+                                      String finalOpenHour = '$openHour - $closeHour';
+                                      return Text(
+                                        finalOpenHour != '00:00 - 00:00' ? finalOpenHour : 'Lukket',
+                                        // textAlign: TextAlign.right,
+                                        style: TextStyle(color: Colors.white),
+                                      );
+                                    },
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                  ),
+                                );
+                              }
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                  ]),
+                )),
+          ),
           // myUser == null
           //     ? settingsButton(Icon(Icons.lock_open), "Sign in ", goToPage)
           //     : settingsButton(Icon(Icons.lock), "Sign out", _buildLogOutDialog),
@@ -242,7 +245,7 @@ class _SettingsPageState extends State<SettingsPage> {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Text(
-              'Logged ind som:',
+              'Logget ind som:',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w300,
@@ -256,7 +259,8 @@ class _SettingsPageState extends State<SettingsPage> {
               Icons.person,
               color: Colors.white,
             ),
-            subtitle: '${myUser?.email ?? 'E-mail'}                                                                                                               ',
+            subtitle:
+                '${myUser?.email ?? 'E-mail'}                                                                                                               ',
             canTap: false,
             trailing: IconButton(onPressed: () => _buildLogOutDialog(), icon: Icon(Icons.logout_rounded, color: Colors.black)),
           ),
@@ -270,13 +274,14 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget settingsButton(Icon _tileIcon, String _tileTitle, VoidCallback _callback) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 35.0, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
       width: double.infinity,
       height: 70,
       child: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
-          primary: F.appPrimaryColor[900],
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+          primary: F.appSecondaryColor[900],
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          elevation: 0,
         ),
         icon: _tileIcon,
         label: Text(_tileTitle),
@@ -300,7 +305,7 @@ class _SettingsPageState extends State<SettingsPage> {
           primary: Colors.white,
           onSurface: Colors.white,
           elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           padding: EdgeInsets.all(5),
         ),
         onPressed: canTap
@@ -318,7 +323,7 @@ class _SettingsPageState extends State<SettingsPage> {
               height: 50,
               width: 50,
               child: Card(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                 color: F.appSecondaryColor[900],
                 child: icon,
               ),

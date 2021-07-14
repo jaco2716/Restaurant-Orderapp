@@ -110,8 +110,7 @@ class _CartPageState extends State<CartPage> {
         },
         separatorBuilder: (BuildContext context, int index) {
           return Divider(
-            height: 2,
-            color: Colors.blue,
+            height: 1,
           );
         },
       ),
@@ -129,39 +128,77 @@ class _CartPageState extends State<CartPage> {
       });
     }
     return Container(
-      color: Colors.grey[100],
+      // color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Column(children: [
           ListTile(
-              title: Text(menuItem.title),
-              subtitle: menuItem.meatChoice.length != 0
-                  ? totalMeatChoiceAmount < 1
-                      ? Text('Tryk her for andet kød/vegetar.')
-                      : ListView.builder(
-                          itemCount: menuItem.meatChoice.length,
-                          itemBuilder: (BuildContext context, int meatIndex) {
-                            print('meatamount: ' + menuItem.meatChoice[meatIndex].amount.toString());
-                            return menuItem.meatChoice[meatIndex].amount != 0
-                                ? Container(
-                                    height: 35,
-                                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                      Text(
-                                        ' - ${menuItem.meatChoice[meatIndex].amount}x ${menuItem.meatChoice[meatIndex].title}',
-                                      ),
-                                      Text(
-                                        '+ ${totalMeatChoicePrice[meatIndex].toString()}kr,-',
-                                      ),
-                                    ]),
-                                  )
-                                : Container();
-                          },
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                        )
-                  : null,
-              leading: Container(padding: EdgeInsets.all(10), color: Colors.brown[100], child: Text(menuItem.amount.toString())),
-              trailing: Text(totalItemPrice.toString() + ' kr,-\n'),
+              title: Text(
+                menuItem.title,
+                // style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 14),
+              ),
+              subtitle: Text(
+                menuItem.description,
+                style: TextStyle(fontSize: 12),
+              ),
+              //  menuItem.meatChoice.length != 0
+              //     ? totalMeatChoiceAmount < 1
+              //         ? Text('Tryk her for andet kød/vegetar.')
+              //         : ListView.builder(
+              //             itemCount: menuItem.meatChoice.length,
+              //             itemBuilder: (BuildContext context, int meatIndex) {
+              //               print('meatamount: ' + menuItem.meatChoice[meatIndex].amount.toString());
+              //               return menuItem.meatChoice[meatIndex].amount != 0
+              //                   ? Container(
+              //                       height: 35,
+              //                       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              //                         Text(
+              //                           ' - ${menuItem.meatChoice[meatIndex].amount}x ${menuItem.meatChoice[meatIndex].title}',
+              //                         ),
+              //                         Text(
+              //                           '+ ${totalMeatChoicePrice[meatIndex].toString()}kr,-',
+              //                         ),
+              //                       ]),
+              //                     )
+              //                   : Container();
+              //             },
+              //             shrinkWrap: true,
+              //             physics: NeverScrollableScrollPhysics(),
+              //           )
+              //     : null,
+              leading: Container(
+                width: 50,
+                height: 50,
+                child: Card(
+                    color: Colors.white,
+                    child: Center(
+                        child: Text(
+                      '${menuItem.amount.toString()}x',
+                      style: TextStyle(color: Colors.grey),
+                    ))),
+              ),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  //     Container(
+                  //   width: 80,
+                  //   height: 50,
+                  //   child: Card(
+                  //       color: Colors.white,
+                  //       child: Center(
+                  //           child: Text(
+                  //         '- ${menuItem.amount.toString()}x +',
+                  //         style: TextStyle(color: Colors.black54),
+                  //       ))),
+                  // ),
+                  Container(
+                      width: 65,
+                      child: Text(
+                        totalItemPrice.toString() + ' kr,-',
+                        textAlign: TextAlign.end,
+                      )),
+                ],
+              ),
               onTap: () {
                 showCartBottomSheet(context, menuItem);
               }),
