@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restaurantorderapp/Logic/CalculateValues.dart';
+import 'package:restaurantorderapp/MyWidgets/MyMenuWidgets/MyModalMeatChoice.dart';
 import 'package:restaurantorderapp/model/NextPageEnum.dart';
 import 'package:restaurantorderapp/pages/LoginPageContent/CheckLoginPage.dart';
 import '../../flavors.dart';
@@ -7,10 +8,6 @@ import '../../model/MealsLog.dart';
 import '../../model/MenuItem.dart';
 
 class CartPage extends StatefulWidget {
-  final ValueChanged<int> notifyParent;
-
-  const CartPage({required this.notifyParent});
-
   @override
   _CartPageState createState() => _CartPageState();
 }
@@ -33,7 +30,7 @@ class _CartPageState extends State<CartPage> {
       if (element.meatChoice.length != 0) {
         element.meatChoice.forEach((meat) {
           // meatTotalAmount += meat.amount;
-          meatChoiceTotal += meat.price * meat.amount;
+          meatChoiceTotal += meat.price * meat.amount * element.amount;
         });
         // if (element.amount < meatTotalAmount) {
         //   element.meatChoice.forEach((meat2) => meat2.amount = 0);
@@ -163,50 +160,12 @@ class _CartPageState extends State<CartPage> {
                 menuItem.title,
                 // style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 14),
               ),
-              subtitle: Text(
-                menuItem.description,
-                style: TextStyle(fontSize: 12),
-              ),
-              // subtitle: menuItem.meatChoice.length != 0
-              //     ? totalMeatChoiceAmount < 1
-              //         ? Text('Tryk her for andet kød/vegetar.')
-              //         : ListView.builder(
-              //             itemCount: menuItem.meatChoice.length,
-              //             itemBuilder: (BuildContext context, int meatIndex) {
-              //               return menuItem.meatChoice[meatIndex].amount != 0
-              //                   ? Container(
-              //                       height: 15,
-              //                       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              //                         Text(
-              //                           ' - ${menuItem.meatChoice[meatIndex].amount}x ${menuItem.meatChoice[meatIndex].title}',
-              //                           style: TextStyle(fontSize: 11),
-              //                         ),
-              //                         Text(
-              //                           '+ ${totalMeatChoicePrice[meatIndex].toString()},00,-',
-              //                           style: TextStyle(fontSize: 11),
-              //                         ),
-              //                       ]),
-              //                     )
-              //                   : Container();
-              //             },
-              //             shrinkWrap: true,
-              //             physics: NeverScrollableScrollPhysics(),
-              //           )
-              //     : Text(
-              //         menuItem.description,
-              //         style: TextStyle(fontSize: 12),
-              //       ),
-              // leading: Container(
-              //   width: 40,
-              //   height: 40,
-              //   child: Card(
-              //       color: Colors.yellow[900],
-              //       child: Center(
-              //           child: Text(
-              //         '${menuItem.amount.toString()}x',
-              //         style: TextStyle(color: Colors.white),
-              //       ))),
-              // ),
+              subtitle: menuItem.description.length == 0
+                  ? null
+                  : Text(
+                      menuItem.description,
+                      style: TextStyle(fontSize: 12),
+                    ),
               leading: FittedBox(
                 child: Card(
                     color: F.appSecondaryColor[900],
@@ -269,7 +228,7 @@ class _CartPageState extends State<CartPage> {
                                       style: subtitleTextStyle,
                                     ),
                                     Text(
-                                      '${totalMeatChoicePrice[meatIndex].toString()} kr,-',
+                                      '${(totalMeatChoicePrice[meatIndex] * menuItem.amount).toString()} kr,-',
                                       style: subtitleTextStyle,
                                     ),
                                   ]),
@@ -288,184 +247,18 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  showCartBottomSheet(BuildContext context, MenuItem menuItem) {
-    int itemAmount = menuItem.amount;
-    // List<MeatChoice> modalMeatChoice = new List<MeatChoice>();
-    // modalMeatChoice.clear();
+  void _updateNewTotal(int changedValue) {
+    setState(() {
+      MealsLog.totalPrice += changedValue;
+    });
+  }
 
+  showCartBottomSheet(BuildContext context, MenuItem menuItem) {
     showModalBottomSheet(
-        enableDrag: false,
-        isDismissible: false,
         isScrollControlled: true,
         context: context,
         builder: (BuildContext context) {
-          // if (menuItem.id > 5 && menuItem.id < 8)
-          //   soupMeatChoice.forEach((element) => modalMeatChoice.add(MeatChoice(element.title, element.price, element.value, element.amount)));
-          // else if (menuItem.id > 7 && menuItem.id < 11)
-          //   noodleAndFriedRiceMeatChoice
-          //       .forEach((element) => modalMeatChoice.add(MeatChoice(element.title, element.price, element.value, element.amount)));
-          // else if (menuItem.id > 10 && menuItem.id < 21)
-          //   mainMealWithRiceMeatChoice
-          //       .forEach((element) => modalMeatChoice.add(element));
-
-          //print(modalMeatChoice.length);
-          return StatefulBuilder(builder: (BuildContext context, StateSetter setModalState) {
-            int totalExtraMeat = 0;
-            if (menuItem.meatChoice.length != 0) {
-              menuItem.meatChoice.forEach((element) {
-                totalExtraMeat += element.amount;
-              });
-            }
-            //print(menuItem.meatChoice.toString());
-            // menuItem.meatChoice.forEach((element) {
-            //   totalExtraMeat += element.amount;
-            // });
-            // modalMeatChoice.forEach((element) {
-            //   totalExtraMeat += element.amount;
-            // });
-            return Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: Wrap(children: [
-                Container(
-                  //height: 600,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        menuItem.meatChoice.length == 0
-                            ? Center()
-                            : Column(children: [
-                                Text('Tilføj ekstra tilbehør'),
-                                ListView.builder(
-                                  itemCount: menuItem.meatChoice.length,
-                                  itemBuilder: (BuildContext context, int index) {
-                                    return Container(
-                                      height: 40,
-                                      width: double.infinity,
-                                      child: ListTile(
-                                        contentPadding: EdgeInsets.symmetric(horizontal: 4),
-                                        title: Text('${menuItem.meatChoice[index].title}  +${menuItem.meatChoice[index].price}kr,-'),
-                                        trailing: Container(
-                                          width: 130,
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              IconButton(
-                                                  icon: Icon(Icons.remove),
-                                                  iconSize: 30,
-                                                  color: Colors.red,
-                                                  onPressed: () {
-                                                    if (menuItem.meatChoice[index].amount >= 1) {
-                                                      setModalState(() {
-                                                        menuItem.meatChoice[index].amount--;
-                                                      });
-                                                    }
-                                                  }),
-                                              Padding(
-                                                padding: const EdgeInsets.all(12.0),
-                                                child: Text(menuItem.meatChoice[index].amount.toString()),
-                                              ),
-                                              IconButton(
-                                                  icon: Icon(Icons.add),
-                                                  iconSize: 30,
-                                                  color: Colors.green,
-                                                  onPressed: () {
-                                                    if (totalExtraMeat < itemAmount) {
-                                                      setModalState(() {
-                                                        menuItem.meatChoice[index].amount++;
-                                                      });
-                                                    }
-                                                  }),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                ),
-                              ]),
-                        Text(menuItem.title, textScaleFactor: 1.5),
-                        Text(menuItem.price.toString() + ' kr,-'),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            IconButton(
-                                icon: Icon(Icons.remove),
-                                iconSize: 35,
-                                color: Colors.red,
-                                onPressed: () {
-                                  if (itemAmount > 1) {
-                                    setModalState(() {
-                                      itemAmount--;
-                                      // menuItem.meatChoice.forEach(
-                                      //     (element) => element.amount = 0);
-                                    });
-                                  }
-                                }),
-                            Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Text(itemAmount.toString(), textScaleFactor: 3),
-                            ),
-                            IconButton(
-                                icon: Icon(Icons.add),
-                                iconSize: 35,
-                                color: Colors.green,
-                                onPressed: () {
-                                  setModalState(() {
-                                    itemAmount++;
-                                  });
-                                }),
-                          ],
-                        ),
-                        FlatButton(
-                          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 45),
-                          child: Text('Fjern fra ordre'),
-                          textColor: Colors.red,
-                          onPressed: () {
-                            MealsLog.allMenus.forEach((element) {
-                              updateOrder(element, menuItem, 0);
-                            });
-
-                            setState(() {});
-
-                            Navigator.pop(context);
-                          },
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        RaisedButton(
-                          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 70),
-                          child: Text('Færdig'),
-                          onPressed: () {
-                            MealsLog.allMenus.forEach((element) {
-                              updateOrder(element, menuItem, itemAmount);
-                            });
-
-                            setState(() {});
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ]),
-            );
-          });
+          return MyModalMeatChoice(meatChoices: menuItem.meatChoice, menuItem: menuItem, updateNewTotal: _updateNewTotal, cartPageModal: true);
         });
-  }
-
-  void updateOrder(List<MenuItem> menuItems, MenuItem newItem, int newAmount) {
-    menuItems.forEach((element) {
-      if (element.id == newItem.id) {
-        element.amount = newAmount;
-        if (newAmount == 0 && element.meatChoice.length != 0) {
-          element.meatChoice.forEach((element) => element.amount = 0);
-        }
-      }
-    });
   }
 }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:restaurantorderapp/Logic/CalculateValues.dart';
 import 'package:restaurantorderapp/model/NextPageEnum.dart';
+import 'package:restaurantorderapp/pages/CartPageContent/CartPage.dart';
 import '../model/MenuItem.dart';
 import '../flavors.dart';
 import '/MyWidgets/MyAppBar.dart';
 import '../MyWidgets/MyAlertDialog.dart';
-import '../Pages/CartPageContent/CartPage.dart';
 import '../Pages/MenuPageContent/MenuPage.dart';
 import '../Pages/SettingsPageContent/SettingsPage.dart';
 import 'LoginPageContent/CheckLoginPage.dart';
@@ -62,9 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final List<Widget> pageTabs = [
       MenuPage(notifyParent: _refresh),
-      CartPage(
-        notifyParent: _refresh,
-      ),
+      CartPage(),
       CheckLoginPage(NextPage.RecieptPage, 'Sing in for at se dine ordrer.', []),
       // ReceiptListPage(userinfo),
       // SettingsPage(),

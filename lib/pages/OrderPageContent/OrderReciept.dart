@@ -3,13 +3,12 @@ import 'package:restaurantorderapp/Logic/CalculateValues.dart';
 import 'package:restaurantorderapp/model/MenuItem.dart';
 import '../../flavors.dart';
 
-
-
 class OrderReciept extends StatelessWidget {
   final List<MenuItem> cartItems;
   OrderReciept(this.cartItems);
   final CalculateValues _calculateValues = CalculateValues();
 
+  TextStyle smallTextStyle = TextStyle(fontSize: 10, color: Colors.grey[700]);
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +22,11 @@ class OrderReciept extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Ordre',
-                  style: TextStyle(fontSize: 35),
+                  'Din ordre',
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w200),
                 ),
               ),
-              Text('Kun Takeaway', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
+              Text('Kun Takeaway', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red[700])),
               Text(
                 'For at spise i restaranten skal du ringe til ${F.companyPhone}',
                 textAlign: TextAlign.center,
@@ -37,20 +36,24 @@ class OrderReciept extends StatelessWidget {
               ),
               buildCart(cartItems),
               Divider(
-                thickness: 3,
-                height: 2,
-                color: Colors.yellow,
+                color: Colors.black,
               ),
-              ListTile(
-                title: Text(
-                  'Total',
-                  style: totalpriceStyle(),
-                ),
-                trailing: Text(
-                  '${_calculateValues.totalPriceFromOrder(cartItems)} kr,-',
-                  style: totalpriceStyle(),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Total',
+                    style: totalpriceStyle(),
+                  ),
+                  Text(
+                    '${_calculateValues.totalPriceFromOrder(cartItems)} kr,-',
+                    style: totalpriceStyle(),
+                  ),
+                ],
               ),
+              SizedBox(
+                height: 20,
+              )
             ],
           ),
         ),
@@ -73,55 +76,110 @@ class OrderReciept extends StatelessWidget {
       },
       separatorBuilder: (BuildContext context, int index) {
         return Divider(
-          height: 2,
-          color: Colors.blue,
+          height: 10,
         );
       },
     );
   }
 
   Widget cartTile(MenuItem menuItem) {
-    //menuItem.meatChoice.forEach((element) {print(element.toString());});
     int totalItemPrice = menuItem.price * menuItem.amount;
+    int totalMeatChoiceAmount = 0;
     List<int> totalMeatChoicePrice = [];
-    if (menuItem.meatChoice != null) {
+    if (menuItem.meatChoice.length != 0) {
       menuItem.meatChoice.forEach((meat) {
         totalMeatChoicePrice.add(meat.price * meat.amount);
+        totalMeatChoiceAmount += meat.amount;
       });
     }
 
-    return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 2),
-      title: Text('${menuItem.amount.toString()}x  ${menuItem.title}'),
-      // leading: Text(
-      //   '${menuItem.amount.toString()}',
-      // ),
-      subtitle: menuItem.meatChoice.length != 0
-          ? ListView.builder(
-              itemCount: menuItem.meatChoice.length,
-              itemBuilder: (BuildContext context, int meatIndex) {
-                // print('meatamount: ' +
-                //     menuItem.meatChoice[meatIndex].amount.toString());
-                return menuItem.meatChoice[meatIndex].amount != 0
-                    ? Container(
-                        height: 35,
-                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                          Text(
-                            '     - ${menuItem.meatChoice[meatIndex].amount}x ${menuItem.meatChoice[meatIndex].title}',
-                          ),
-                          Text(
-                            '+ ${totalMeatChoicePrice[meatIndex].toString()}kr,-',
-                          ),
-                        ]),
-                      )
-                    : Container();
-              },
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-            )
-          : null,
-      trailing: Text(totalItemPrice.toString() + ' kr,-'),
-      dense: true,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            // height: 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${menuItem.amount.toString()}x  ${menuItem.title}',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(totalItemPrice.toString() + ' kr,-'),
+                // ListTile(
+                //   minVerticalPadding:0,
+                //   contentPadding: EdgeInsets.symmetric(horizontal: 2, vertical: 0),
+                //   title: Text('${menuItem.amount.toString()}x  ${menuItem.title}'),
+                //   // leading: Text(
+                //   //   '${menuItem.amount.toString()}',
+                //   // ),
+                //   // subtitle: menuItem.meatChoice.length != 0
+                //   //     ? ListView.builder(
+                //   //         itemCount: menuItem.meatChoice.length,
+                //   //         itemBuilder: (BuildContext context, int meatIndex) {
+                //   //           // print('meatamount: ' +
+                //   //           //     menuItem.meatChoice[meatIndex].amount.toString());
+                //   //           return menuItem.meatChoice[meatIndex].amount != 0
+                //   //               ? Container(
+                //   //                   height: 15,
+                //   //                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                //   //                     Text(
+                //   //                       '     - ${menuItem.meatChoice[meatIndex].amount}x ${menuItem.meatChoice[meatIndex].title}',
+                //   //                     ),
+                //   //                     Text(
+                //   //                       '+ ${totalMeatChoicePrice[meatIndex].toString()}kr,-',
+                //   //                     ),
+                //   //                   ]),
+                //   //                 )
+                //   //               : Container();
+                //   //         },
+                //   //         shrinkWrap: true,
+                //   //         physics: NeverScrollableScrollPhysics(),
+                //   //       )
+                //   //     : null,
+                //   trailing: Text(totalItemPrice.toString() + ' kr,-'),
+                //   dense: true,
+                // ),
+              ],
+            ),
+          ),
+          menuItem.meatChoice.length != 0
+              ? totalMeatChoiceAmount > 1
+                  ? ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount: menuItem.meatChoice.length,
+                      itemBuilder: (BuildContext context, int meatIndex) {
+                        return menuItem.meatChoice[meatIndex].amount != 0
+                            ? Container(
+                                height: 15,
+                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                  Text(
+                                    '     - ${menuItem.meatChoice[meatIndex].amount}x ${menuItem.meatChoice[meatIndex].title}',
+                                    style: smallTextStyle,
+                                  ),
+                                  Text(
+                                    '+ ${totalMeatChoicePrice[meatIndex].toString()}kr,-',
+                                    style: smallTextStyle,
+                                  ),
+                                ]),
+                              )
+                            : Center();
+                      },
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                    )
+                  : Center()
+              : Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Text(
+                    menuItem.description,
+                    style: smallTextStyle,
+                  ),
+                )
+        ],
+      ),
     );
   }
 }

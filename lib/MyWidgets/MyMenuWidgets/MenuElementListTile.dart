@@ -6,18 +6,17 @@ import 'AddAndRemoveButton.dart';
 
 class MenuElementListTile extends StatelessWidget {
   dynamic element;
-  int totalPrice;
-  final ValueChanged<int> notifyParent;
+  final ValueChanged<int> updateNewTotal;
   void Function(void Function()) setModalState;
 
   MenuElementListTile({
     required this.element,
-    required this.totalPrice,
-    required this.notifyParent,
+    required this.updateNewTotal,
     required this.setModalState,
   });
 
   MenuLogic _menuLogic = MenuLogic();
+  int newTotal = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -69,25 +68,23 @@ class MenuElementListTile extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 AddAndRemoveButton(
-                    text: 'Slet',
                     amount: element.amount,
                     icon: Icon(Icons.remove),
                     color: Colors.red,
                     myOnPressed: () {
                       setModalState(() {
                         int value = _menuLogic.changeAmount(element, -1);
-                        notifyParent(totalPrice + value);
+                        updateNewTotal(value);
                       });
                     }),
                 AddAndRemoveButton(
-                    text: 'Tilføj',
                     amount: element.amount,
                     icon: Icon(Icons.add),
                     color: Colors.green,
                     myOnPressed: () {
                       setModalState(() {
                         int value = _menuLogic.changeAmount(element, 1);
-                        notifyParent(totalPrice + value);
+                        updateNewTotal(value);
                       });
                     }),
               ],

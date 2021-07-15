@@ -9,23 +9,21 @@ import '../../model/MealsLog.dart';
 import '../../model/MenuItem.dart';
 
 class MenuAndCategories extends StatefulWidget {
-  final ValueChanged<int> notifyParent;
+  final ValueChanged<int> updateNewTotal;
   final int totalCartPrice;
 
-  const MenuAndCategories({required this.notifyParent, required this.totalCartPrice});
+  const MenuAndCategories({required this.updateNewTotal, required this.totalCartPrice});
 
   @override
   _MenuAndCategoriesState createState() => _MenuAndCategoriesState();
 }
 
 class _MenuAndCategoriesState extends State<MenuAndCategories> {
-  int totalPrice = 0;
+
   ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
-    totalPrice = widget.totalCartPrice;
-
     return SingleChildScrollView(
       controller: _scrollController,
       child: ListView.builder(
@@ -105,7 +103,7 @@ class _MenuAndCategoriesState extends State<MenuAndCategories> {
                       fit: BoxFit.cover,
                     )
                   : Center(),
-              MenuElementListTile(element: meals[i], notifyParent: widget.notifyParent, totalPrice: totalPrice, setModalState: setState),
+              MenuElementListTile(element: meals[i], updateNewTotal: widget.updateNewTotal, setModalState: setState),
               // menuListTile(meals[i], setState),
               // Row(
               //   children: [
@@ -169,16 +167,13 @@ class _MenuAndCategoriesState extends State<MenuAndCategories> {
                               onPressed: () {
                                 showModalBottomSheet(
                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-// enableDrag: false,
+                                    // enableDrag: false,
                                     isScrollControlled: true,
                                     // isDismissible: false,
                                     context: context,
                                     builder: (modalContext) {
                                       return MyModalMeatChoice(
-                                          meatChoices: meals[i].meatChoice,
-                                          menuItem: meals[i],
-                                          totalPrice: totalPrice,
-                                          notifyParent: widget.notifyParent);
+                                          meatChoices: meals[i].meatChoice, menuItem: meals[i], updateNewTotal: widget.updateNewTotal);
                                     });
                               },
                               child: Text(
@@ -224,8 +219,7 @@ class _MenuAndCategoriesState extends State<MenuAndCategories> {
                                   meatChoice: newMeatchoices);
 
                               meals.insert(i + 1, newMenuItem);
-                              totalPrice += newMenuItem.price;
-                              widget.notifyParent(totalPrice);
+                              widget.updateNewTotal(newMenuItem.price);
                             },
                             child: Text(
                               'Tilføj ny ${meals[i].title} uden ekstra',
@@ -282,7 +276,7 @@ class _MenuAndCategoriesState extends State<MenuAndCategories> {
   //   if (element.amount > 0 || op > 0) {
   //     totalPrice += ((element.price as int) * op);
   //     element.amount += op;
-  //     widget.notifyParent(totalPrice);
+  //     widget.updateNewTotal(totalPrice);
   //   }
   // }
 

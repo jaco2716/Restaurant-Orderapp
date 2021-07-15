@@ -18,7 +18,7 @@ class _MenuPageState extends State<MenuPage> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Expanded(child: MenuAndCategories(notifyParent: _refresh, totalCartPrice: MealsLog.totalPrice)),
+        Expanded(child: MenuAndCategories(updateNewTotal: _updateNewTotal, totalCartPrice: MealsLog.totalPrice)),
         BottomCart(
           sum: MealsLog.totalPrice,
           myOnPressed: () => _refreshParent(1),
@@ -31,9 +31,9 @@ class _MenuPageState extends State<MenuPage> {
     widget.notifyParent(index);
   }
 
-  _refresh(int total) {
+  _updateNewTotal(int changedValue) {
     setState(() {
-      MealsLog.totalPrice = total;
+      MealsLog.totalPrice += changedValue;
     });
   }
 }

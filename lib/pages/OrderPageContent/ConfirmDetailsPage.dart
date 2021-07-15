@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:restaurantorderapp/Logic/CalculateValues.dart';
 import 'package:restaurantorderapp/MyWidgets/LoadingCircle.dart';
 import 'package:restaurantorderapp/MyWidgets/MyAlertDialog.dart';
+import 'package:restaurantorderapp/MyWidgets/MyIconGridButton.dart';
 import 'package:restaurantorderapp/flavors.dart';
 import 'package:restaurantorderapp/model/ApplicationData.dart';
 import 'package:restaurantorderapp/model/MeatChoice.dart';
@@ -68,11 +69,18 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
                         });
                       });
                     }
-                    return ListTile(
-                      title: Text(user.fullName),
-                      subtitle: Text(user.phoneNr + '\n' + user.email),
-                      isThreeLine: true,
+                    return MyIconGridButton(
+                      title: user.fullName,
+                      url: 'url',
+                      icon: Icon(Icons.person, color: Colors.white),
+                      subtitle: '${user.email}\n${user.phoneNr}',
+                      canTap: false,
                     );
+                    // return ListTile(
+                    //   title: Text(user.fullName),
+                    //   subtitle: Text(user.phoneNr + '\n' + user.email),
+                    //   isThreeLine: true,
+                    // );
                   }
                 },
               ),
@@ -152,63 +160,32 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
     );
   }
 
-//Skal måske bruges senere, hvis man skal vælge hvornår man vil hente maden.
-  // _buildSelectTime() {
-  //   showCupertinoModalPopup(
-  //     context: context,
-  //     builder: (context) {
-  //       return Container(
-  //         color: Colors.white,
-  //         height: 200,
-  //         child: CupertinoDatePicker(
-  //           use24hFormat: true,
-  //           initialDateTime: isOpen? currentDate : todayOpenDate,
-  //           minimumDate: isOpen? currentDate : todayOpenDate,
-  //           maximumDate: todayClosingDate,
-  //           minuteInterval: 1,
-  //           mode: CupertinoDatePickerMode.dateAndTime,
-  //           onDateTimeChanged: (DateTime dateTime) {
-  //             print("dateTime: $dateTime");
-  //           },
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
   //dialog to add comment to order.
   _buildAddMessageDialog(BuildContext context) {
     return showDialog(
       builder: (context) {
-        return AlertDialog(
-          title: Text('Tilføj kommentar'),
+        return MyAlertDialog(
+          title: 'Tilføj kommentar',
           content: Container(
             height: 120,
             color: Colors.grey[100],
             child: TextField(
+              style: TextStyle(fontWeight: FontWeight.normal),
               scrollPadding: EdgeInsets.all(0),
               textCapitalization: TextCapitalization.sentences,
               textInputAction: TextInputAction.newline,
               maxLines: 5,
               controller: myController,
-              //minLines: 3,
             ),
           ),
-          actions: <Widget>[
-            FlatButton(
-                child: Text('Luk'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                }),
-            RaisedButton(
-                child: Text('Tilføj'),
-                onPressed: () {
-                  setState(() {
-                    orderMessage = myController.text;
-                  });
-                  Navigator.of(context).pop();
-                })
-          ],
+          cancelText: 'Luk',
+          myOnPressed: () {
+            setState(() {
+              orderMessage = myController.text;
+            });
+            Navigator.of(context).pop();
+          },
+          confirmText: 'Bekræft',
         );
       },
       context: context,
@@ -236,8 +213,8 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
       DocumentSnapshot applicationDataSnapshot = await _firestore.doc('${F.firestoreCollection}').get();
       ApplicationData appData = ApplicationData.fromJson(applicationDataSnapshot.data() as Map<String, dynamic>);
 
-      if (true) {
-      // if (isOpen && appData.versionId == 1) {
+      // if (true) {
+      if (isOpen && appData.versionId == 1) {
         //Create Order
         String orderDate = DateTime.now().millisecondsSinceEpoch.toString();
         Order finalOrder = Order(
