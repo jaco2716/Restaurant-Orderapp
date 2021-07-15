@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:restaurantorderapp/Logic/CalculateValues.dart';
 import 'package:restaurantorderapp/MyWidgets/LoadingCircle.dart';
+import 'package:restaurantorderapp/MyWidgets/MyAlertDialog.dart';
 import 'package:restaurantorderapp/flavors.dart';
 import 'package:restaurantorderapp/model/ApplicationData.dart';
 import 'package:restaurantorderapp/model/MeatChoice.dart';
@@ -51,8 +52,7 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
             children: [
               StreamBuilder<DocumentSnapshot>(
                 stream: docRef.snapshots(),
-                builder: (BuildContext streamContext,
-                    AsyncSnapshot<DocumentSnapshot> snapshot) {
+                builder: (BuildContext streamContext, AsyncSnapshot<DocumentSnapshot> snapshot) {
                   if (!snapshot.hasData)
                     return Container(height: 88, child: LoadingCircle());
                   else if (snapshot.hasError)
@@ -229,15 +229,15 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
     );
     try {
       // DateTime currentDate = await NTP.now();
-      DateTime currentDate = DateTime(2020, 09, 25, 11, 02);
+      DateTime currentDate = DateTime.now();
+      // DateTime currentDate = DateTime(2020, 09, 25, 11, 02);
       isOpen = await _calculateValues.checkIfWithinOpenHours(currentDate);
 
-      DocumentSnapshot applicationDataSnapshot =
-          await _firestore.doc('${F.firestoreCollection}').get();
-      ApplicationData appData =
-          ApplicationData.fromJson(applicationDataSnapshot.data as Map<String, dynamic>);
+      DocumentSnapshot applicationDataSnapshot = await _firestore.doc('${F.firestoreCollection}').get();
+      ApplicationData appData = ApplicationData.fromJson(applicationDataSnapshot.data() as Map<String, dynamic>);
 
-      if (isOpen && appData.versionId == 1) {
+      if (true) {
+      // if (isOpen && appData.versionId == 1) {
         //Create Order
         String orderDate = DateTime.now().millisecondsSinceEpoch.toString();
         Order finalOrder = Order(
@@ -288,12 +288,7 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
         // finalOrder.menuOrder[0].meatChoice.forEach((element) {
         //   print('after meat amount' + element.amount.toString());
         // });
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    SingleReceiptPage(finalOrder, dateString, true),
-                fullscreenDialog: true));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => SingleReceiptPage(finalOrder, dateString, true), fullscreenDialog: true));
 
         // Future.delayed(Duration(seconds: 4), () {
         //   resetMenuItems();
@@ -303,12 +298,10 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
         //     MaterialPageRoute(builder: (context) => MyHomePage()),
         //     (Route<dynamic> route) => false);
         Navigator.of(context).pop();
-        _buildDialog(context, 'Restauranten er lukket',
-            'Se åbningstider på info siden.');
+        _buildDialog(context, 'Restauranten er lukket', 'Se åbningstider på info siden.');
       } else {
         Navigator.of(context).pop();
-        _buildDialog(context, 'Din app er outdated',
-            'Du skal opdatere din app til den nyeste version, inden du kan lave en bestilling.');
+        _buildDialog(context, 'Din app er outdated', 'Du skal opdatere din app til den nyeste version, inden du kan lave en bestilling.');
       }
     } catch (e) {
       Navigator.of(context).pop();
@@ -320,22 +313,12 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
   Future _buildDialog(BuildContext context, String _title, String _message) {
     return showDialog(
       builder: (context) {
-        return AlertDialog(
-          title: Text(
-            _title,
-            textAlign: TextAlign.center,
-          ),
-          content: Text(
-            _message,
-            textAlign: TextAlign.center,
-          ),
-          actions: <Widget>[
-            FlatButton(
-                child: Text('Ok'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                })
-          ],
+        return MyAlertDialog(
+          title: _title,
+          content: Text(_message, textAlign: TextAlign.center),
+          cancelText: 'Ok',
+          myOnPressed: () {},
+          infoDialog: true,
         );
       },
       context: context,
@@ -373,8 +356,7 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
   }
 
 //Send post norification to client app with device id
-  Future<bool> sendAndRetrieveMessage(
-      String orderDate, String deviceToken) async {
+  Future<bool> sendAndRetrieveMessage(String orderDate, String deviceToken) async {
     print(deviceToken);
     await post(
       Uri.parse(F.baseURL + '/fcm/send'),
@@ -391,11 +373,7 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
             'badge': '1',
           },
           'priority': 'high',
-          'data': <String, dynamic>{
-            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-            'id': orderDate,
-            'status': 'done'
-          },
+          'data': <String, dynamic>{'click_action': 'FLUTTER_NOTIFICATION_CLICK', 'id': orderDate, 'status': 'done'},
           'to': deviceToken,
         },
       ),
@@ -411,32 +389,31 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
 
 //Send order to database
   Future<bool> postToFireStore(Order finalOrder, String orderDate) async {
-    //print('Sending to db');
+    print('Sending to db');
 
     List<Map<String, dynamic>> finalMenuOrder = [];
     finalOrder.menuOrder.forEach((element) {
       finalMenuOrder.add(element.toJson());
     });
+
+    var docpostRef = _firestore.collection('${F.firestoreCollection}/orders');
+
+    await docpostRef.doc(orderDate).set({
+      'menuOrder': finalMenuOrder,
+      'user': finalOrder.user.toJson(),
+      'orderDate': finalOrder.orderDate,
+      'orderDone': finalOrder.orderDone,
+      'orderAccepted': finalOrder.orderAccepted,
+      'acceptTime': finalOrder.acceptTime,
+      'restaurantMessage': finalOrder.restaurantMessage,
+      'orderMessage': finalOrder.orderMessage,
+    }).then((value) {
+      print('db: success!');
+      return true;
+    }).catchError((onError) {
+      print('db error: ' + onError.toString());
+      return false;
+    });
     return false;
-
-    // var docpostRef = _firestore.collection('orders');
-
-    // await docpostRef.document(orderDate).setData({
-    //   'menuOrder': finalMenuOrder,
-    //   'user': finalOrder.user.toJson(),
-    //   'orderDate': finalOrder.orderDate,
-    //   'orderDone': finalOrder.orderDone,
-    //   'orderAccepted': finalOrder.orderAccepted,
-    //   'acceptTime': finalOrder.acceptTime,
-    //   'restaurantMessage': finalOrder.restaurantMessage,
-    //   'orderMessage': finalOrder.orderMessage,
-    // }).then((value) {
-    //   print('db: success!');
-    //   return true;
-    // }).catchError((onError) {
-    //   print('db error: ' + onError.toString());
-    //   return false;
-    // });
-    // return false;
   }
 }

@@ -9,7 +9,25 @@ class MenuItem {
   int amount;
   List<MeatChoice> meatChoice;
 
-  MenuItem(this.id, this.title, this.description, this.price, this.image, this.amount, {required this.meatChoice});
+  MenuItem({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.price,
+    required this.image,
+    required this.amount,
+    required this.meatChoice,
+  });
+
+  MenuItem.clone(MenuItem menuItemCopy)
+      : this(
+            id: menuItemCopy.id,
+            title: menuItemCopy.title,
+            description: menuItemCopy.description,
+            price: menuItemCopy.price,
+            image: menuItemCopy.image,
+            amount: menuItemCopy.amount,
+            meatChoice: menuItemCopy.meatChoice);
 
   MenuItem.fromJson(Map<String, dynamic> json)
       : id = json['id'],
@@ -27,7 +45,7 @@ class MenuItem {
         'price': price,
         'image': image,
         'amount': amount,
-        'meatChoice':  meatChoice.map((e) => e.toJson()).toList(),
+        'meatChoice': meatChoice.map((e) => e.toJson()).toList(),
         //'meatChoice': jsonEncode(meatChoice),
       };
 

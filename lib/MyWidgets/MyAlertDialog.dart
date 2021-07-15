@@ -24,6 +24,7 @@ class MyAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      contentTextStyle: TextStyle(fontWeight: FontWeight.w500, color: Colors.black),
       actionsPadding: EdgeInsets.all(0),
       contentPadding: EdgeInsets.only(top: 10, bottom: 0, left: 20, right: 20),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

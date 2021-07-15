@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:restaurantorderapp/Logic/CalculateValues.dart';
 import 'package:restaurantorderapp/model/NextPageEnum.dart';
 import 'package:restaurantorderapp/pages/LoginPageContent/CheckLoginPage.dart';
+import '../../flavors.dart';
 import '../../model/MealsLog.dart';
 import '../../model/MenuItem.dart';
 
@@ -15,6 +17,7 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   List<MenuItem> cartItems = [];
+  TextStyle subtitleTextStyle = TextStyle(fontSize: 11, color: Colors.grey[600]);
 
   @override
   Widget build(BuildContext context) {
@@ -26,16 +29,16 @@ class _CartPageState extends State<CartPage> {
     int subtotal = 0;
     cartItems.forEach((element) {
       int meatChoiceTotal = 0;
-      int meatTotalAmount = 0;
+      // int meatTotalAmount = 0;
       if (element.meatChoice.length != 0) {
         element.meatChoice.forEach((meat) {
-          meatTotalAmount += meat.amount;
+          // meatTotalAmount += meat.amount;
           meatChoiceTotal += meat.price * meat.amount;
         });
-        if (element.amount < meatTotalAmount) {
-          element.meatChoice.forEach((meat2) => meat2.amount = 0);
-          meatChoiceTotal = 0;
-        }
+        // if (element.amount < meatTotalAmount) {
+        //   element.meatChoice.forEach((meat2) => meat2.amount = 0);
+        //   meatChoiceTotal = 0;
+        // }
       }
       subtotal += element.price * element.amount + meatChoiceTotal;
     });
@@ -46,32 +49,40 @@ class _CartPageState extends State<CartPage> {
         Expanded(
           child: Container(child: cartItems.length > 0 ? buildCart(cartItems) : emptyCart()),
         ),
-        ListTile(
-          title: Text('Total'),
-          trailing: Text(subtotal.toString() + ' kr,-'),
+        Divider(
+          height: 1,
+          thickness: 2,
         ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            width: double.infinity,
-            height: 50,
-            child: ElevatedButton(
-                onPressed: cartItems.isEmpty
-                    ? null
-                    : () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => CheckLoginPage(NextPage.OrderPage, 'OrderPage', cartItems)));
-                      },
-                child: Text('Gå til bestilling')),
+        // ListTile(
+        //   title: Text('Total'),
+        //   trailing: Text(subtotal.toString() + ' kr,-'),
+        // ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Total',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(subtotal.toString() + ' kr,-'),
+            ],
           ),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          width: double.infinity,
+          child: ElevatedButton(
+              onPressed: cartItems.isEmpty
+                  ? null
+                  : () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => CheckLoginPage(NextPage.OrderPage, 'OrderPage', cartItems)));
+                    },
+              child: Text('Gå til bestilling')),
         )
       ],
     );
-  }
-
-  updateWidgets() {
-    print('update');
-    setState(() {});
   }
 
   Widget emptyCart() {
@@ -94,8 +105,15 @@ class _CartPageState extends State<CartPage> {
   void addToCart(List<MenuItem> menuItems) {
     menuItems.forEach((element) {
       if (element.amount != 0) {
-        MenuItem newElement =
-            MenuItem(element.id, element.title, element.description, element.price, element.image, element.amount, meatChoice: element.meatChoice);
+        MenuItem newElement = MenuItem.clone(element);
+        // MenuItem newElement = MenuItem(
+        //     id: element.id,
+        //     title: element.title,
+        //     description: element.description,
+        //     price: element.price,
+        //     image: element.image,
+        //     amount: element.amount,
+        //     meatChoice: element.meatChoice);
         cartItems.add(newElement);
       }
     });
@@ -127,12 +145,20 @@ class _CartPageState extends State<CartPage> {
         totalMeatChoiceAmount += meat.amount;
       });
     }
-    return Container(
+    return InkWell(
+      onTap: () {
+        showCartBottomSheet(context, menuItem);
+      },
       // color: Colors.white,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        padding: const EdgeInsets.symmetric(vertical: 0.0),
         child: Column(children: [
-          ListTile(
+          Container(
+            height: 60,
+            child: ListTile(
+              contentPadding: EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 0),
+              minLeadingWidth: 43,
+              horizontalTitleGap: 10,
               title: Text(
                 menuItem.title,
                 // style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 14),
@@ -141,22 +167,23 @@ class _CartPageState extends State<CartPage> {
                 menuItem.description,
                 style: TextStyle(fontSize: 12),
               ),
-              //  menuItem.meatChoice.length != 0
+              // subtitle: menuItem.meatChoice.length != 0
               //     ? totalMeatChoiceAmount < 1
               //         ? Text('Tryk her for andet kød/vegetar.')
               //         : ListView.builder(
               //             itemCount: menuItem.meatChoice.length,
               //             itemBuilder: (BuildContext context, int meatIndex) {
-              //               print('meatamount: ' + menuItem.meatChoice[meatIndex].amount.toString());
               //               return menuItem.meatChoice[meatIndex].amount != 0
               //                   ? Container(
-              //                       height: 35,
+              //                       height: 15,
               //                       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               //                         Text(
               //                           ' - ${menuItem.meatChoice[meatIndex].amount}x ${menuItem.meatChoice[meatIndex].title}',
+              //                           style: TextStyle(fontSize: 11),
               //                         ),
               //                         Text(
-              //                           '+ ${totalMeatChoicePrice[meatIndex].toString()}kr,-',
+              //                           '+ ${totalMeatChoicePrice[meatIndex].toString()},00,-',
+              //                           style: TextStyle(fontSize: 11),
               //                         ),
               //                       ]),
               //                     )
@@ -165,16 +192,31 @@ class _CartPageState extends State<CartPage> {
               //             shrinkWrap: true,
               //             physics: NeverScrollableScrollPhysics(),
               //           )
-              //     : null,
-              leading: Container(
-                width: 50,
-                height: 50,
+              //     : Text(
+              //         menuItem.description,
+              //         style: TextStyle(fontSize: 12),
+              //       ),
+              // leading: Container(
+              //   width: 40,
+              //   height: 40,
+              //   child: Card(
+              //       color: Colors.yellow[900],
+              //       child: Center(
+              //           child: Text(
+              //         '${menuItem.amount.toString()}x',
+              //         style: TextStyle(color: Colors.white),
+              //       ))),
+              // ),
+              leading: FittedBox(
                 child: Card(
-                    color: Colors.white,
+                    color: F.appSecondaryColor[900],
                     child: Center(
-                        child: Text(
-                      '${menuItem.amount.toString()}x',
-                      style: TextStyle(color: Colors.grey),
+                        child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                      child: Text(
+                        '${menuItem.amount.toString()}x',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ))),
               ),
               trailing: Row(
@@ -199,9 +241,48 @@ class _CartPageState extends State<CartPage> {
                       )),
                 ],
               ),
-              onTap: () {
-                showCartBottomSheet(context, menuItem);
-              }),
+            ),
+          ),
+          menuItem.meatChoice.length != 0
+              ? totalMeatChoiceAmount < 1
+                  ? Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 65, right: 12, bottom: 10),
+                        child: Text(
+                          '- Tryk for at tilføje ekstra.',
+                          style: subtitleTextStyle,
+                        ),
+                      ),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.only(left: 65, right: 12, bottom: 10),
+                      child: ListView.builder(
+                        itemCount: menuItem.meatChoice.length,
+                        itemBuilder: (BuildContext context, int meatIndex) {
+                          return menuItem.meatChoice[meatIndex].amount != 0
+                              ? Container(
+                                  height: 15,
+                                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                    Text(
+                                      '+ ${menuItem.meatChoice[meatIndex].amount}x ${menuItem.meatChoice[meatIndex].title}',
+                                      style: subtitleTextStyle,
+                                    ),
+                                    Text(
+                                      '${totalMeatChoicePrice[meatIndex].toString()} kr,-',
+                                      style: subtitleTextStyle,
+                                    ),
+                                  ]),
+                                )
+                              : Container();
+                        },
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                      ),
+                    )
+              : SizedBox(
+                  height: 10,
+                ),
         ]),
       ),
     );
@@ -254,7 +335,7 @@ class _CartPageState extends State<CartPage> {
                         menuItem.meatChoice.length == 0
                             ? Center()
                             : Column(children: [
-                                Text('Vælg andet kød'),
+                                Text('Tilføj ekstra tilbehør'),
                                 ListView.builder(
                                   itemCount: menuItem.meatChoice.length,
                                   itemBuilder: (BuildContext context, int index) {

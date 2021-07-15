@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restaurantorderapp/Logic/CalculateValues.dart';
 import 'package:restaurantorderapp/model/NextPageEnum.dart';
 import '../model/MenuItem.dart';
 import '../flavors.dart';
@@ -17,7 +18,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<MenuItem> dummyList = [];
   int pageIndex = 0;
-  DateTime currentDate = DateTime.now();
+  CalculateValues _calculateValues = CalculateValues();
 
   @override
   void initState() {
@@ -29,35 +30,36 @@ class _MyHomePageState extends State<MyHomePage> {
 
   initDate() async {
     try {
+      DateTime currentDate = DateTime.now();
       // currentDate = await NTP.now();
       bool isOpen = false;
-      // isOpen = await CalculateValues.checkIfWithinOpenHours(currentDate);
+      isOpen = await _calculateValues.checkIfWithinOpenHours(currentDate);
       if (!isOpen) {
-        _buildDialog(context, 'Restauranten er lukket', 'Se åbningstider på info siden.');
+        showDialog(
+          builder: (context) {
+            return MyAlertDialog(
+              title: 'Restauranten er lukket',
+              content: Text('Se åbningstider på info siden.', textAlign: TextAlign.center),
+              cancelText: 'Ok',
+              infoDialog: true,
+              myOnPressed: () {},
+            );
+          },
+          context: context,
+        );
+        // _buildDialog(context, 'Restauranten er lukket', 'Se åbningstider på info siden.');
       }
     } catch (error) {
       print('date/firestore Error: $error');
     }
   }
 
-  Future _buildDialog(BuildContext context, String _title, String _message) {
-    return showDialog(
-      builder: (context) {
-        return MyAlertDialog(
-          title: _title,
-          content: Text(_message, textAlign: TextAlign.center),
-          cancelText: 'Ok',
-          infoDialog: true,
-          myOnPressed: () {},
-        );
-      },
-      context: context,
-    );
-  }
+  // Future _buildDialog(BuildContext context, String _title, String _message) {
+  //   return
+  // }
 
   @override
   Widget build(BuildContext context) {
-
     final List<Widget> pageTabs = [
       MenuPage(notifyParent: _refresh),
       CartPage(

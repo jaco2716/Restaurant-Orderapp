@@ -5,6 +5,7 @@ import 'package:restaurantorderapp/Logic/AuthService.dart';
 import 'package:restaurantorderapp/MyWidgets/LoadingCircle.dart';
 import 'package:restaurantorderapp/MyWidgets/MyAlertDialog.dart';
 import 'package:restaurantorderapp/MyWidgets/MyAppBar.dart';
+import 'package:restaurantorderapp/MyWidgets/MyIconGridButton.dart';
 import 'package:restaurantorderapp/model/NextPageEnum.dart';
 import 'package:restaurantorderapp/pages/LoginPageContent/CheckLoginPage.dart';
 import '../../model/ApplicationData.dart';
@@ -61,11 +62,14 @@ class _SettingsPageState extends State<SettingsPage> {
               physics: NeverScrollableScrollPhysics(),
               crossAxisCount: 2,
               children: [
-                infoGridButton('Website', F.companyWebsite, Icon(Icons.web), subtitle: F.companyWebsite),
-                infoGridButton('Phone', 'tel:${F.companyPhone.replaceAll(' ', '')}', Icon(Icons.phone), subtitle: F.companyPhone),
-                infoGridButton('Address', 'https://www.google.com/maps/place/${F.companyAddress.replaceAll(' ', '+')}', Icon(Icons.pin_drop),
+                MyIconGridButton(title: 'Website', url: F.companyWebsite, icon: Icon(Icons.web), subtitle: F.companyWebsite),
+                MyIconGridButton(title: 'Phone', url: 'tel:${F.companyPhone.replaceAll(' ', '')}', icon: Icon(Icons.phone), subtitle: F.companyPhone),
+                MyIconGridButton(
+                    title: 'Address',
+                    url: 'https://www.google.com/maps/place/${F.companyAddress.replaceAll(' ', '+')}',
+                    icon: Icon(Icons.pin_drop),
                     subtitle: F.companyAddress),
-                infoGridButton('Privacy Policy', F.privacyPolicyURL, Icon(Icons.privacy_tip)),
+                MyIconGridButton(title: 'Privacy Policy', url: F.privacyPolicyURL, icon: Icon(Icons.privacy_tip)),
               ],
             ),
           ),
@@ -221,15 +225,15 @@ class _SettingsPageState extends State<SettingsPage> {
       builder: (context) {
         return MyAlertDialog(
           title: 'Sign out',
-          content: Text('Are you sure you want to logout', textAlign: TextAlign.center),
-          cancelText: 'Cancel',
+          content: Text('Er du sikker på du vil logge ud?', textAlign: TextAlign.center),
+          cancelText: 'Annuller',
           myOnPressed: () {
             _authService.logout();
             Navigator.of(context).pop();
             // setState(() {
             // });
           },
-          confirmText: 'Confirm',
+          confirmText: 'Bekræft',
         );
       },
       context: context,
@@ -252,10 +256,10 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
           ),
-          infoGridButton(
-            '${myUser?.displayName ?? 'Navn'}',
-            'url',
-            Icon(
+          MyIconGridButton(
+            title: '${myUser?.displayName ?? 'Navn'}',
+            url: 'url',
+            icon: Icon(
               Icons.person,
               color: Colors.white,
             ),
@@ -299,56 +303,56 @@ class _SettingsPageState extends State<SettingsPage> {
   //   _firestore.doc('${F.firestoreCollection}').set(appDataTemp.toJson());
   // }
 
-  Widget infoGridButton(String title, String url, Icon icon, {String? subtitle, bool canTap = true, Widget? trailing}) {
-    return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          primary: Colors.white,
-          onSurface: Colors.white,
-          elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          padding: EdgeInsets.all(5),
-        ),
-        onPressed: canTap
-            ? () async {
-                bool canLaunch = await urlLauncher.canLaunch(url);
-                if (canLaunch) {
-                  await urlLauncher.launch(url);
-                }
-              }
-            : null,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Container(
-              height: 50,
-              width: 50,
-              child: Card(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                color: F.appSecondaryColor[900],
-                child: icon,
-              ),
-            ),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 5),
-                child: RichText(
-                  text: TextSpan(
-                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
-                    children: [
-                      TextSpan(text: title),
-                      subtitle != null
-                          ? TextSpan(
-                              text: '\n$subtitle',
-                              style: TextStyle(color: Colors.black87, fontSize: 8, fontWeight: FontWeight.w300),
-                            )
-                          : TextSpan(),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            trailing == null ? Center() : trailing,
-          ],
-        ));
-  }
+  // Widget infoGridButton(String title, String url, Icon icon, {String? subtitle, bool canTap = true, Widget? trailing}) {
+  //   return ElevatedButton(
+  //       style: ElevatedButton.styleFrom(
+  //         primary: Colors.white,
+  //         onSurface: Colors.white,
+  //         elevation: 0,
+  //         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+  //         padding: EdgeInsets.all(5),
+  //       ),
+  //       onPressed: canTap
+  //           ? () async {
+  //               bool canLaunch = await urlLauncher.canLaunch(url);
+  //               if (canLaunch) {
+  //                 await urlLauncher.launch(url);
+  //               }
+  //             }
+  //           : null,
+  //       child: Row(
+  //         mainAxisSize: MainAxisSize.max,
+  //         children: [
+  //           Container(
+  //             height: 50,
+  //             width: 50,
+  //             child: Card(
+  //               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+  //               color: F.appSecondaryColor[900],
+  //               child: icon,
+  //             ),
+  //           ),
+  //           Flexible(
+  //             child: Padding(
+  //               padding: const EdgeInsets.only(left: 5),
+  //               child: RichText(
+  //                 text: TextSpan(
+  //                   style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
+  //                   children: [
+  //                     TextSpan(text: title),
+  //                     subtitle != null
+  //                         ? TextSpan(
+  //                             text: '\n$subtitle',
+  //                             style: TextStyle(color: Colors.black87, fontSize: 8, fontWeight: FontWeight.w300),
+  //                           )
+  //                         : TextSpan(),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //           trailing == null ? Center() : trailing,
+  //         ],
+  //       ));
+  // }
 }

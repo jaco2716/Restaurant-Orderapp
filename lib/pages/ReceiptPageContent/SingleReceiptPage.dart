@@ -1,5 +1,6 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:restaurantorderapp/MyWidgets/MyIconGridButton.dart';
 import 'package:restaurantorderapp/model/MenuItem.dart';
 import 'package:restaurantorderapp/model/Order.dart';
 import 'package:restaurantorderapp/pages/OrderPageContent/OrderReciept.dart';
@@ -9,7 +10,6 @@ import '/../MyWidgets/LoadingCircle.dart';
 import '/../MyWidgets/MyAppBar.dart';
 import '../../Logic/CalculateValues.dart';
 
-
 class SingleReceiptPage extends StatefulWidget {
   final Order order;
   final String dateString;
@@ -17,22 +17,20 @@ class SingleReceiptPage extends StatefulWidget {
 
   SingleReceiptPage(this.order, this.dateString, this.fromMakeOrder);
 
-
   @override
   _SingelOrderPageState createState() => _SingelOrderPageState();
 }
 
 class _SingelOrderPageState extends State<SingleReceiptPage> {
   int timeAmount = 15;
-  // Firestore _firestore = Firestore.instance;
-  // DocumentReference docRef;
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
   bool showOrderAgain = false;
   bool hasRefreshed = false;
   final CalculateValues _calculateValues = CalculateValues();
 
   @override
   Widget build(BuildContext context) {
-    // docRef = _firestore.collection('orders').document(widget.order.orderDate);
+    DocumentReference docRef = _firestore.collection('${F.firestoreCollection}/orders').doc(widget.order.orderDate);
 
     return Scaffold(
       appBar: !widget.fromMakeOrder
@@ -52,48 +50,45 @@ class _SingelOrderPageState extends State<SingleReceiptPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              widget.order.orderAccepted
-                  ? orderConfirmed()
-                  : widget.order.orderDone
-                      ? orderDeclined()
-                      : waitingForResponse(),
-              // StreamBuilder<DocumentSnapshot>(
-              //   stream: docRef.snapshots(),
-              //   builder: (BuildContext streamContext,
-              //       AsyncSnapshot<DocumentSnapshot> snapshot) {
-              //     if (!snapshot.hasData)
-              //       return Container(height: 88, child: LoadingCircle());
-              //     else if (snapshot.hasError)
-              //       return Center(child: Text('Error: ${snapshot.error}'));
-              //     else {
-              //       Order orderStream = Order.fromJson(snapshot.data.data);
-              //       Future.delayed(Duration.zero, () {
-              //         if (orderStream.orderAccepted && !showOrderAgain) {
-              //           setState(() {
-              //             showOrderAgain = true;
-              //             print('update!!');
-              //             widget.order.restaurantMessage =
-              //                 orderStream.restaurantMessage;
-              //             widget.order.acceptTime = orderStream.acceptTime;
-              //           });
-              //         }
-              //         if (orderStream.orderDone && !hasRefreshed) {
-              //           setState(() {
-              //             hasRefreshed = true;
-              //             print('update!!');
-              //             widget.order.restaurantMessage =
-              //                 orderStream.restaurantMessage;
-              //           });
-              //         }
-              //       });
-              //       return orderStream.orderAccepted
-              //           ? orderConfirmed()
-              //           : orderStream.orderDone
-              //               ? orderDeclined()
-              //               : waitingForResponse();
-              //     }
-              //   },
-              // ),
+              // widget.order.orderAccepted
+              //     ? orderConfirmed()
+              //     : widget.order.orderDone
+              //         ? orderDeclined()
+              //         : waitingForResponse(),
+              StreamBuilder<DocumentSnapshot>(
+                stream: docRef.snapshots(),
+                builder: (BuildContext streamContext, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  if (!snapshot.hasData)
+                    return Container(height: 88, child: LoadingCircle());
+                  else if (snapshot.hasError)
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  else {
+                    Order orderStream = Order.fromJson(snapshot.data?.data() as Map<String, dynamic>);
+                    Future.delayed(Duration.zero, () {
+                      if (orderStream.orderAccepted && !showOrderAgain) {
+                        setState(() {
+                          showOrderAgain = true;
+                          print('update!!');
+                          widget.order.restaurantMessage = orderStream.restaurantMessage;
+                          widget.order.acceptTime = orderStream.acceptTime;
+                        });
+                      }
+                      if (orderStream.orderDone && !hasRefreshed) {
+                        setState(() {
+                          hasRefreshed = true;
+                          print('update!!');
+                          widget.order.restaurantMessage = orderStream.restaurantMessage;
+                        });
+                      }
+                    });
+                    return orderStream.orderAccepted
+                        ? orderConfirmed()
+                        : orderStream.orderDone
+                            ? orderDeclined()
+                            : waitingForResponse();
+                  }
+                },
+              ),
 
               //Text(widget.order.orderDate),
               // widget.order.orderAccepted
@@ -101,13 +96,20 @@ class _SingelOrderPageState extends State<SingleReceiptPage> {
               //     : widget.order.orderDone
               //         ? orderDeclined()
               //         : waitingForResponse(),
-              Card(
-                elevation: 5,
-                child: ListTile(
-                  title: Text('Navn: ${widget.order.user.fullName}'),
-                  subtitle: Text('Tlf: ${widget.order.user.phoneNr} \nE-mail: ${widget.order.user.email}'),
-                ),
+              MyIconGridButton(
+                title: '${widget.order.user.fullName}',
+                url: 'url',
+                icon: Icon(Icons.person, color: Colors.white),
+                subtitle: '${widget.order.user.phoneNr} \n${widget.order.user.email}',
+                canTap: false,
               ),
+              // Card(
+              //   elevation: 5,
+              //   child: ListTile(
+              //     title: Text('Navn: ${widget.order.user.fullName}'),
+              //     subtitle: Text('Tlf: ${widget.order.user.phoneNr} \nE-mail: ${widget.order.user.email}'),
+              //   ),
+              // ),
               Divider(),
               Text('Bestilt ${widget.dateString}'),
               OrderReciept(widget.order.menuOrder),
