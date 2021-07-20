@@ -147,6 +147,7 @@ class _LoginPageState extends State<LoginPage> {
       try {
         User? result = await _authService.loginUser(email: _email!, password: _password!);
         print('Success: $result');
+        Navigator.of(context).pop();
       } on FirebaseAuthException catch (error) {
         // handle the firebase specific error
         return _buildErrorDialog(context, 'Error Message', error.message as String);

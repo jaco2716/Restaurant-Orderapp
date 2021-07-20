@@ -107,38 +107,35 @@ class ReceiptListPage extends StatelessWidget {
             stream: _firestore
                 .collection('${F.firestoreCollection}/orders')
                 .where('user.uid', isEqualTo: currentUser.uid)
-                // .orderBy('orderDate', descending: true)
+                .orderBy('orderDate', descending: true)
                 .snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (!snapshot.hasData)
-                return Expanded(child: Center(child: Text("Du har ingen ordrer endnu.")));
-              // else if (snapshot.hasError) return Expanded(child: Center(child: Text('Error: ${snapshot.error}')));
-              switch (snapshot.connectionState) {
-                case ConnectionState.waiting:
-                  return Expanded(child: Center(child: LoadingCircle()));
-                default:
-                  List<Order> orders = [];
-                  // Map to list instead
-                  snapshot.data?.docs.forEach((e) {
-                    Order dataOrder = Order.fromJson(e.data() as Map<String, dynamic>);
-                    orders.add(dataOrder);
-                    print(dataOrder.toJson());
-                  });
-                  final int dataCount = orders.length;
-                  if (dataCount == 0)
-                    return Expanded(
-                      child: Center(child: Text("Du har ingen tidligere ordre")),
-                    );
-                  else {
-                    return Expanded(
-                      child: ListView.builder(
-                        itemCount: dataCount,
-                        itemBuilder: (_, int index) {
-                          return ReceiptListRow(currentUser, orders[index]);
-                        },
-                      ),
-                    );
-                  }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Expanded(child: Center(child: LoadingCircle()));
+              }
+              if (!snapshot.hasData) return Expanded(child: Center(child: Text("Du har ingen ordrer endnu.")));
+
+              List<Order> orders = [];
+              // Map to list instead
+              snapshot.data?.docs.forEach((e) {
+                Order dataOrder = Order.fromJson(e.data() as Map<String, dynamic>);
+                orders.add(dataOrder);
+                // print(dataOrder.toJson());
+              });
+              final int dataCount = orders.length;
+              if (dataCount == 0)
+                return Expanded(
+                  child: Center(child: Text("Du har ingen tidligere ordre")),
+                );
+              else {
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: dataCount,
+                    itemBuilder: (_, int index) {
+                      return ReceiptListRow(currentUser, orders[index]);
+                    },
+                  ),
+                );
               }
             }),
       ],

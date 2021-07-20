@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restaurantorderapp/Logic/CalculateValues.dart';
+import 'package:restaurantorderapp/MyWidgets/MyAppBar.dart';
 import 'package:restaurantorderapp/MyWidgets/MyMenuWidgets/MyModalMeatChoice.dart';
 import 'package:restaurantorderapp/model/NextPageEnum.dart';
 import 'package:restaurantorderapp/pages/LoginPageContent/CheckLoginPage.dart';
@@ -46,37 +47,52 @@ class _CartPageState extends State<CartPage> {
         Expanded(
           child: Container(child: cartItems.length > 0 ? buildCart(cartItems) : emptyCart()),
         ),
-        Divider(
-          height: 1,
-          thickness: 2,
-        ),
+        // Divider(
+        //   height: 1,
+        //   thickness: 2,
+        // ),
         // ListTile(
         //   title: Text('Total'),
         //   trailing: Text(subtotal.toString() + ' kr,-'),
         // ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Container(
+          decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 10,
+                      color: Colors.black12,
+                    )
+                  ],
+                  color: Colors.white,
+                ),
+          child: Column(
             children: [
-              Text(
-                'Total',
-                style: TextStyle(fontWeight: FontWeight.bold),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Total',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(subtotal.toString() + ' kr,-'),
+                  ],
+                ),
               ),
-              Text(subtotal.toString() + ' kr,-'),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                width: double.infinity,
+                child: ElevatedButton(
+                    onPressed: cartItems.isEmpty
+                        ? null
+                        : () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Scaffold(appBar: MyAppBar(''), body:CheckLoginPage(NextPage.OrderPage, 'OrderPage', cartItems))));
+                          },
+                    child: Text('Gå til bestilling')),
+              ),
             ],
           ),
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          width: double.infinity,
-          child: ElevatedButton(
-              onPressed: cartItems.isEmpty
-                  ? null
-                  : () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => CheckLoginPage(NextPage.OrderPage, 'OrderPage', cartItems)));
-                    },
-              child: Text('Gå til bestilling')),
         )
       ],
     );

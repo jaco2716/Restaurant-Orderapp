@@ -19,6 +19,15 @@ class MenuItem {
     required this.meatChoice,
   });
 
+  @override
+  bool operator ==(other) {
+    return (other is MenuItem) &&
+        other.id == id &&
+        other.title == title &&
+        other.description == description &&
+        other.price == price;
+  }
+
   MenuItem.clone(MenuItem menuItemCopy)
       : this(
             id: menuItemCopy.id,
@@ -53,4 +62,7 @@ class MenuItem {
   String toString() {
     return "$id, $title, $price dk,- Antal: $amount. extra";
   }
+
+  @override
+  int get hashCode => id.hashCode ^ title.hashCode ^ description.hashCode ^ price.hashCode ^ meatChoice.hashCode;
 }

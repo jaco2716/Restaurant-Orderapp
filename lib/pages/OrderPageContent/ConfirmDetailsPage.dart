@@ -19,6 +19,7 @@ import '../../model/MealsLog.dart';
 import '../../model/Order.dart';
 import 'OrderReciept.dart';
 import 'package:http/http.dart';
+import 'package:ntp/ntp.dart';
 
 class ConfirmDetailsPage extends StatefulWidget {
   final List<MenuItem> cartItems;
@@ -38,131 +39,212 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
   OrderUser user = OrderUser(uid: 'uid', fullName: 'Name', phoneNr: 'Phone', email: 'E-mail');
   bool userLoaded = false;
   String orderMessage = 'Ingen kommentar til restaurenten.';
+  String collectTimeMessage = 'Hurtigst muligt.';
   String serverToken = '';
   bool isOpen = false;
 
   @override
   Widget build(BuildContext context) {
     var docRef = _firestore.collection('users').doc(widget.currentUser.uid);
-    return Scaffold(
-      appBar: MyAppBar('Bekræft Ordre'),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: Column(
-            children: [
-              StreamBuilder<DocumentSnapshot>(
-                stream: docRef.snapshots(),
-                builder: (BuildContext streamContext, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (!snapshot.hasData)
-                    return Container(height: 88, child: LoadingCircle());
-                  else if (snapshot.hasError)
-                    return Text('Error: ${snapshot.error}');
-                  else {
-                    user = OrderUser.fromJson(snapshot.data!.data() as Map<String, dynamic>);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Column(
+                  children: [
+                    StreamBuilder<DocumentSnapshot>(
+                      stream: docRef.snapshots(),
+                      builder: (BuildContext streamContext, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if (!snapshot.hasData)
+                          return Container(height: 88, child: LoadingCircle());
+                        else if (snapshot.hasError)
+                          return Text('Error: ${snapshot.error}');
+                        else {
+                          user = OrderUser.fromJson(snapshot.data!.data() as Map<String, dynamic>);
 
-                    if (!userLoaded) {
-                      Future.delayed(Duration.zero, () {
-                        setState(() {
-                          userLoaded = true;
-                          print('update!');
-                        });
-                      });
-                    }
-                    return MyIconGridButton(
-                      title: user.fullName,
-                      url: 'url',
-                      icon: Icon(Icons.person, color: Colors.white),
-                      subtitle: '${user.email}\n${user.phoneNr}',
-                      canTap: false,
-                    );
-                    // return ListTile(
-                    //   title: Text(user.fullName),
-                    //   subtitle: Text(user.phoneNr + '\n' + user.email),
-                    //   isThreeLine: true,
-                    // );
-                  }
-                },
-              ),
-              OrderReciept(widget.cartItems),
-              Container(
-                height: 60,
-                padding: EdgeInsets.all(4),
-                width: double.infinity,
-                child: RaisedButton(
-                    elevation: 0,
-                    child: Text('Tilføj kommentar til ordren.'),
-                    color: Colors.blue,
-                    onPressed: () {
-                      _buildAddMessageDialog(context);
-                    }),
-              ),
-              Card(
-                  child: Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                      child: Column(children: [
-                        Text(
-                          'Kommentar:',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          orderMessage,
-                          textAlign: TextAlign.center,
-                        )
-                      ]))),
-              SizedBox(
-                height: 10,
-              ),
-              // Container(
-              //   width: double.infinity,
-              //   padding: EdgeInsets.all(4),
-              //   height: 60,
-              //   child: RaisedButton(
-              //       onPressed: () {
-              //         showDialog(
-              //           context: context,
-              //           builder: (context) {
-              //             return AlertDialog(
-              //               title: Text('Demo'),
-              //               content: Text('Demo versionen kan ikke lave ordrer.'),
-              //               actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text('Ok'))],
-              //             );
-              //           },
-              //         );
-              //         // confirmOrder();
-              //       },
-              //       child: Text('Bekræft og send ordre')),
-              // ),
-              userLoaded
-                  ? Container(
-                      width: double.infinity,
+                          if (!userLoaded) {
+                            Future.delayed(Duration.zero, () {
+                              setState(() {
+                                userLoaded = true;
+                                print('update!');
+                              });
+                            });
+                          }
+                          return MyIconGridButton(
+                            title: user.fullName,
+                            url: 'url',
+                            icon: Icon(Icons.person, color: Colors.white),
+                            subtitle: '${user.email}\n${user.phoneNr}',
+                            canTap: false,
+                          );
+                          // return ListTile(
+                          //   title: Text(user.fullName),
+                          //   subtitle: Text(user.phoneNr + '\n' + user.email),
+                          //   isThreeLine: true,
+                          // );
+                        }
+                      },
+                    ),
+                    OrderReciept(widget.cartItems),
+                    Container(
                       padding: EdgeInsets.all(4),
-                      height: 60,
-                      child: RaisedButton(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                          child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(text: 'Kommentar:\n', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white), children: [
+                              TextSpan(
+                                text: orderMessage,
+                                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13),
+                              )
+                            ]),
+                          ),
                           onPressed: () {
-                            confirmOrder();
-                          },
-                          child: Text('Bekræft og send ordre')),
-                    )
-                  : Container(
-                      height: 60,
-                      child: Center(
-                        child: Text('Venter på bruger...'),
-                      )),
-              SizedBox(
-                height: 30,
-              )
-            ],
+                            _buildAddMessageDialog(context);
+                          }),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(4),
+                      width: double.infinity,
+                      child: ElevatedButton(
+                          child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(text: 'Afhent tid:\n', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white), children: [
+                              TextSpan(
+                                text: collectTimeMessage,
+                                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13),
+                              )
+                            ]),
+                          ),
+                          onPressed: () {
+                            _buildCollectTimeDialog(context);
+                          }),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
-        ),
+          // Spacer(),
+          userLoaded
+              ? Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(4),
+                  // height: 60,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(primary: Colors.green),
+                      onPressed: () {
+                        confirmOrder();
+                      },
+                      child: Text('Bekræft og send ordre')),
+                )
+              : Container(
+                  height: 60,
+                  child: Center(
+                    child: Text('Venter på bruger...'),
+                  )),
+          // SizedBox(
+          //   height: 30,
+          // )
+        ],
       ),
     );
   }
 
+  Future<List<String>> _createCollectTimeList() async {
+    DateTime currentDate = await NTP.now();
+    // List<double> openCloseHour = await _calculateValues.getTodaysOpenCloseHour(currentDate);
+    List<double> openCloseHour = [14,01];
+    List<String> timeList = [
+      'Hurtigst muligt',
+    ];
+
+    DateTime tempDate = currentDate.add(Duration(minutes: 15));
+    int startMinute = tempDate.minute;
+    // int startMinute = 59;
+
+    print(openCloseHour);
+    print('startMinute: $startMinute');
+    print('startMinute round: ${(startMinute / 15).floor()}');
+
+    for (var i = tempDate.hour; i < 24; i++) {
+      if ((i > openCloseHour[0] && i < openCloseHour[1]) || (i > openCloseHour[0] && openCloseHour[0] > openCloseHour[1])) {
+        for (var j = (startMinute / 15).ceil(); j < 4; j++) {
+          double dateIndex = i + j / 100;
+          if ((dateIndex > openCloseHour[0] && dateIndex < openCloseHour[1]) ||
+              (dateIndex > openCloseHour[0] && openCloseHour[0] > openCloseHour[1])) {
+            timeList.add('${i.toString().padLeft(2, '0')}:${(j * 15).toString().padLeft(2, '0')}');
+          }
+        }
+          startMinute = 0;
+      }
+    }
+    return timeList;
+  }
+
+  _buildCollectTimeDialog(BuildContext context) async {
+    // DateTime currentDate = await NTP.now();
+    // List<double> openCloseHour = await _calculateValues.getTodaysOpenCloseHour(currentDate);
+    // List<String> timeList = [
+    //   'Hurtigst muligt',
+    // ];
+
+    // DateTime tempDate = currentDate.add(Duration(minutes: 15));
+    // int startMinute = tempDate.minute;
+
+    // for (var i = tempDate.hour; i < 24; i++) {
+    //   if ((i > openCloseHour[0] && i < openCloseHour[1]) || (i > openCloseHour[0] && openCloseHour[0] > openCloseHour[1])) {
+    //     for (var j = (startMinute / 15).ceil(); j < 4; j++) {
+    //       startMinute = 0;
+    //       double dateIndex = i + j / 100;
+    //       if ((dateIndex > openCloseHour[0] && dateIndex < openCloseHour[1]) ||
+    //           (dateIndex > openCloseHour[0] && openCloseHour[0] > openCloseHour[1])) {
+    //         timeList.add('${i.toString().padLeft(2, '0')}:${(j * 15).toString().padLeft(2, '0')}');
+    //       }
+    //     }
+    //   }
+    // }
+    _createCollectTimeList().then((timeList) {
+      print(timeList);
+      showDialog(
+        context: context,
+        builder: (context) {
+          String selectedValue = 'Hurtigst muligt.';
+          return MyAlertDialog(
+            title: 'Vælg afhentnings tid.',
+            content: Container(
+              height: 200,
+              child: CupertinoPicker.builder(
+                // magnification: 1.2,
+                childCount: timeList.length,
+                itemExtent: 40,
+                onSelectedItemChanged: (value) => selectedValue = timeList[value],
+                itemBuilder: (context, index) {
+                  return Center(child: Text(timeList[index]));
+                },
+              ),
+            ),
+            cancelText: 'Luk',
+            myOnPressed: () {
+              setState(() {
+                collectTimeMessage = selectedValue;
+              });
+              Navigator.of(context).pop();
+            },
+            confirmText: 'Bekræft',
+          );
+        },
+      );
+    });
+  }
+
   //dialog to add comment to order.
   _buildAddMessageDialog(BuildContext context) {
-    return showDialog(
+    showDialog(
       builder: (context) {
         return MyAlertDialog(
           title: 'Tilføj kommentar',
@@ -205,10 +287,17 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
       context: context,
     );
     try {
-      // DateTime currentDate = await NTP.now();
-      DateTime currentDate = DateTime.now();
+      DateTime currentDate = await NTP.now();
+      // DateTime currentDate = DateTime.now();
       // DateTime currentDate = DateTime(2020, 09, 25, 11, 02);
       isOpen = await _calculateValues.checkIfWithinOpenHours(currentDate);
+      List<String> collectTimeList = collectTimeMessage.split(':');
+      String wantOrderTime = '0';
+      if (collectTimeList.length > 0) {
+        DateTime wantOrderDateTime =
+            DateTime(currentDate.year, currentDate.month, currentDate.day, int.parse(collectTimeList[0]), int.parse(collectTimeList[1]));
+        wantOrderTime = wantOrderDateTime.millisecondsSinceEpoch.toString();
+      }
 
       DocumentSnapshot applicationDataSnapshot = await _firestore.doc('${F.firestoreCollection}').get();
       ApplicationData appData = ApplicationData.fromJson(applicationDataSnapshot.data() as Map<String, dynamic>);
@@ -216,17 +305,18 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
       // if (true) {
       if (isOpen && appData.versionId == 1) {
         //Create Order
-        String orderDate = DateTime.now().millisecondsSinceEpoch.toString();
-        Order finalOrder = Order(
+        String orderDate = currentDate.millisecondsSinceEpoch.toString();
+        Order tempFinalOrder = Order(
             menuOrder: widget.cartItems,
             user: user,
             orderDate: orderDate,
             orderDone: false,
             orderAccepted: false,
             acceptTime: '0',
-            restaurantMessage: 'No message',
+            wantOrderTime: wantOrderTime,
+            restaurantMessage: 'Ingen besked.',
             orderMessage: orderMessage);
-        finalOrder.menuOrder.forEach((mo) {
+        tempFinalOrder.menuOrder.forEach((mo) {
           List<MeatChoice> newMeatchoice = [];
           if (mo.meatChoice.length != 0) {
             mo.meatChoice.forEach((mc) {
@@ -236,11 +326,7 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
           }
         });
 
-        //Order finalOrder = Order.clone(tempFinalOrder);
-
-        // print('Order copy: ${finalOrder.orderDone.toString()} - ${newOrderfinal.orderDone.toString()}');
-        // finalOrder.orderDone = true;
-        // print('copy after change: ${finalOrder.orderDone.toString()} - ${newOrderfinal.orderDone.toString()}');
+        Order finalOrder = Order.clone(tempFinalOrder);
 
         // widget.cartItems.forEach((e) {
         //   finalOrder.menuOrder.add(MenuItem(
@@ -254,22 +340,10 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
         await sendAndRetrieveMessage(orderDate, appData.deviceToken);
 
         MealsLog.pageIndex = 2;
-        // print('Before make order: ' + finalOrder.menuOrder[0].toString());
-        // finalOrder.menuOrder[0].meatChoice.forEach((element) {
-        //   print('before meat amount' + element.amount.toString());
-        // });
 
         resetMenuItems();
 
-        // print('Make Order with: ' + finalOrder.menuOrder[0].toString());
-        // finalOrder.menuOrder[0].meatChoice.forEach((element) {
-        //   print('after meat amount' + element.amount.toString());
-        // });
         Navigator.push(context, MaterialPageRoute(builder: (context) => SingleReceiptPage(finalOrder, dateString, true), fullscreenDialog: true));
-
-        // Future.delayed(Duration(seconds: 4), () {
-        //   resetMenuItems();
-        // });
       } else if (!isOpen) {
         // Navigator.of(context).pushAndRemoveUntil(
         //     MaterialPageRoute(builder: (context) => MyHomePage()),
@@ -305,22 +379,9 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
   resetMenuItems() {
     print('reset');
     MealsLog.totalPrice = 0;
-    //TODO = DONE? Change to final static lists
     MealsLog.allMenus.forEach((element) {
       clearMenuItems(element);
     });
-    // clearMenuItems(MealsLog.smallMeals);
-    // clearMenuItems(MealsLog.soups);
-    // clearMenuItems(MealsLog.noodlesAndFriedRice);
-    // clearMenuItems(MealsLog.mainMealWithRice);
-    // clearMenuItems(MealsLog.specialMealsWithRice);
-    // clearMenuItems(MealsLog.vegetaryVeganMeals);
-    // clearMenuItems(MealsLog.salads);
-    // clearMenuItems(MealsLog.childMeals);
-    // clearMenuItems(MealsLog.childMeals2);
-    // clearMenuItems(MealsLog.dersert);
-    // clearMenuItems(MealsLog.accessoriesItems);
-    // clearMenuItems(MealsLog.hotDrinks);
   }
 
   void clearMenuItems(List<MenuItem> menuItems) {

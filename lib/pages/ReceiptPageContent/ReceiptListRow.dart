@@ -19,6 +19,7 @@ class ReceiptListRow extends StatelessWidget {
         _calculateValues.dateStringFromMili(order.orderDate);
     Icon orderIcon = Icon(Icons.watch_later, size: 35, color: Colors.grey,);
     String acceptTimeString = 'Venter...';
+    String orderPrice = _calculateValues.totalPriceFromOrder(order.menuOrder).toString();
     if (order.orderAccepted){
       acceptTimeString = _calculateValues.dateStringFromMili(order.acceptTime);
       orderIcon = Icon(Icons.check_circle, size: 35, color: Colors.green,);
@@ -27,27 +28,28 @@ class ReceiptListRow extends StatelessWidget {
       acceptTimeString = 'Ordre afvist';
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-      child: Card(
+    return Card(
+      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
         elevation: 5,
-        child: InkWell(
-          child: Container(
-              padding: EdgeInsets.all(20),
-              child: ListTile(
-                title: Text('Ordre nr: '+order.orderDate),
-                subtitle: Text('Bestilt · $orderDateString \nAfhent · $acceptTimeString'),
-                trailing: orderIcon,
-              )
-              ),
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        SingleReceiptPage(order, orderDateString, false)));
-          },
-        ),
+      child: InkWell(
+        child: Container(
+            padding: EdgeInsets.symmetric(vertical: 16),
+            child: ListTile(
+              minLeadingWidth: 35,
+              horizontalTitleGap: 5,
+              leading: Icon(Icons.receipt),
+              title: Text('Ordre nr: ${order.orderDate}'),
+              subtitle: Text('Bestilt · $orderDateString \nAfhent · $acceptTimeString'),
+              trailing: orderIcon,
+            )
+            ),
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      SingleReceiptPage(order, orderDateString, false)));
+        },
       ),
     );
   }

@@ -28,6 +28,10 @@ class _SingelOrderPageState extends State<SingleReceiptPage> {
   bool hasRefreshed = false;
   final CalculateValues _calculateValues = CalculateValues();
 
+  final TextStyle whiteText = TextStyle(
+    color: Colors.white,
+  );
+
   @override
   Widget build(BuildContext context) {
     DocumentReference docRef = _firestore.collection('${F.firestoreCollection}/orders').doc(widget.order.orderDate);
@@ -45,11 +49,18 @@ class _SingelOrderPageState extends State<SingleReceiptPage> {
                 },
               ),
             ),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
+              MyIconGridButton(
+                title: '${widget.order.user.fullName}',
+                url: 'url',
+                icon: Icon(Icons.person, color: Colors.white),
+                subtitle: '${widget.order.user.phoneNr} \n${widget.order.user.email}',
+                canTap: false,
+              ),
               // widget.order.orderAccepted
               //     ? orderConfirmed()
               //     : widget.order.orderDone
@@ -68,7 +79,7 @@ class _SingelOrderPageState extends State<SingleReceiptPage> {
                       if (orderStream.orderAccepted && !showOrderAgain) {
                         setState(() {
                           showOrderAgain = true;
-                          print('update!!');
+                          // print('update!!');
                           widget.order.restaurantMessage = orderStream.restaurantMessage;
                           widget.order.acceptTime = orderStream.acceptTime;
                         });
@@ -76,11 +87,13 @@ class _SingelOrderPageState extends State<SingleReceiptPage> {
                       if (orderStream.orderDone && !hasRefreshed) {
                         setState(() {
                           hasRefreshed = true;
-                          print('update!!');
+                          // print('update!!');
                           widget.order.restaurantMessage = orderStream.restaurantMessage;
                         });
                       }
                     });
+                    // print(widget.order.menuOrder.toString());
+                    // return orderStatus();
                     return orderStream.orderAccepted
                         ? orderConfirmed()
                         : orderStream.orderDone
@@ -96,13 +109,7 @@ class _SingelOrderPageState extends State<SingleReceiptPage> {
               //     : widget.order.orderDone
               //         ? orderDeclined()
               //         : waitingForResponse(),
-              MyIconGridButton(
-                title: '${widget.order.user.fullName}',
-                url: 'url',
-                icon: Icon(Icons.person, color: Colors.white),
-                subtitle: '${widget.order.user.phoneNr} \n${widget.order.user.email}',
-                canTap: false,
-              ),
+              
               // Card(
               //   elevation: 5,
               //   child: ListTile(
@@ -110,8 +117,8 @@ class _SingelOrderPageState extends State<SingleReceiptPage> {
               //     subtitle: Text('Tlf: ${widget.order.user.phoneNr} \nE-mail: ${widget.order.user.email}'),
               //   ),
               // ),
-              Divider(),
-              Text('Bestilt ${widget.dateString}'),
+              // Divider(),
+              // Text('Bestilt ${widget.dateString}'),
               OrderReciept(widget.order.menuOrder),
               SizedBox(
                 height: 15,
@@ -124,6 +131,15 @@ class _SingelOrderPageState extends State<SingleReceiptPage> {
                       child: RaisedButton(
                           child: Text('Bestil igen!'),
                           onPressed: () {
+                            //TODO order again
+                            try {
+                              bool canReorder = checkIfCanReorder();
+                              if(canReorder)print('MenuItems are the same');
+                              else print('Somwthing went wrong');
+                            } catch (e) {
+                              print(e);
+                            }
+
                             // Navigator.push(context, MaterialPageRoute(builder: (context) => loginNextPage(widget.order.menuOrder, 'OrderPage')));
                           }),
                     )
@@ -140,70 +156,149 @@ class _SingelOrderPageState extends State<SingleReceiptPage> {
   }
 
   Widget waitingForResponse() {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: Column(children: [
-        Text(
-          'Venter',
-          style: TextStyle(fontSize: 50, color: Colors.yellow[700], fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center,
+    return Card(
+      // width: double.infinity,
+      color: Colors.orange,
+      child: SizedBox(
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 30),
+          child: Column(children: [
+            Icon(
+              Icons.watch_later_outlined,
+              color: Colors.white,
+              size: 80,
+            ),
+            // Icon(
+            //   Icons.check_circle_outline_rounded,
+            //   color: Colors.white,
+            //   size: 80,
+            // ),
+            Text(
+              'Venter',
+              style: whiteText.copyWith(fontSize: 50, fontWeight: FontWeight.bold),
+            ),
+            Text('Din bestilling er gennemført og venter på svar fra restauranten.\nBestilt kl. ${widget.dateString}',
+                style: whiteText, textAlign: TextAlign.center),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: LoadingCircle(
+                color: Colors.white,
+              ),
+            ),
+          ]),
         ),
-        Text('Venter på svar fra restauranten.'),
-        Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: LoadingCircle(),
-        )
-      ]),
+      ),
     );
   }
 
   Widget orderConfirmed() {
     List<String> acceptTimeString = _calculateValues.dateStringFromMili(widget.order.acceptTime).split(' ');
     // acceptTimeString.forEach((element) {print(element);});
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: Column(children: [
-        Text(
-          'Accepteret',
-          style: TextStyle(fontSize: 40, color: Colors.green[600], fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center,
+    return Card(
+      // width: double.infinity,
+      color: Colors.green,
+      child: SizedBox(
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 30),
+          child: Column(children: [
+            Icon(
+              Icons.check_circle_outline_rounded,
+              color: Colors.white,
+              size: 80,
+            ),
+            Text(
+              'Accepteret',
+              style: whiteText.copyWith(fontSize: 30, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            // Text('Bestilt kl. ${widget.dateString}', style: whiteText, textAlign: TextAlign.center),
+            Text('Din ordre er blevet accepteret\nog kan afhentes kl.', style: whiteText, textAlign: TextAlign.center),
+            Text(
+              acceptTimeString[0],
+              style: whiteText.copyWith(fontWeight: FontWeight.w300, fontSize: 40),
+            ),
+            Text(
+              acceptTimeString[2],
+              style: whiteText.copyWith(fontWeight: FontWeight.w200, fontSize: 18, height: 0.8),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Text(
+                'Restaurant besked:\n${widget.order.restaurantMessage}',
+                style: whiteText,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ]),
         ),
-        Text('Hent din ordre kl.'),
-        Text(
-          acceptTimeString[0],
-          style: TextStyle(fontWeight: FontWeight.w300, fontSize: 40),
-        ),
-        Text(
-          acceptTimeString[2],
-          style: TextStyle(fontWeight: FontWeight.w100, fontSize: 20),
-        ),
-        Text(
-          'Restaurant besked:\n${widget.order.restaurantMessage}',
-          textAlign: TextAlign.center,
-        ),
-      ]),
+      ),
     );
   }
 
   Widget orderDeclined() {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: Column(children: [
-        Text(
-          'Afvist',
-          style: TextStyle(fontSize: 50, color: Colors.red[600], fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center,
+    return Card(
+      // width: double.infinity,
+      color: Colors.red[400],
+      child: SizedBox(
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 30),
+          child: Column(children: [
+            Icon(
+              Icons.cancel_rounded,
+              color: Colors.white,
+              size: 80,
+            ),
+            Text(
+              'Afvist',
+              style: whiteText.copyWith(fontSize: 50, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            Text(
+              'Din ordre blev afvist.\n Besked fra restauranten:\n${widget.order.restaurantMessage}',
+              style: whiteText,
+              textAlign: TextAlign.center,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Text(
+                'Du kan ringe til restauranten på:\n${F.companyPhone}',
+                style: whiteText,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ]),
         ),
-        Text(
-          'Restaurant besked:\n${widget.order.restaurantMessage}',
-          textAlign: TextAlign.center,
-        ),
-        Text(
-          'Du kan ringe til restauranten på ${F.companyPhone}',
-          textAlign: TextAlign.center,
-        ),
-      ]),
+      ),
     );
+  }
+
+  bool checkIfCanReorder() {
+    List<List<MenuItem>> allMenuItems = F.allMenus;
+
+    int foundIndex = -1;
+
+    widget.order.menuOrder.forEach((orderElement) {
+      for (var allMenuElement in allMenuItems) {
+        foundIndex = allMenuElement.indexWhere((element) => element.id == orderElement.id);
+        print('foundindex: $foundIndex');
+        if (foundIndex != -1) {
+          if (allMenuElement[foundIndex] != orderElement) {
+            throw 'MenuItems does not match.';
+          }
+
+          for (var i = 0; i < allMenuElement[foundIndex].meatChoice.length - 1; i++) {
+            if (orderElement.meatChoice[i] != allMenuElement[foundIndex].meatChoice[i]) {
+              throw 'MeatChoice does not match.';
+            }
+          }
+        }
+        if (foundIndex != -1) break;
+      }
+    });
+    return true;
   }
 }
 

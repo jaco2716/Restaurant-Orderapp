@@ -356,16 +356,16 @@ class F {
           //PIZZA
           [
             MenuItem(id: 30, title: 'MARGHERITA', description: 'Tomat og ost', price: 65, image: '', amount: 0, meatChoice: [
-              MeatChoice('Oliven', 5, 0),
-              MeatChoice('Salat', 5, 0),
-              MeatChoice('Pesto', 5, 0),
-              MeatChoice('Agurk', 5, 0),
-              MeatChoice('Chilli', 5, 0),
-              MeatChoice('Salt', 5, 0),
-              MeatChoice('Peber', 5, 0),
-              MeatChoice('Paprika', 5, 0),
-              MeatChoice('Hvidløg', 5, 0),
-              MeatChoice('Løg', 5, 0),
+              MeatChoice(1, 'Oliven', 5, 0),
+              MeatChoice(2, 'Salat', 5, 0),
+              MeatChoice(3, 'Pesto', 5, 0),
+              MeatChoice(4, 'Agurk', 5, 0),
+              MeatChoice(5, 'Chilli', 5, 0),
+              MeatChoice(6, 'Salt', 5, 0),
+              MeatChoice(7, 'Peber', 5, 0),
+              MeatChoice(8, 'Paprika', 5, 0),
+              MeatChoice(9, 'Hvidløg', 5, 0),
+              MeatChoice(10, 'Løg', 5, 0),
             ]),
             MenuItem(id: 31, title: 'CAPRICCIOSA', description: 'Skinke og champignon', price: 75, image: '', amount: 0, meatChoice: []),
             MenuItem(

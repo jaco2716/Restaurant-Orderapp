@@ -1,18 +1,26 @@
 class MeatChoice {
-    String title;
-    int price;
-    int amount;
+  int id;
+  String title;
+  int price;
+  int amount;
 
-    MeatChoice(this.title, this.price, this.amount);
+  MeatChoice(this.id, this.title, this.price, this.amount);
 
-    MeatChoice.clone(MeatChoice meatChoiceCopy) : this(meatChoiceCopy.title, meatChoiceCopy.price, meatChoiceCopy.amount);
+  @override
+  bool operator ==(other) {
+    return (other is MeatChoice) && other.id == id && other.title == title && other.price == price;
+  }
 
-    MeatChoice.fromJson(Map<String, dynamic> json)
-      : title = json['title'],
-       price = json['price'],
-       amount = json['amount'];
+  MeatChoice.clone(MeatChoice meatChoiceCopy) : this(meatChoiceCopy.id, meatChoiceCopy.title, meatChoiceCopy.price, meatChoiceCopy.amount);
+
+  MeatChoice.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        title = json['title'],
+        price = json['price'],
+        amount = json['amount'];
 
   Map<String, dynamic> toJson() => {
+        'id': id,
         'title': title,
         'price': price,
         'amount': amount,

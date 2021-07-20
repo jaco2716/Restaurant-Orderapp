@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ntp/ntp.dart';
 import 'package:restaurantorderapp/Logic/CalculateValues.dart';
 import 'package:restaurantorderapp/model/NextPageEnum.dart';
 import 'package:restaurantorderapp/pages/CartPageContent/CartPage.dart';
@@ -30,8 +31,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   initDate() async {
     try {
-      DateTime currentDate = DateTime.now();
-      // currentDate = await NTP.now();
+      // DateTime currentDate = DateTime.now();
+      DateTime currentDate = await NTP.now();
       bool isOpen = false;
       isOpen = await _calculateValues.checkIfWithinOpenHours(currentDate);
       if (!isOpen) {

@@ -35,11 +35,10 @@ class CalculateValues {
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
     try {
       // currentDate = DateTime(2020, 9, 22, 21, 01);
+      double currentTimeDouble = (currentDate.hour * 100 + currentDate.minute.toDouble()) / 100;
 
       DocumentSnapshot applicationDataSnapshot = await _firestore.doc('${F.firestoreCollection}').get();
       ApplicationData appData = ApplicationData.fromJson(applicationDataSnapshot.data() as Map<String, dynamic>);
-
-      double currentTimeDouble = (currentDate.hour * 100 + currentDate.minute.toDouble()) / 100;
 
       List<double> openTimes = appData.openingHours.map((e) => e / 100 as double).toList();
       List<double> closeTimes = appData.closingHours.map((e) => e / 100 as double).toList();
@@ -47,6 +46,7 @@ class CalculateValues {
       //   print('day: ${i+1}, open: ${openTimes[i]} - ${closeTimes[i]}');
       // }
       // print('today: ${currentDate.weekday}, time: $currentTimeDouble');
+      return true;
 
       if ((currentTimeDouble < openTimes[currentDate.weekday - 1] || currentTimeDouble > closeTimes[currentDate.weekday - 1])) {
         if (openTimes[currentDate.weekday - 1] < closeTimes[currentDate.weekday - 1]) {
@@ -60,12 +60,24 @@ class CalculateValues {
         print('restaurant open');
         return true;
       }
-
-      
     } catch (error) {
       print('date Error');
       print(error.toString());
       return false;
     }
+  }
+
+  Future<List<double>> getTodaysOpenCloseHour(DateTime currentDate) async {
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+    DocumentSnapshot applicationDataSnapshot = await _firestore.doc('${F.firestoreCollection}').get();
+    ApplicationData appData = ApplicationData.fromJson(applicationDataSnapshot.data() as Map<String, dynamic>);
+
+    List<double> openTimes = appData.openingHours.map((e) => e / 100 as double).toList();
+    List<double> closeTimes = appData.closingHours.map((e) => e / 100 as double).toList();
+
+    List<double> openCloseHour = [openTimes[currentDate.weekday - 1], closeTimes[currentDate.weekday - 1]];
+    print('openCloseHour: $openCloseHour');
+    return openCloseHour;
   }
 }
