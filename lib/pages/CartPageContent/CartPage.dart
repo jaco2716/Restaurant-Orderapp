@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:restaurantorderapp/Logic/CalculateValues.dart';
 import 'package:restaurantorderapp/MyWidgets/MyAppBar.dart';
 import 'package:restaurantorderapp/MyWidgets/MyMenuWidgets/MyModalMeatChoice.dart';
 import 'package:restaurantorderapp/model/NextPageEnum.dart';

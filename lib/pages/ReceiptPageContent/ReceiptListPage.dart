@@ -5,9 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:restaurantorderapp/MyWidgets/LoadingCircle.dart';
 import 'package:restaurantorderapp/flavors.dart';
-import '../../model/MenuItem.dart';
 import '../../model/Order.dart';
-import '../../model/OrderUser.dart';
 import 'ReceiptListRow.dart';
 
 class ReceiptListPage extends StatelessWidget {

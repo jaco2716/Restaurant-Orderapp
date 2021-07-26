@@ -13,7 +13,6 @@ import 'package:restaurantorderapp/model/ApplicationData.dart';
 import 'package:restaurantorderapp/model/MeatChoice.dart';
 import 'package:restaurantorderapp/model/OrderUser.dart';
 import 'package:restaurantorderapp/pages/ReceiptPageContent/SingleReceiptPage.dart';
-import '../../MyWidgets/MyAppBar.dart';
 import '../../model/MenuItem.dart';
 import '../../model/MealsLog.dart';
 import '../../model/Order.dart';
@@ -46,137 +45,140 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
   @override
   Widget build(BuildContext context) {
     var docRef = _firestore.collection('users').doc(widget.currentUser.uid);
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Column(
-                  children: [
-                    StreamBuilder<DocumentSnapshot>(
-                      stream: docRef.snapshots(),
-                      builder: (BuildContext streamContext, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                        if (!snapshot.hasData)
-                          return Container(height: 88, child: LoadingCircle());
-                        else if (snapshot.hasError)
-                          return Text('Error: ${snapshot.error}');
-                        else {
-                          user = OrderUser.fromJson(snapshot.data!.data() as Map<String, dynamic>);
-
-                          if (!userLoaded) {
-                            Future.delayed(Duration.zero, () {
-                              setState(() {
-                                userLoaded = true;
-                                print('update!');
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Column(
+                    children: [
+                      StreamBuilder<DocumentSnapshot>(
+                        stream: docRef.snapshots(),
+                        builder: (BuildContext streamContext, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (!snapshot.hasData)
+                            return Container(height: 88, child: LoadingCircle());
+                          else if (snapshot.hasError)
+                            return Text('Error: ${snapshot.error}');
+                          else {
+                            user = OrderUser.fromJson(snapshot.data!.data() as Map<String, dynamic>);
+    
+                            if (!userLoaded) {
+                              Future.delayed(Duration.zero, () {
+                                setState(() {
+                                  userLoaded = true;
+                                  print('update!');
+                                });
                               });
-                            });
+                            }
+                            return MyIconGridButton(
+                              title: user.fullName,
+                              url: 'url',
+                              icon: Icon(Icons.person, color: Colors.white),
+                              subtitle: '${user.email}\n${user.phoneNr}',
+                              canTap: false,
+                            );
+                            // return ListTile(
+                            //   title: Text(user.fullName),
+                            //   subtitle: Text(user.phoneNr + '\n' + user.email),
+                            //   isThreeLine: true,
+                            // );
                           }
-                          return MyIconGridButton(
-                            title: user.fullName,
-                            url: 'url',
-                            icon: Icon(Icons.person, color: Colors.white),
-                            subtitle: '${user.email}\n${user.phoneNr}',
-                            canTap: false,
-                          );
-                          // return ListTile(
-                          //   title: Text(user.fullName),
-                          //   subtitle: Text(user.phoneNr + '\n' + user.email),
-                          //   isThreeLine: true,
-                          // );
-                        }
-                      },
-                    ),
-                    OrderReciept(widget.cartItems),
-                    Container(
-                      padding: EdgeInsets.all(4),
-                      width: double.infinity,
-                      child: ElevatedButton(
-                          child: RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(text: 'Kommentar:\n', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white), children: [
-                              TextSpan(
-                                text: orderMessage,
-                                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13),
-                              )
-                            ]),
-                          ),
-                          onPressed: () {
-                            _buildAddMessageDialog(context);
-                          }),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(4),
-                      width: double.infinity,
-                      child: ElevatedButton(
-                          child: RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(text: 'Afhent tid:\n', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white), children: [
-                              TextSpan(
-                                text: collectTimeMessage,
-                                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13),
-                              )
-                            ]),
-                          ),
-                          onPressed: () {
-                            _buildCollectTimeDialog(context);
-                          }),
-                    ),
-                  ],
+                        },
+                      ),
+                      OrderReciept(widget.cartItems),
+                      Container(
+                        padding: EdgeInsets.all(4),
+                        width: double.infinity,
+                        child: ElevatedButton(
+                            child: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(text: 'Kommentar:\n', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white), children: [
+                                TextSpan(
+                                  text: orderMessage,
+                                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13),
+                                )
+                              ]),
+                            ),
+                            onPressed: () {
+                              _buildAddMessageDialog(context);
+                            }),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(4),
+                        width: double.infinity,
+                        child: ElevatedButton(
+                            child: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(text: 'Afhent tid:\n', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white), children: [
+                                TextSpan(
+                                  text: collectTimeMessage,
+                                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13),
+                                )
+                              ]),
+                            ),
+                            onPressed: () {
+                              _buildCollectTimeDialog(context);
+                            }),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          // Spacer(),
-          userLoaded
-              ? Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(4),
-                  // height: 60,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(primary: Colors.green),
-                      onPressed: () {
-                        confirmOrder();
-                      },
-                      child: Text('Bekræft og send ordre')),
-                )
-              : Container(
-                  height: 60,
-                  child: Center(
-                    child: Text('Venter på bruger...'),
-                  )),
-          // SizedBox(
-          //   height: 30,
-          // )
-        ],
+            // Spacer(),
+            userLoaded
+                ? Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(4),
+                    // height: 60,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(primary: Colors.green),
+                        onPressed: () {
+                          confirmOrder();
+                        },
+                        child: Text('Bekræft og send ordre')),
+                  )
+                : Container(
+                    height: 60,
+                    child: Center(
+                      child: Text('Venter på bruger...'),
+                    )),
+            // SizedBox(
+            //   height: 30,
+            // )
+          ],
+        ),
       ),
     );
   }
 
   Future<List<String>> _createCollectTimeList() async {
     DateTime currentDate = await NTP.now();
-    // List<double> openCloseHour = await _calculateValues.getTodaysOpenCloseHour(currentDate);
-    List<double> openCloseHour = [14,01];
+      currentDate = DateTime(2020, 9, 22, 8, 00);
+
+    List<double> openCloseHour = await _calculateValues.getTodaysOpenCloseHour(currentDate);
+    openCloseHour = [11,18];
     List<String> timeList = [
       'Hurtigst muligt',
     ];
 
     DateTime tempDate = currentDate.add(Duration(minutes: 15));
     int startMinute = tempDate.minute;
-    // int startMinute = 59;
 
     print(openCloseHour);
     print('startMinute: $startMinute');
     print('startMinute round: ${(startMinute / 15).floor()}');
 
     for (var i = tempDate.hour; i < 24; i++) {
-      if ((i > openCloseHour[0] && i < openCloseHour[1]) || (i > openCloseHour[0] && openCloseHour[0] > openCloseHour[1])) {
+      if ((i >= openCloseHour[0] && i <= openCloseHour[1]) || (i >= openCloseHour[0] && openCloseHour[0] > openCloseHour[1])) {
         for (var j = (startMinute / 15).ceil(); j < 4; j++) {
           double dateIndex = i + j / 100;
-          if ((dateIndex > openCloseHour[0] && dateIndex < openCloseHour[1]) ||
-              (dateIndex > openCloseHour[0] && openCloseHour[0] > openCloseHour[1])) {
+          if ((dateIndex >= openCloseHour[0] && dateIndex <= openCloseHour[1]) ||
+              (dateIndex >= openCloseHour[0] && openCloseHour[0] > openCloseHour[1])) {
             timeList.add('${i.toString().padLeft(2, '0')}:${(j * 15).toString().padLeft(2, '0')}');
           }
         }
@@ -291,9 +293,11 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
       // DateTime currentDate = DateTime.now();
       // DateTime currentDate = DateTime(2020, 09, 25, 11, 02);
       isOpen = await _calculateValues.checkIfWithinOpenHours(currentDate);
+      print('collect Time: $collectTimeMessage');
       List<String> collectTimeList = collectTimeMessage.split(':');
+      print('collect Time l: ${collectTimeList.length}');
       String wantOrderTime = '0';
-      if (collectTimeList.length > 0) {
+      if (collectTimeList.length > 1) {
         DateTime wantOrderDateTime =
             DateTime(currentDate.year, currentDate.month, currentDate.day, int.parse(collectTimeList[0]), int.parse(collectTimeList[1]));
         wantOrderTime = wantOrderDateTime.millisecondsSinceEpoch.toString();
@@ -387,7 +391,7 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
   void clearMenuItems(List<MenuItem> menuItems) {
     menuItems.forEach((element) {
       element.amount = 0;
-      if (element.meatChoice != null) {
+      if (element.meatChoice.length != 0) {
         element.meatChoice.forEach((meat) => meat.amount = 0);
       }
     });

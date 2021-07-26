@@ -34,7 +34,7 @@ class CalculateValues {
   Future<bool> checkIfWithinOpenHours(DateTime currentDate) async {
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
     try {
-      // currentDate = DateTime(2020, 9, 22, 21, 01);
+      // currentDate = DateTime(2020, 9, 22, 2, 01);
       double currentTimeDouble = (currentDate.hour * 100 + currentDate.minute.toDouble()) / 100;
 
       DocumentSnapshot applicationDataSnapshot = await _firestore.doc('${F.firestoreCollection}').get();
@@ -42,22 +42,38 @@ class CalculateValues {
 
       List<double> openTimes = appData.openingHours.map((e) => e / 100 as double).toList();
       List<double> closeTimes = appData.closingHours.map((e) => e / 100 as double).toList();
-      // for (var i = 0; i < 6; i++) {
-      //   print('day: ${i+1}, open: ${openTimes[i]} - ${closeTimes[i]}');
-      // }
-      // print('today: ${currentDate.weekday}, time: $currentTimeDouble');
-      return true;
+
+      // openTimes = [11.0, 11.0, 11.0, 11.0, 11.0, 11.0, 11.0];
+      // closeTimes = [4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 11.0];
+
+      // print('open: ${openTimes[currentDate.weekday - 1]} - ${closeTimes[currentDate.weekday - 1]}');
+      // print('now: $currentTimeDouble');
+
+      // print('Yesterday open: ${openTimes[(currentDate.weekday - 2) % 7]} - ${closeTimes[(currentDate.weekday - 2) % 7]}');
+
+      if (openTimes[(currentDate.weekday - 2) % 7] > closeTimes[(currentDate.weekday - 2) % 7] &&
+          (currentTimeDouble < closeTimes[(currentDate.weekday - 2) % 7])) {
+        print('restaurant open after midnight. Now: $currentTimeDouble Close: ${closeTimes[(currentDate.weekday - 2) % 7]}');
+        return true;
+      }
 
       if ((currentTimeDouble < openTimes[currentDate.weekday - 1] || currentTimeDouble > closeTimes[currentDate.weekday - 1])) {
         if (openTimes[currentDate.weekday - 1] < closeTimes[currentDate.weekday - 1]) {
-          print('restaurant closed');
+          print(
+              'restaurant closed normal. Now: $currentTimeDouble. Open: ${openTimes[currentDate.weekday - 1]} - ${closeTimes[currentDate.weekday - 1]}');
           return false;
-        } else {
-          print('restaurant open2');
+        } else if (currentTimeDouble > openTimes[currentDate.weekday - 1]) {
+          print(
+              'restaurant open to midnight. Now: $currentTimeDouble. Open: ${openTimes[currentDate.weekday - 1]} - ${closeTimes[currentDate.weekday - 1]}');
           return true;
+        } else {
+          print(
+              'restaurant closed before open rest of day. Now: $currentTimeDouble. Open: ${openTimes[currentDate.weekday - 1]} - ${closeTimes[currentDate.weekday - 1]}');
+          return false;
         }
       } else {
-        print('restaurant open');
+        print(
+            'restaurant open normal. Now: $currentTimeDouble. Open: ${openTimes[currentDate.weekday - 1]} - ${closeTimes[currentDate.weekday - 1]}');
         return true;
       }
     } catch (error) {
@@ -72,11 +88,18 @@ class CalculateValues {
 
     DocumentSnapshot applicationDataSnapshot = await _firestore.doc('${F.firestoreCollection}').get();
     ApplicationData appData = ApplicationData.fromJson(applicationDataSnapshot.data() as Map<String, dynamic>);
+    double currentTimeDouble = (currentDate.hour * 100 + currentDate.minute.toDouble()) / 100;
 
     List<double> openTimes = appData.openingHours.map((e) => e / 100 as double).toList();
     List<double> closeTimes = appData.closingHours.map((e) => e / 100 as double).toList();
 
     List<double> openCloseHour = [openTimes[currentDate.weekday - 1], closeTimes[currentDate.weekday - 1]];
+
+    if (openTimes[(currentDate.weekday - 2) % 7] > closeTimes[(currentDate.weekday - 2) % 7] &&
+        (currentTimeDouble < closeTimes[(currentDate.weekday - 2) % 7])) {
+      openCloseHour = [00, closeTimes[(currentDate.weekday - 2) % 7]];
+    }
+
     print('openCloseHour: $openCloseHour');
     return openCloseHour;
   }

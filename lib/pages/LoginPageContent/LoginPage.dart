@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 
 import 'package:restaurantorderapp/Logic/AuthService.dart';
 import 'package:restaurantorderapp/Logic/ValidateValues.dart';
-import 'package:restaurantorderapp/MyWidgets/LoadingCircle.dart';
 import 'package:restaurantorderapp/MyWidgets/MyAlertDialog.dart';
 import 'package:restaurantorderapp/MyWidgets/MyAppBar.dart';
 import 'package:restaurantorderapp/MyWidgets/MyLoginWidgets/MyTextFieldWidget.dart';
 import 'package:restaurantorderapp/flavors.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'SignUpPage.dart';
 
 class LoginPage extends StatefulWidget {

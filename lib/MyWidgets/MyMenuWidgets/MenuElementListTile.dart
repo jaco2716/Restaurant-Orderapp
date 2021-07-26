@@ -5,9 +5,9 @@ import '../../flavors.dart';
 import 'AddAndRemoveButton.dart';
 
 class MenuElementListTile extends StatelessWidget {
-  dynamic element;
+  final dynamic element;
   final ValueChanged<int> updateNewTotal;
-  void Function(void Function()) setModalState;
+  final void Function(void Function()) setModalState;
 
   MenuElementListTile({
     required this.element,
@@ -15,8 +15,7 @@ class MenuElementListTile extends StatelessWidget {
     required this.setModalState,
   });
 
-  MenuLogic _menuLogic = MenuLogic();
-  int newTotal = 0;
+  final MenuLogic _menuLogic = MenuLogic();
 
   @override
   Widget build(BuildContext context) {

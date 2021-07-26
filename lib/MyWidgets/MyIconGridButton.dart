@@ -4,12 +4,12 @@ import 'package:url_launcher/url_launcher.dart' as urlLauncher;
 import '../flavors.dart';
 
 class MyIconGridButton extends StatelessWidget {
-  String title;
-  String url;
-  Icon icon;
-  String? subtitle;
-  bool canTap;
-  Widget? trailing;
+  final String title;
+  final String url;
+  final Icon icon;
+  final String? subtitle;
+  final bool canTap;
+  final Widget? trailing;
 
   MyIconGridButton({
     required this.title,

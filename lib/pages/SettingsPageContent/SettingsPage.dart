@@ -9,9 +9,6 @@ import 'package:restaurantorderapp/MyWidgets/MyIconGridButton.dart';
 import 'package:restaurantorderapp/model/NextPageEnum.dart';
 import 'package:restaurantorderapp/pages/LoginPageContent/CheckLoginPage.dart';
 import '../../model/ApplicationData.dart';
-import '../../model/MenuItem.dart';
-import 'package:url_launcher/url_launcher.dart' as urlLauncher;
-
 import '../../flavors.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -138,8 +135,6 @@ class _SettingsPageState extends State<SettingsPage> {
                                   style: TextStyle(color: Colors.white),
                                 );
                               else {
-                                //TODO create easy open hours...
-
                                 ApplicationData appData = ApplicationData.fromJson(snapshot.data!.data() as Map<String, dynamic>);
 
                                 return Container(
@@ -209,7 +204,6 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   goToPage() {
-    List<MenuItem> dummyList = [];
     print('Sign in');
     Navigator.push(
         context,

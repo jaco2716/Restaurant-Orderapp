@@ -9,7 +9,7 @@ import 'MenuElementListTile.dart';
 
 class MyModalMeatChoice extends StatefulWidget {
   final List<MeatChoice> meatChoices;
-  MenuItem menuItem;
+  final MenuItem menuItem;
   final ValueChanged<int> updateNewTotal;
   final bool cartPageModal;
 

@@ -7,7 +7,6 @@ import 'package:restaurantorderapp/pages/LoginPageContent/LoginPage.dart';
 import 'package:restaurantorderapp/pages/LoginPageContent/SignUpPage.dart';
 import 'package:restaurantorderapp/pages/OrderPageContent/ConfirmDetailsPage.dart';
 import 'package:restaurantorderapp/pages/ReceiptPageContent/ReceiptListPage.dart';
-import 'package:restaurantorderapp/pages/my_home_page.dart';
 
 import '../../flavors.dart';
 

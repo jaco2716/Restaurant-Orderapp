@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:restaurantorderapp/MyWidgets/MyAlertDialog.dart';
 import 'package:restaurantorderapp/MyWidgets/MyIconGridButton.dart';
 import 'package:restaurantorderapp/model/MenuItem.dart';
+import 'package:restaurantorderapp/model/NextPageEnum.dart';
 import 'package:restaurantorderapp/model/Order.dart';
+import 'package:restaurantorderapp/pages/LoginPageContent/CheckLoginPage.dart';
 import 'package:restaurantorderapp/pages/OrderPageContent/OrderReciept.dart';
 import '../../flavors.dart';
 import '../my_home_page.dart';
@@ -109,7 +112,7 @@ class _SingelOrderPageState extends State<SingleReceiptPage> {
               //     : widget.order.orderDone
               //         ? orderDeclined()
               //         : waitingForResponse(),
-              
+
               // Card(
               //   elevation: 5,
               //   child: ListTile(
@@ -128,19 +131,28 @@ class _SingelOrderPageState extends State<SingleReceiptPage> {
                       width: double.infinity,
                       padding: EdgeInsets.all(4),
                       height: 60,
-                      child: RaisedButton(
+                      child: ElevatedButton(
                           child: Text('Bestil igen!'),
                           onPressed: () {
-                            //TODO order again
+                            //TODO test order again
                             try {
                               bool canReorder = checkIfCanReorder();
-                              if(canReorder)print('MenuItems are the same');
-                              else print('Somwthing went wrong');
+                              if (canReorder) {
+                                print('MenuItems are the same');
+
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            Scaffold(appBar: MyAppBar(''),body: CheckLoginPage(NextPage.OrderPage, 'Sing in for at se dine ordrer.', widget.order.menuOrder))));
+                              } else {
+                                print('Somwthing went wrong');
+                                _showCantReorderDialog();
+                              }
                             } catch (e) {
                               print(e);
+                              _showCantReorderDialog();
                             }
-
-                            // Navigator.push(context, MaterialPageRoute(builder: (context) => loginNextPage(widget.order.menuOrder, 'OrderPage')));
                           }),
                     )
                   : Center(),
@@ -148,6 +160,21 @@ class _SingelOrderPageState extends State<SingleReceiptPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showCantReorderDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return MyAlertDialog(
+          title: 'Kan ikke genbestille',
+          content: Text('Elementer i din ordre er blevet ændret i menuer og kan derfor ikke genbestilles.'),
+          cancelText: 'cancelText',
+          myOnPressed: () {},
+          infoDialog: true,
+        );
+      },
     );
   }
 

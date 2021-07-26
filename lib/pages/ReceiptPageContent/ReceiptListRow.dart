@@ -19,7 +19,7 @@ class ReceiptListRow extends StatelessWidget {
         _calculateValues.dateStringFromMili(order.orderDate);
     Icon orderIcon = Icon(Icons.watch_later, size: 35, color: Colors.grey,);
     String acceptTimeString = 'Venter...';
-    String orderPrice = _calculateValues.totalPriceFromOrder(order.menuOrder).toString();
+    // String orderPrice = _calculateValues.totalPriceFromOrder(order.menuOrder).toString();
     if (order.orderAccepted){
       acceptTimeString = _calculateValues.dateStringFromMili(order.acceptTime);
       orderIcon = Icon(Icons.check_circle, size: 35, color: Colors.green,);

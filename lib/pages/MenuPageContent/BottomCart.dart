@@ -26,7 +26,7 @@ class BottomCart extends StatelessWidget {
               Icons.shopping_basket,
               size: 40,
             ),
-            title: Text('Total: ${sum != null ? sum.toString() : '0'}kr,-'),
+            title: Text('Total: ${sum.toString()}kr,-'),
             subtitle: Text('Gå til kurv'),
             onTap: () => myOnPressed(),
           ),

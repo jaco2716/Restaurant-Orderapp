@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class AddAndRemoveButton extends StatelessWidget {
-  int amount;
-  Icon icon;
-  Color color;
-  void Function() myOnPressed;
-  bool sideways;
+  final int amount;
+  final Icon icon;
+  final Color color;
+  final void Function() myOnPressed;
+  final bool sideways;
 
   AddAndRemoveButton({
     required this.amount,

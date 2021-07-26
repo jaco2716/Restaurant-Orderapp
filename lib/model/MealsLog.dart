@@ -6,7 +6,7 @@ class MealsLog {
   static int pageIndex = 0;
 
   static int totalPrice = 0;
-  //TODO change to amount of meal lists
+  
   static List<CategoryCard> menuCategoryCards = [
     // CategoryCard('SANDWICHES', 'Vores sandwiches serveres med tomat, agurk, salat og peberfrugt.', false),
     // CategoryCard('SALATER', 'Serveres med brød.', false),
@@ -21,8 +21,6 @@ class MealsLog {
     // CategoryCard('KOLDE DRIKKE', '', false),
     // CategoryCard('VARME DRIKKE', '', false),
   ];
-
-  //TODO = DONE? ChangeTo final Static lists
 
   static List<List<MenuItem>> allMenus = [
 //     //SANDWICHES

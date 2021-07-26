@@ -25,4 +25,8 @@ class MeatChoice {
         'price': price,
         'amount': amount,
       };
+
+  @override
+  int get hashCode => id.hashCode ^ title.hashCode ^ price.hashCode ^ amount.hashCode;
+
 }

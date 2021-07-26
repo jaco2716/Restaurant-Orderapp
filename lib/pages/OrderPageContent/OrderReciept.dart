@@ -8,7 +8,7 @@ class OrderReciept extends StatelessWidget {
   OrderReciept(this.cartItems);
   final CalculateValues _calculateValues = CalculateValues();
 
-  TextStyle smallTextStyle = TextStyle(fontSize: 10, color: Colors.grey[700]);
+  final TextStyle smallTextStyle = TextStyle(fontSize: 10, color: Colors.grey[700]);
 
   @override
   Widget build(BuildContext context) {
