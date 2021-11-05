@@ -4,7 +4,7 @@ import 'package:restaurantorderapp/MyWidgets/MyMenuWidgets/MyModalMeatChoice.dar
 import 'package:restaurantorderapp/model/MeatChoice.dart';
 
 import '../../flavors.dart';
-import '/model/CategoryCard.dart';
+import '../../model/CategoryCard.dart';
 import '../../model/MealsLog.dart';
 import '../../model/MenuItem.dart';
 
@@ -19,7 +19,6 @@ class MenuAndCategories extends StatefulWidget {
 }
 
 class _MenuAndCategoriesState extends State<MenuAndCategories> {
-
   ScrollController _scrollController = ScrollController();
 
   @override
@@ -172,8 +171,7 @@ class _MenuAndCategoriesState extends State<MenuAndCategories> {
                                     // isDismissible: false,
                                     context: context,
                                     builder: (modalContext) {
-                                      return MyModalMeatChoice(
-                                          meatChoices: meals[i].meatChoice, menuItem: meals[i], updateNewTotal: widget.updateNewTotal);
+                                      return MyModalMeatChoice(meatChoices: meals[i].meatChoice, menuItem: meals[i], updateNewTotal: widget.updateNewTotal);
                                     });
                               },
                               child: Text(
@@ -209,14 +207,7 @@ class _MenuAndCategoriesState extends State<MenuAndCategories> {
                               newMeatchoices.forEach((element) {
                                 element.amount = 0;
                               });
-                              MenuItem newMenuItem = MenuItem(
-                                  id: meals[i].id + 199,
-                                  title: meals[i].title,
-                                  description: meals[i].description,
-                                  price: meals[i].price,
-                                  image: meals[i].image,
-                                  amount: 1,
-                                  meatChoice: newMeatchoices);
+                              MenuItem newMenuItem = MenuItem(id: meals[i].id + 199, title: meals[i].title, description: meals[i].description, price: meals[i].price, image: meals[i].image, amount: 1, meatChoice: newMeatchoices);
 
                               meals.insert(i + 1, newMenuItem);
                               widget.updateNewTotal(newMenuItem.price);

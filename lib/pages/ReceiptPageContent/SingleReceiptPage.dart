@@ -9,8 +9,8 @@ import 'package:restaurantorderapp/pages/LoginPageContent/CheckLoginPage.dart';
 import 'package:restaurantorderapp/pages/OrderPageContent/OrderReciept.dart';
 import '../../flavors.dart';
 import '../my_home_page.dart';
-import '/../MyWidgets/LoadingCircle.dart';
-import '/../MyWidgets/MyAppBar.dart';
+import '../../MyWidgets/LoadingCircle.dart';
+import '../../MyWidgets/MyAppBar.dart';
 import '../../Logic/CalculateValues.dart';
 
 class SingleReceiptPage extends StatefulWidget {
@@ -140,11 +140,7 @@ class _SingelOrderPageState extends State<SingleReceiptPage> {
                               if (canReorder) {
                                 print('MenuItems are the same');
 
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            Scaffold(appBar: MyAppBar(''),body: CheckLoginPage(NextPage.OrderPage, 'Sing in for at se dine ordrer.', widget.order.menuOrder))));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => Scaffold(appBar: MyAppBar(''), body: CheckLoginPage(NextPage.OrderPage, 'Sing in for at se dine ordrer.', widget.order.menuOrder))));
                               } else {
                                 print('Somwthing went wrong');
                                 _showCantReorderDialog();
@@ -205,8 +201,7 @@ class _SingelOrderPageState extends State<SingleReceiptPage> {
               'Venter',
               style: whiteText.copyWith(fontSize: 50, fontWeight: FontWeight.bold),
             ),
-            Text('Din bestilling er gennemført og venter på svar fra restauranten.\nBestilt kl. ${widget.dateString}',
-                style: whiteText, textAlign: TextAlign.center),
+            Text('Din bestilling er gennemført og venter på svar fra restauranten.\nBestilt kl. ${widget.dateString}', style: whiteText, textAlign: TextAlign.center),
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: LoadingCircle(

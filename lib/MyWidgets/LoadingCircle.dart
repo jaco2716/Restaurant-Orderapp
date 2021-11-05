@@ -7,7 +7,9 @@ class LoadingCircle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        child: CircularProgressIndicator(color: color,),
+        child: CircularProgressIndicator(
+          backgroundColor: color,
+        ),
         alignment: Alignment(0.0, 0.0),
       ),
     );
