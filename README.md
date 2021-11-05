@@ -72,9 +72,12 @@ Add new Flavor TODO list:
     - Add firebase dependecies.
     - iOS Firebase faster build times: In Podfile: (Change "8.0.0" to relvant version: check link on code line).
         inside -> target 'Runner' do:
-            pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :tag => '8.0.0'
+            pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :tag => '8.8.0'
 
     - ((Not for Flavor?) if base configurations are not set...-> set all configurations to none in Xcode Project->Runner  and then pod install)
+
+    - If error: "CocoaPods could not find compatible versions for pod "Firebase/Firestore":"
+Write in terminal: "pod repo update" and then "pod install".
             
     - Initialize firebase before runApp() in main functions:
         WidgetsFlutterBinding.ensureInitialized();
