@@ -5,7 +5,7 @@ import 'package:restaurantorderapp/model/NextPageEnum.dart';
 import 'package:restaurantorderapp/pages/CartPageContent/CartPage.dart';
 import '../model/MenuItem.dart';
 import '../flavors.dart';
-import '/MyWidgets/MyAppBar.dart';
+import '../MyWidgets/MyAppBar.dart';
 import '../MyWidgets/MyAlertDialog.dart';
 import '../Pages/MenuPageContent/MenuPage.dart';
 import '../Pages/SettingsPageContent/SettingsPage.dart';
@@ -76,12 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
           selectedItemColor: F.appPrimaryColor[900],
           unselectedItemColor: Colors.grey,
           currentIndex: pageIndex,
-          items: [
-            BottomNavigationBarItem(label: 'Menu', icon: Icon(Icons.home)),
-            BottomNavigationBarItem(label: 'Kurv', icon: Icon(Icons.shopping_basket)),
-            BottomNavigationBarItem(label: 'Ordrer', icon: Icon(Icons.receipt)),
-            BottomNavigationBarItem(label: 'Info', icon: Icon(Icons.info))
-          ],
+          items: [BottomNavigationBarItem(label: 'Menu', icon: Icon(Icons.home)), BottomNavigationBarItem(label: 'Kurv', icon: Icon(Icons.shopping_basket)), BottomNavigationBarItem(label: 'Ordrer', icon: Icon(Icons.receipt)), BottomNavigationBarItem(label: 'Info', icon: Icon(Icons.info))],
           onTap: (index) async {
             setState(() {
               pageIndex = index;

@@ -1,4 +1,4 @@
-import '/model/CategoryCard.dart';
+import 'CategoryCard.dart';
 
 import 'MenuItem.dart';
 
@@ -6,7 +6,7 @@ class MealsLog {
   static int pageIndex = 0;
 
   static int totalPrice = 0;
-  
+
   static List<CategoryCard> menuCategoryCards = [
     // CategoryCard('SANDWICHES', 'Vores sandwiches serveres med tomat, agurk, salat og peberfrugt.', false),
     // CategoryCard('SALATER', 'Serveres med brød.', false),
