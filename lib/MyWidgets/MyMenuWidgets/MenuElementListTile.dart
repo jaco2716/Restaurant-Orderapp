@@ -82,6 +82,7 @@ class MenuElementListTile extends StatelessWidget {
                     color: Colors.green,
                     myOnPressed: () {
                       setModalState(() {
+                        print('hejsa');
                         int value = _menuLogic.changeAmount(element, 1);
                         updateNewTotal(value);
                       });

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../flavors.dart';
 
 
@@ -9,7 +10,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       centerTitle: true,
-      brightness: Brightness.dark,
+      // brightness: Brightness.dark,
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
       backgroundColor: F.appPrimaryColor[700],
       title: Text(_title),
       actions: <Widget>[

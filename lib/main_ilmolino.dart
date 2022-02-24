@@ -13,6 +13,8 @@ Future<void> main() async {
   MealsLog.allMenus = F.allMenus;
   MealsLog.menuCategoryCards = F.menuCategoryCards;
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
+     print('############### - Main ilmolino - #################');
+     print('############### - Main ilmolino - #################');
     runApp(MyApp());
   });
 }
