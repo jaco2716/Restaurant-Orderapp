@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 
+import 'firebase_options_orderapptest.dart';
 import 'flavors.dart';
 import 'model/MealsLog.dart';
 import 'my_app.dart';
@@ -10,10 +11,11 @@ import 'my_app.dart';
 Future<void> main() async {
   F.appFlavor = Flavor.orderappTest;
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+   await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   MealsLog.allMenus = F.allMenus;
   MealsLog.menuCategoryCards = F.menuCategoryCards;
-  //sadoasdo
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
     print('############### - Main orderapptest - #################');
     print('############### - Main orderapptest - #################');

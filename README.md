@@ -70,7 +70,7 @@ Add new Flavor TODO list:
 
 6. Firebase setup with flavors:
     - Add firebase dependecies.
-    - iOS Firebase faster build times: In Podfile: (Change "8.0.0" to relvant version: check link on code line).
+    - iOS Firebase faster build times: In Podfile: (Change "8.8.0" to relvant version: check link on code line).
         inside -> target 'Runner' do:
             pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :tag => '8.8.0'
 
@@ -86,3 +86,11 @@ Write in terminal: "pod repo update" and then "pod install".
     - (iOS) Add GoogleServices-info.plist to config/flavorName/ and drag it in xcode.
     - (Android) Add google-services.json to app/src/flavorName/
     
+
+New Flutterfire setup command with FlutterFire CLI
+    # (note: do the same for all flavors)
+flutterfire config \
+  --project=restaurant-orderapps \
+  --out=lib/firebase_options_orderapptest.dart \
+  --ios-bundle-id=dk.wejeo.restaurantorderapp.orderapptest \
+  --android-app-id=dk.wejeo.restaurantorderapp.orderapptest
