@@ -61,7 +61,11 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 MyIconGridButton(title: 'Website', url: F.companyWebsite, icon: Icon(Icons.web), subtitle: F.companyWebsite),
                 MyIconGridButton(title: 'Phone', url: 'tel:${F.companyPhone.replaceAll(' ', '')}', icon: Icon(Icons.phone), subtitle: F.companyPhone),
-                MyIconGridButton(title: 'Address', url: 'https://www.google.com/maps/place/${F.companyAddress.replaceAll(' ', '+')}', icon: Icon(Icons.pin_drop), subtitle: F.companyAddress),
+                MyIconGridButton(
+                    title: 'Address',
+                    url: 'https://www.google.com/maps/place/${F.companyAddress.replaceAll(' ', '+')}',
+                    icon: Icon(Icons.pin_drop),
+                    subtitle: F.companyAddress),
                 MyIconGridButton(title: 'Privacy Policy', url: F.privacyPolicyURL, icon: Icon(Icons.privacy_tip)),
               ],
             ),
@@ -108,12 +112,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             future: _firestore.doc('${F.firestoreCollection}').get(),
                             //initialData: Text('Henter...'),
                             builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                              if (snapshot.data!.data() == null)
-                                return Text(
-                                  'Der skete en fejl.',
-                                  style: TextStyle(color: Colors.white),
-                                );
-                              else if (!snapshot.hasData)
+                              if (!snapshot.hasData)
                                 return Text(
                                   'Login for at\nse åbningstider',
                                   style: TextStyle(color: Colors.white),
@@ -129,6 +128,16 @@ class _SettingsPageState extends State<SettingsPage> {
                                   child: LoadingCircle(
                                     color: Colors.white,
                                   ),
+                                );
+                              else if (snapshot.data == null)
+                                return Text(
+                                  'Der skete en fejl.',
+                                  style: TextStyle(color: Colors.white),
+                                );
+                              else if (snapshot.data!.data() == null)
+                                return Text(
+                                  'Der skete en fejl.',
+                                  style: TextStyle(color: Colors.white),
                                 );
                               else {
                                 ApplicationData appData = ApplicationData.fromJson(snapshot.data!.data() as Map<String, dynamic>);
@@ -193,7 +202,7 @@ class _SettingsPageState extends State<SettingsPage> {
           //     },
           //   ),
           // ),
-          ElevatedButton(onPressed: () => createOpenHours(), child: Text('create app data')),
+          // ElevatedButton(onPressed: () => createOpenHours(), child: Text('create app data')),
         ],
       ),
     ));
@@ -201,7 +210,10 @@ class _SettingsPageState extends State<SettingsPage> {
 
   goToPage() {
     print('Sign in');
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Scaffold(appBar: MyAppBar('Sign in'), body: CheckLoginPage(NextPage.SettingsPage, 'Sign in.. .', []))));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Scaffold(appBar: MyAppBar('Sign in'), body: CheckLoginPage(NextPage.SettingsPage, 'Sign in.. .', []))));
     // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage())).then((value) {
     //   setState(() {});
     // });
@@ -250,7 +262,8 @@ class _SettingsPageState extends State<SettingsPage> {
               Icons.person,
               color: Colors.white,
             ),
-            subtitle: '${myUser?.email ?? 'E-mail'}                                                                                                               ',
+            subtitle:
+                '${myUser?.email ?? 'E-mail'}                                                                                                               ',
             canTap: false,
             trailing: IconButton(onPressed: () => _buildLogOutDialog(), icon: Icon(Icons.logout, color: Colors.black)),
           ),

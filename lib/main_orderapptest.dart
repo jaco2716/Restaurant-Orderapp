@@ -21,3 +21,8 @@ Future<void> main() async {
     runApp(MyApp());
   });
 }
+
+//Run 
+//flutter run --flavor orderapptest -t lib/main_orderapptest.dart
+//Run in release mode:
+//flutter run --release --flavor orderapptest -t lib/main_orderapptest.dart

@@ -20,7 +20,7 @@
             "request": "launch",
             "program": "lib/main_orderapptest.dart",
             "args": [
-                "--flavor", 
+                "--flavor",
                 "orderapptest",
                 // "--target lib/main_orderapptest.dart"
             ]
