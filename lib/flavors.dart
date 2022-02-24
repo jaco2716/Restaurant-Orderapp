@@ -117,7 +117,7 @@ class F {
       case Flavor.orderappTest:
         return 'application/orderapptest';
       default:
-        return 'testing/';
+        return 'application/testing';
     }
   }
 

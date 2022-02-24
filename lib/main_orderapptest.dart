@@ -18,7 +18,6 @@ Future<void> main() async {
   MealsLog.menuCategoryCards = F.menuCategoryCards;
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
     print('############### - Main orderapptest - #################');
-    print('############### - Main orderapptest - #################');
     runApp(MyApp());
   });
 }

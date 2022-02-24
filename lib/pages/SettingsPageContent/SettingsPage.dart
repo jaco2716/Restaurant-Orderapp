@@ -108,7 +108,12 @@ class _SettingsPageState extends State<SettingsPage> {
                             future: _firestore.doc('${F.firestoreCollection}').get(),
                             //initialData: Text('Henter...'),
                             builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                              if (!snapshot.hasData)
+                              if (snapshot.data!.data() == null)
+                                return Text(
+                                  'Der skete en fejl.',
+                                  style: TextStyle(color: Colors.white),
+                                );
+                              else if (!snapshot.hasData)
                                 return Text(
                                   'Login for at\nse åbningstider',
                                   style: TextStyle(color: Colors.white),
@@ -124,11 +129,6 @@ class _SettingsPageState extends State<SettingsPage> {
                                   child: LoadingCircle(
                                     color: Colors.white,
                                   ),
-                                );
-                              else if (snapshot.data!.data() == null)
-                                return Text(
-                                  'Der skete en fejl.',
-                                  style: TextStyle(color: Colors.white),
                                 );
                               else {
                                 ApplicationData appData = ApplicationData.fromJson(snapshot.data!.data() as Map<String, dynamic>);
@@ -193,7 +193,7 @@ class _SettingsPageState extends State<SettingsPage> {
           //     },
           //   ),
           // ),
-          // ElevatedButton(onPressed: () => createOpenHours(), child: Text('create app data')),
+          ElevatedButton(onPressed: () => createOpenHours(), child: Text('create app data')),
         ],
       ),
     ));
@@ -280,14 +280,14 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  // void createOpenHours() {
-  //   ApplicationData appDataTemp = ApplicationData(
-  //       closingHours: [2100, 2100, 2100, 2100, 2100, 2100, 2100],
-  //       openingHours: [1100, 1100, 1100, 1100, 1100, 1100, 1100],
-  //       versionId: 1,
-  //       deviceToken: '123');
-  //   _firestore.doc('${F.firestoreCollection}').set(appDataTemp.toJson());
-  // }
+  void createOpenHours() {
+    ApplicationData appDataTemp = ApplicationData(
+        closingHours: [2100, 2100, 2100, 2100, 2100, 2100, 2100],
+        openingHours: [1100, 1100, 1100, 1100, 1100, 1100, 1100],
+        versionId: 1,
+        deviceToken: '123');
+    _firestore.doc('${F.firestoreCollection}').set(appDataTemp.toJson());
+  }
 
   // Widget infoGridButton(String title, String url, Icon icon, {String? subtitle, bool canTap = true, Widget? trailing}) {
   //   return ElevatedButton(
