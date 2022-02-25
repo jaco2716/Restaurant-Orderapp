@@ -5,6 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Flavor: Orderapp Test",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main_orderapptest.dart",
+            "args": [
+                "--flavor",
+                "orderapptest",
+                // "--target lib/main_orderapptest.dart"
+            ]
+        },
+        {
             "name": "Flavor: IL MOLINO",
             "type": "dart",
             "request": "launch",
@@ -15,14 +26,13 @@
             ]
         },
         {
-            "name": "Flavor: Orderapp Test",
+            "name": "Flavor: Chiang Mai",
             "type": "dart",
             "request": "launch",
-            "program": "lib/main_orderapptest.dart",
+            "program": "lib/main_chiangmai.dart",
             "args": [
                 "--flavor",
-                "orderapptest",
-                // "--target lib/main_orderapptest.dart"
+                "chiangmai"
             ]
         },
         {

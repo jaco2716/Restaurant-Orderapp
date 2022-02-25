@@ -849,7 +849,7 @@
 			baseConfigurationReference = 42F276C32BDD33899E179E0B /* Pods-Runner.debug-orderapptest.xcconfig */;
 			buildSettings = {
 				APP_DISPLAY_NAME = "Orderapp Test";
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-orderapptest";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon-orderapptest;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 48XD72VU42;
@@ -926,7 +926,7 @@
 			baseConfigurationReference = 6D016BD54959992B8394180D /* Pods-Runner.release-orderapptest.xcconfig */;
 			buildSettings = {
 				APP_DISPLAY_NAME = "Orderapp Test";
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-orderapptest";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon-orderapptest;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 48XD72VU42;
@@ -1000,7 +1000,7 @@
 			baseConfigurationReference = 73BF7CA1B8EDDA67D5910473 /* Pods-Runner.profile-orderapptest.xcconfig */;
 			buildSettings = {
 				APP_DISPLAY_NAME = "Orderapp Test";
-				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-orderapptest";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon-orderapptest;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 48XD72VU42;
@@ -1056,4 +1056,5 @@
 /* End XCConfigurationList section */
 	};
 	rootObject = 97C146E61CF9000F007C117D /* Project object */;
+} */;
 }

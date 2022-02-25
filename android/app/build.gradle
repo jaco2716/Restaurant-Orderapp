@@ -66,6 +66,12 @@ android {
             versionCode 1
             versionName "1.0"
         }
+        chiangmai {
+            dimension "app"
+            applicationId "dk.wejeo.restaurantorderapp.chiangmai"
+            versionCode 1
+            versionName "1.0"
+        }
     }
 
     buildTypes {
