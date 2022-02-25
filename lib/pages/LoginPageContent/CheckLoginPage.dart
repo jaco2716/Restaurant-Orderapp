@@ -65,7 +65,7 @@ class _CheckLoginPageState extends State<CheckLoginPage> {
               ),
               SizedBox(height: 40),
               MyRoundedButton(
-                  title: 'SIGN IN',
+                  title: 'LOGIN',
                   myOnPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
                   }),

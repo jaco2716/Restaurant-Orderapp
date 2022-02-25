@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar('Sign in'),
+      appBar: MyAppBar('Login'),
       body: SingleChildScrollView(
         child: Container(
           width: double.infinity,
@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Sign in med din account.',
+                      'Login med din account.',
                       style: TextStyle(color: Colors.grey),
                     ),
                   ),
@@ -92,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                         // showDialog(context: context, builder: (context) => LoadingCircle());
                         loginButtonMethod(context);
                       },
-                      child: Text('SIGN IN'),
+                      child: Text('LOGIN'),
                       style: ElevatedButton.styleFrom(
                         elevation: 0,
                         shape: RoundedRectangleBorder(

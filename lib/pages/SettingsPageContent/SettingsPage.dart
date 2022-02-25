@@ -45,7 +45,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       width: double.infinity,
                       child: Image.asset(F.appIconPathDark),
                     ),
-                    settingsButton(Icon(Icons.lock_open), "Sign in ", goToPage)
+                    settingsButton(Icon(Icons.lock_open), "Login", goToPage)
                   ],
                 )
               : userInfoTile(),
@@ -61,11 +61,7 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 MyIconGridButton(title: 'Website', url: F.companyWebsite, icon: Icon(Icons.web), subtitle: F.companyWebsite),
                 MyIconGridButton(title: 'Phone', url: 'tel:${F.companyPhone.replaceAll(' ', '')}', icon: Icon(Icons.phone), subtitle: F.companyPhone),
-                MyIconGridButton(
-                    title: 'Address',
-                    url: 'https://www.google.com/maps/place/${F.companyAddress.replaceAll(' ', '+')}',
-                    icon: Icon(Icons.pin_drop),
-                    subtitle: F.companyAddress),
+                MyIconGridButton(title: 'Address', url: 'https://www.google.com/maps/place/${F.companyAddress.replaceAll(' ', '+')}', icon: Icon(Icons.pin_drop), subtitle: F.companyAddress),
                 MyIconGridButton(title: 'Privacy Policy', url: F.privacyPolicyURL, icon: Icon(Icons.privacy_tip)),
               ],
             ),
@@ -108,67 +104,67 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                           SizedBox(width: 10),
                           // Container(height: 110, width: 1, color: Colors.white70),
-                          FutureBuilder<DocumentSnapshot>(
-                            future: _firestore.doc('${F.firestoreCollection}').get(),
-                            //initialData: Text('Henter...'),
-                            builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                              if (!snapshot.hasData)
-                                return Text(
-                                  'Login for at\nse åbningstider',
+                          myUser == null
+                              ? Text(
+                                  'Login for at se\nåbningstider.',
                                   style: TextStyle(color: Colors.white),
-                                );
-                              else if (snapshot.hasError)
-                                return Text(
-                                  'Der skete en fejl,\nLogin og prøv igen.',
-                                  style: TextStyle(color: Colors.white),
-                                );
-                              else if (snapshot.connectionState == ConnectionState.waiting)
-                                return SizedBox(
-                                  width: 100,
-                                  child: LoadingCircle(
-                                    color: Colors.white,
-                                  ),
-                                );
-                              else if (snapshot.data == null)
-                                return Text(
-                                  'Der skete en fejl.',
-                                  style: TextStyle(color: Colors.white),
-                                );
-                              else if (snapshot.data!.data() == null)
-                                return Text(
-                                  'Der skete en fejl.',
-                                  style: TextStyle(color: Colors.white),
-                                );
-                              else {
-                                ApplicationData appData = ApplicationData.fromJson(snapshot.data!.data() as Map<String, dynamic>);
-
-                                return Container(
-                                  width: 100,
-                                  child: ListView.builder(
-                                    itemCount: appData.openingHours.length,
-                                    itemBuilder: (BuildContext context, int index) {
-                                      String openHour;
-                                      String closeHour;
-                                      double openhourDouble = (appData.openingHours[index] / 100);
-                                      appData.openingHours[index] < 1000 ? openHour = '0' : openHour = '';
-                                      openHour += openhourDouble.toStringAsFixed(2).replaceAll('.', ':');
-                                      double closehourDouble = (appData.closingHours[index] / 100);
-                                      appData.closingHours[index] < 1000 ? closeHour = '0' : closeHour = '';
-                                      closeHour += closehourDouble.toStringAsFixed(2).replaceAll('.', ':');
-                                      String finalOpenHour = '$openHour - $closeHour';
+                                )
+                              : FutureBuilder<DocumentSnapshot>(
+                                  future: _firestore.doc('${F.firestoreCollection}').get(),
+                                  //initialData: Text('Henter...'),
+                                  builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                    if (!snapshot.hasData || snapshot.hasError)
                                       return Text(
-                                        finalOpenHour != '00:00 - 00:00' ? finalOpenHour : 'Lukket',
-                                        // textAlign: TextAlign.right,
+                                        'Der skete en fejl,\nKan ikke se åbningstider.',
                                         style: TextStyle(color: Colors.white),
                                       );
-                                    },
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                  ),
-                                );
-                              }
-                            },
-                          )
+                                    else if (snapshot.connectionState == ConnectionState.waiting)
+                                      return SizedBox(
+                                        width: 100,
+                                        child: LoadingCircle(
+                                          color: Colors.white,
+                                        ),
+                                      );
+                                    else if (snapshot.data == null)
+                                      return Text(
+                                        'Der skete en fejl.',
+                                        style: TextStyle(color: Colors.white),
+                                      );
+                                    else if (snapshot.data!.data() == null)
+                                      return Text(
+                                        'Der skete en fejl.',
+                                        style: TextStyle(color: Colors.white),
+                                      );
+                                    else {
+                                      ApplicationData appData = ApplicationData.fromJson(snapshot.data!.data() as Map<String, dynamic>);
+
+                                      return Container(
+                                        width: 100,
+                                        child: ListView.builder(
+                                          itemCount: appData.openingHours.length,
+                                          itemBuilder: (BuildContext context, int index) {
+                                            String openHour;
+                                            String closeHour;
+                                            double openhourDouble = (appData.openingHours[index] / 100);
+                                            appData.openingHours[index] < 1000 ? openHour = '0' : openHour = '';
+                                            openHour += openhourDouble.toStringAsFixed(2).replaceAll('.', ':');
+                                            double closehourDouble = (appData.closingHours[index] / 100);
+                                            appData.closingHours[index] < 1000 ? closeHour = '0' : closeHour = '';
+                                            closeHour += closehourDouble.toStringAsFixed(2).replaceAll('.', ':');
+                                            String finalOpenHour = '$openHour - $closeHour';
+                                            return Text(
+                                              finalOpenHour != '00:00 - 00:00' ? finalOpenHour : 'Lukket',
+                                              // textAlign: TextAlign.right,
+                                              style: TextStyle(color: Colors.white),
+                                            );
+                                          },
+                                          shrinkWrap: true,
+                                          physics: NeverScrollableScrollPhysics(),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                )
                         ],
                       ),
                     ),
@@ -210,10 +206,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   goToPage() {
     print('Sign in');
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => Scaffold(appBar: MyAppBar('Sign in'), body: CheckLoginPage(NextPage.SettingsPage, 'Sign in.. .', []))));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Scaffold(appBar: MyAppBar('Login'), body: CheckLoginPage(NextPage.SettingsPage, 'Login', []))));
     // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage())).then((value) {
     //   setState(() {});
     // });
@@ -262,8 +255,7 @@ class _SettingsPageState extends State<SettingsPage> {
               Icons.person,
               color: Colors.white,
             ),
-            subtitle:
-                '${myUser?.email ?? 'E-mail'}                                                                                                               ',
+            subtitle: '${myUser?.email ?? 'E-mail'}                                                                                                               ',
             canTap: false,
             trailing: IconButton(onPressed: () => _buildLogOutDialog(), icon: Icon(Icons.logout, color: Colors.black)),
           ),
@@ -294,11 +286,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void createOpenHours() {
-    ApplicationData appDataTemp = ApplicationData(
-        closingHours: [2100, 2100, 2100, 2100, 2100, 2100, 2100],
-        openingHours: [1100, 1100, 1100, 1100, 1100, 1100, 1100],
-        versionId: 1,
-        deviceToken: '123');
+    ApplicationData appDataTemp = ApplicationData(closingHours: [2100, 2100, 2100, 2100, 2100, 2100, 2100], openingHours: [1100, 1100, 1100, 1100, 1100, 1100, 1100], versionId: 1, deviceToken: '123');
     _firestore.doc('${F.firestoreCollection}').set(appDataTemp.toJson());
   }
 

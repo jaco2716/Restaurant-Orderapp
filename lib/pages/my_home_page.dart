@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final List<Widget> pageTabs = [
       MenuPage(notifyParent: _refresh),
       CartPage(),
-      CheckLoginPage(NextPage.RecieptPage, 'Sing in for at se dine ordrer.', []),
+      CheckLoginPage(NextPage.RecieptPage, 'Login for at se dine ordrer.', []),
       // ReceiptListPage(userinfo),
       // SettingsPage(),
       SettingsPage(),

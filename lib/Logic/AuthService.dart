@@ -32,7 +32,7 @@ class AuthService {
       return result.user;
     } on FirebaseAuthException catch (e) {
       // throw the Firebase AuthException that we caught
-      print('Sign in error: ${e.code}');
+      print('Login error: ${e.code}');
       throw e;
     }
   }

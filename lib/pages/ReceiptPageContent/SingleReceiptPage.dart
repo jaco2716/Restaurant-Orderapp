@@ -140,7 +140,7 @@ class _SingelOrderPageState extends State<SingleReceiptPage> {
                               if (canReorder) {
                                 print('MenuItems are the same');
 
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => Scaffold(appBar: MyAppBar(''), body: CheckLoginPage(NextPage.OrderPage, 'Sing in for at se dine ordrer.', widget.order.menuOrder))));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => Scaffold(appBar: MyAppBar(''), body: CheckLoginPage(NextPage.OrderPage, 'Login for at se dine ordrer.', widget.order.menuOrder))));
                               } else {
                                 print('Somwthing went wrong');
                                 _showCantReorderDialog();
