@@ -132,6 +132,6 @@ New Flutterfire setup command with FlutterFire CLI
     # (note: do the same for all flavors)
 flutterfire config \
   --project=restaurant-orderapps \
-  --out=lib/firebase_options_orderapptest.dart \
-  --ios-bundle-id=dk.wejeo.restaurantorderapp.orderapptest \
-  --android-app-id=dk.wejeo.restaurantorderapp.orderapptest
+  --out=lib/firebase_options_chiangmai.dart \
+  --ios-bundle-id=dk.wejeo.restaurantorderapp.chiangmai \
+  --android-app-id=dk.wejeo.restaurantorderapp.chiangmai
