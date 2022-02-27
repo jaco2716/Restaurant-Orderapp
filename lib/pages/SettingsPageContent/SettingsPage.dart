@@ -85,9 +85,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       thickness: 2,
                     ),
                     Container(
-                      width: 200,
+                      // width: 200,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,17 +113,17 @@ class _SettingsPageState extends State<SettingsPage> {
                                   future: _firestore.doc('${F.firestoreCollection}').get(),
                                   //initialData: Text('Henter...'),
                                   builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                                    if (!snapshot.hasData || snapshot.hasError)
-                                      return Text(
-                                        'Der skete en fejl,\nKan ikke se åbningstider.',
-                                        style: TextStyle(color: Colors.white),
-                                      );
-                                    else if (snapshot.connectionState == ConnectionState.waiting)
+                                    if (snapshot.connectionState == ConnectionState.waiting)
                                       return SizedBox(
                                         width: 100,
                                         child: LoadingCircle(
                                           color: Colors.white,
                                         ),
+                                      );
+                                    else if (!snapshot.hasData || snapshot.hasError)
+                                      return Text(
+                                        'Der skete en fejl.\nKan ikke se åbningstider.',
+                                        style: TextStyle(color: Colors.white),
                                       );
                                     else if (snapshot.data == null)
                                       return Text(
