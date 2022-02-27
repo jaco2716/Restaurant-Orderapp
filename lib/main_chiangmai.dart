@@ -7,7 +7,7 @@ import 'model/MealsLog.dart';
 import 'my_app.dart';
 
 Future<void> main() async {
-  F.appFlavor = Flavor.orderappTest;
+  F.appFlavor = Flavor.chiangmai;
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -21,6 +21,6 @@ Future<void> main() async {
 }
 
 //Run 
-//flutter run --flavor orderapptest -t lib/main_orderapptest.dart
+//flutter run --flavor chiangmai -t lib/main_chiangmai.dart
 //Run in release mode:
-//flutter run --release --flavor orderapptest -t lib/main_orderapptest.dart
+//flutter run --release --flavor chiangmai -t lib/main_chiangmai.dart

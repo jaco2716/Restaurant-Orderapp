@@ -32,7 +32,7 @@ class F {
       case Flavor.ilmolino:
         return 'https://ilmolinolyngby.dk';
       case Flavor.chiangmai:
-        return 'https://chiangmairestaurant.dk/k';
+        return 'https://chiangmairestaurant.dk/';
       default:
         return 'companyWebsite';
     }

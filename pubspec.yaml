@@ -54,10 +54,12 @@ flutter:
 
   #TODO change to correct appfolders for flavor
   assets:
+    # - assets/orderapptest/menu/
+    # - assets/orderapptest/icons/
     # - assets/ilmolino/menu/
     # - assets/ilmolino/icons/
-    - assets/orderapptest/menu/
-    - assets/orderapptest/icons/
+    - assets/chiangmai/menu/
+    - assets/chiangmai/icons/
 
   #   - images/a_dot_ham.jpeg
 
