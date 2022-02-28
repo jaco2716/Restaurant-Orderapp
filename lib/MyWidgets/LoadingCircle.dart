@@ -8,7 +8,8 @@ class LoadingCircle extends StatelessWidget {
     return Center(
       child: Container(
         child: CircularProgressIndicator(
-          backgroundColor: color,
+          // backgroundColor: color,
+          color: color,
         ),
         alignment: Alignment(0.0, 0.0),
       ),

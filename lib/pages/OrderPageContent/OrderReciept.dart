@@ -102,46 +102,11 @@ class OrderReciept extends StatelessWidget {
             // height: 20,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '${menuItem.amount.toString()}x  ${menuItem.title}',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
+                Text('${menuItem.amount.toString()}x '),
+                Expanded(child: Text('${menuItem.title}', style: TextStyle(fontWeight: FontWeight.bold))),
                 Text(totalItemPrice.toString() + ' kr,-'),
-                // ListTile(
-                //   minVerticalPadding:0,
-                //   contentPadding: EdgeInsets.symmetric(horizontal: 2, vertical: 0),
-                //   title: Text('${menuItem.amount.toString()}x  ${menuItem.title}'),
-                //   // leading: Text(
-                //   //   '${menuItem.amount.toString()}',
-                //   // ),
-                //   // subtitle: menuItem.meatChoice.length != 0
-                //   //     ? ListView.builder(
-                //   //         itemCount: menuItem.meatChoice.length,
-                //   //         itemBuilder: (BuildContext context, int meatIndex) {
-                //   //           // print('meatamount: ' +
-                //   //           //     menuItem.meatChoice[meatIndex].amount.toString());
-                //   //           return menuItem.meatChoice[meatIndex].amount != 0
-                //   //               ? Container(
-                //   //                   height: 15,
-                //   //                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                //   //                     Text(
-                //   //                       '     - ${menuItem.meatChoice[meatIndex].amount}x ${menuItem.meatChoice[meatIndex].title}',
-                //   //                     ),
-                //   //                     Text(
-                //   //                       '+ ${totalMeatChoicePrice[meatIndex].toString()}kr,-',
-                //   //                     ),
-                //   //                   ]),
-                //   //                 )
-                //   //               : Container();
-                //   //         },
-                //   //         shrinkWrap: true,
-                //   //         physics: NeverScrollableScrollPhysics(),
-                //   //       )
-                //   //     : null,
-                //   trailing: Text(totalItemPrice.toString() + ' kr,-'),
-                //   dense: true,
-                // ),
               ],
             ),
           ),

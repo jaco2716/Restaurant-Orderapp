@@ -387,7 +387,7 @@
 		};
 		249021D4217E4FDB00AE95B9 /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 408176D17E5EADFF0191E1BB /* Pods-Runner.profile.xcconfig */;
+			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				APP_DISPLAY_NAME = "Order App (Testing)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -519,7 +519,7 @@
 		};
 		97C147061CF9000F007C117D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7B0D0CB9F6B81B9603140621 /* Pods-Runner.debug.xcconfig */;
+			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
 				APP_DISPLAY_NAME = "Order App (Testing)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -543,7 +543,7 @@
 		};
 		97C147071CF9000F007C117D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 491EA39FAF9EE4BDE9A17924 /* Pods-Runner.release.xcconfig */;
+			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				APP_DISPLAY_NAME = "Order App (Testing)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -622,7 +622,7 @@
 		};
 		C722F940268DE3B700F7189F /* Debug-ilmolino */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CBDDEE830D0F8F55C2CE251D /* Pods-Runner.debug-ilmolino.xcconfig */;
+			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
 				APP_DISPLAY_NAME = "IL MOLINO";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-ilmolino";
@@ -699,7 +699,7 @@
 		};
 		C722F942268DE3C400F7189F /* Release-ilmolino */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E2FA4D7DD4C5E4BF0D780891 /* Pods-Runner.release-ilmolino.xcconfig */;
+			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				APP_DISPLAY_NAME = "IL MOLINO";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-ilmolino";
@@ -773,7 +773,7 @@
 		};
 		C722F944268DE3CE00F7189F /* Profile-ilmolino */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D2BEE176DE0D325D734FC786 /* Pods-Runner.profile-ilmolino.xcconfig */;
+			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				APP_DISPLAY_NAME = "IL MOLINO";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-ilmolino";
@@ -852,7 +852,7 @@
 		};
 		C722F949268E0F3400F7189F /* Debug-orderapptest */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 42F276C32BDD33899E179E0B /* Pods-Runner.debug-orderapptest.xcconfig */;
+			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
 				APP_DISPLAY_NAME = "Orderapp Test";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-orderapptest";
@@ -929,7 +929,7 @@
 		};
 		C722F94B268E0F4600F7189F /* Release-orderapptest */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6D016BD54959992B8394180D /* Pods-Runner.release-orderapptest.xcconfig */;
+			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				APP_DISPLAY_NAME = "Orderapp Test";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-orderapptest";
@@ -1003,7 +1003,7 @@
 		};
 		C722F94D268E0F4E00F7189F /* Profile-orderapptest */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 73BF7CA1B8EDDA67D5910473 /* Pods-Runner.profile-orderapptest.xcconfig */;
+			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				APP_DISPLAY_NAME = "Orderapp Test";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-orderapptest";
@@ -1082,7 +1082,7 @@
 		};
 		C725036B27C9417A001F6F4E /* Debug-chiangmai */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E2EA108FE46564C5BF3FB482 /* Pods-Runner.debug-chiangmai.xcconfig */;
+			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
 				APP_DISPLAY_NAME = "Chiang Mai";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-chiangmai";
@@ -1159,7 +1159,7 @@
 		};
 		C725036D27C94193001F6F4E /* Release-chiangmai */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7CA1E9A140689B1125D82465 /* Pods-Runner.release-chiangmai.xcconfig */;
+			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				APP_DISPLAY_NAME = "Chiang Mai";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-chiangmai";
@@ -1233,7 +1233,7 @@
 		};
 		C725036F27C9419E001F6F4E /* Profile-chiangmai */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B0C0AB885F9F5EAE04DA8D1E /* Pods-Runner.profile-chiangmai.xcconfig */;
+			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				APP_DISPLAY_NAME = "Chiang Mai";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-chiangmai";

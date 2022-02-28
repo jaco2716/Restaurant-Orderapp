@@ -36,6 +36,17 @@
             ]
         },
         {
+            "name": "Release: Chiang Mai",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main_chiangmai.dart",
+            "args": [
+                "--release",
+                "--flavor",
+                "chiangmai"
+            ]
+        },
+        {
             "name": "restaurantorderapp",
             "request": "launch",
             "type": "dart"

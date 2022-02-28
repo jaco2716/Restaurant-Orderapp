@@ -24,8 +24,8 @@ Add new Flavor TODO list:
     - Add new scheme in Target -> Runner
     - In project->runner->info Create debug, profile, release for flavor.
     - Edit Scheme and select the correct Build configuration for all tabs.
-    - In Targets->Runner->Build Settings, search bundle indentifier and input correct Bundle ID.
-    - (Only do first time) In info.plist add field "Bundle display name" With value "$(APP_DISPLAY_NAME)"
+    - In Targets->Runner->Build Settings, search bundle identifier and input correct Bundle ID.
+    - (Only do first time) In info.plist in field "Bundle display name" set value "$(APP_DISPLAY_NAME)"
     - In Targets->Runner->Build Settings, find (Or add) user defined setting named "APP_DISPLAY_NAME" and set display name for different schemes.
 
 4. Android setup.
@@ -74,7 +74,7 @@ Add new Flavor TODO list:
         inside -> target 'Runner' do:
             pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :tag => '8.8.0'
 
-    - ((Not for Flavor?) if base configurations are not set...-> set all configurations to none in Xcode Project->Runner  and then pod install)
+    - ((DOES NOT WORK with Flavor) if base configurations are not set...-> set all configurations to none in Xcode Project->Runner  and then pod install)
 
     - If error: "CocoaPods could not find compatible versions for pod "Firebase/Firestore":"
 Write in terminal: "pod repo update" and then "pod install".
