@@ -10,7 +10,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       centerTitle: true,
       systemOverlayStyle: SystemUiOverlayStyle.light,
-      backgroundColor: F.appPrimaryColor[700],
+      backgroundColor: F.appColors[2],
       title: Text(_title),
       actions: <Widget>[
         Padding(

@@ -65,7 +65,7 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
                             return Text('Error: ${snapshot.error}');
                           else {
                             user = OrderUser.fromJson(snapshot.data!.data() as Map<String, dynamic>);
-    
+
                             if (!userLoaded) {
                               Future.delayed(Duration.zero, () {
                                 setState(() {
@@ -158,10 +158,10 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
 
   Future<List<String>> _createCollectTimeList() async {
     DateTime currentDate = await NTP.now();
-      currentDate = DateTime(2020, 9, 22, 8, 00);
+    currentDate = DateTime(2020, 9, 22, 8, 00);
 
     List<double> openCloseHour = await _calculateValues.getTodaysOpenCloseHour(currentDate);
-    openCloseHour = [11,18];
+    openCloseHour = [11, 18];
     List<String> timeList = [
       'Hurtigst muligt',
     ];
@@ -182,7 +182,7 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
             timeList.add('${i.toString().padLeft(2, '0')}:${(j * 15).toString().padLeft(2, '0')}');
           }
         }
-          startMinute = 0;
+        startMinute = 0;
       }
     }
     return timeList;
@@ -306,8 +306,9 @@ class _ConfirmDetailsPageState extends State<ConfirmDetailsPage> {
       DocumentSnapshot applicationDataSnapshot = await _firestore.doc('${F.firestoreCollection}').get();
       ApplicationData appData = ApplicationData.fromJson(applicationDataSnapshot.data() as Map<String, dynamic>);
 
-      // if (true) {
-      if (isOpen && appData.versionId == 1) {
+      //TODO check if open
+      if (true) {
+        // if (isOpen && appData.versionId == 1) {
         //Create Order
         String orderDate = currentDate.millisecondsSinceEpoch.toString();
         Order tempFinalOrder = Order(

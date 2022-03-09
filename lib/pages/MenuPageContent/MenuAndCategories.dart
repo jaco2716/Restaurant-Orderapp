@@ -57,7 +57,7 @@ class _MenuAndCategoriesState extends State<MenuAndCategories> {
     return Container(
       padding: EdgeInsets.only(top: 1),
       child: Container(
-        color: categoryCard.selected ? F.appSecondaryColor[900] : F.appPrimaryColor[900],
+        color: categoryCard.selected ? F.appColors[1] : F.appColors[0],
         // color: categoryCard.selected ? Colors.white : Colors.grey,
         child: ListTile(
             trailing: Icon(
@@ -171,7 +171,8 @@ class _MenuAndCategoriesState extends State<MenuAndCategories> {
                                     // isDismissible: false,
                                     context: context,
                                     builder: (modalContext) {
-                                      return MyModalMeatChoice(meatChoices: meals[i].meatChoice, menuItem: meals[i], updateNewTotal: widget.updateNewTotal);
+                                      return MyModalMeatChoice(
+                                          meatChoices: meals[i].meatChoice, menuItem: meals[i], updateNewTotal: widget.updateNewTotal);
                                     });
                               },
                               child: Text(
@@ -207,7 +208,14 @@ class _MenuAndCategoriesState extends State<MenuAndCategories> {
                               newMeatchoices.forEach((element) {
                                 element.amount = 0;
                               });
-                              MenuItem newMenuItem = MenuItem(id: meals[i].id + 199, title: meals[i].title, description: meals[i].description, price: meals[i].price, image: meals[i].image, amount: 1, meatChoice: newMeatchoices);
+                              MenuItem newMenuItem = MenuItem(
+                                  id: meals[i].id + 199,
+                                  title: meals[i].title,
+                                  description: meals[i].description,
+                                  price: meals[i].price,
+                                  image: meals[i].image,
+                                  amount: 1,
+                                  meatChoice: newMeatchoices);
 
                               meals.insert(i + 1, newMenuItem);
                               widget.updateNewTotal(newMenuItem.price);

@@ -17,7 +17,7 @@ class MyTextFieldWidget extends StatelessWidget {
     required this.setValue,
     required this.validate,
     required this.textInputType,
-    this.horizontalPaddig = 40,
+    this.horizontalPaddig = 20,
     this.textCapitalization = TextCapitalization.words,
   });
 
@@ -31,7 +31,7 @@ class MyTextFieldWidget extends StatelessWidget {
         decoration: InputDecoration(
           errorStyle: TextStyle(fontSize: 10, height: 0.1),
           prefixIcon: icon,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
           hintText: hintText,
         ),
         textCapitalization: textCapitalization,

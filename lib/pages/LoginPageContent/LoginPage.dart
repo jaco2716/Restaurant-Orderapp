@@ -6,6 +6,7 @@ import 'package:restaurantorderapp/Logic/AuthService.dart';
 import 'package:restaurantorderapp/Logic/ValidateValues.dart';
 import 'package:restaurantorderapp/MyWidgets/MyAlertDialog.dart';
 import 'package:restaurantorderapp/MyWidgets/MyAppBar.dart';
+import 'package:restaurantorderapp/MyWidgets/MyLoginWidgets/MyRoundedButton.dart';
 import 'package:restaurantorderapp/MyWidgets/MyLoginWidgets/MyTextFieldWidget.dart';
 import 'package:restaurantorderapp/flavors.dart';
 import 'SignUpPage.dart';
@@ -31,6 +32,7 @@ class _LoginPageState extends State<LoginPage> {
       appBar: MyAppBar('Login'),
       body: SingleChildScrollView(
         child: Container(
+          height: MediaQuery.of(context).size.height - (MediaQuery.of(context).padding.top + kToolbarHeight),
           width: double.infinity,
           child: Form(
               key: _formKey,
@@ -83,42 +85,29 @@ class _LoginPageState extends State<LoginPage> {
                               ))),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 90, vertical: 7),
-                    width: double.infinity,
-                    height: 73,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // showDialog(context: context, builder: (context) => LoadingCircle());
-                        loginButtonMethod(context);
-                      },
-                      child: Text('LOGIN'),
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 50),
-                  RichText(
-                      text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          text: 'Ingen account? ',
-                          children: [
-                        TextSpan(
-                          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-                          text: 'Sign up\n',
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignUpPage())).then((value) => setState(() {}));
-                            },
-                        )
-                      ]))
+                  MyRoundedButton(title: 'LOGIN', myOnPressed: () => loginButtonMethod(context)),
+                  Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: RichText(
+                        text: TextSpan(
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            text: 'Ingen account? ',
+                            children: [
+                          TextSpan(
+                            style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                            text: 'Sign up\n',
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignUpPage()))
+                                    .then((value) => setState(() {}));
+                              },
+                          )
+                        ])),
+                  )
                 ],
               )),
         ),

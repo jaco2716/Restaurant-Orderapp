@@ -32,9 +32,15 @@ class MyIconGridButton extends StatelessWidget {
         ),
         onPressed: canTap
             ? () async {
-                bool canLaunch = await urlLauncher.canLaunch(url);
-                if (canLaunch) {
-                  await urlLauncher.launch(url);
+                String finalUrl;
+                finalUrl = url.replaceAll('æ', 'ae');
+                finalUrl = finalUrl.replaceAll('ø', 'oe');
+                finalUrl = finalUrl.replaceAll('å', 'aa');
+
+                if (await urlLauncher.canLaunch(finalUrl)) {
+                  await urlLauncher.launch(finalUrl, forceSafariVC: false, forceWebView: false);
+                } else {
+                  print('### Failed to launch url');
                 }
               }
             : null,
@@ -46,7 +52,7 @@ class MyIconGridButton extends StatelessWidget {
               width: 50,
               child: Card(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                color: F.appSecondaryColor[900],
+                color: F.appColors[1],
                 child: icon,
               ),
             ),

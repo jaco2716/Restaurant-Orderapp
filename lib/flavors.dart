@@ -56,9 +56,9 @@ class F {
       case Flavor.orderappTest:
         return 'test addresse og noget mere';
       case Flavor.ilmolino:
-        return 'Gammel Lundtoftevej 14, 2800 Kongens Lyngby';
+        return 'Gammel Lundtoftevej 14, 2800 Kongens Lyngby, Denmark';
       case Flavor.chiangmai:
-        return 'Havnen 23B, 4600 Køge';
+        return 'Havnen 23B, 4600 Køge, Denmark';
       default:
         return 'companyAddress';
     }
@@ -77,31 +77,68 @@ class F {
     }
   }
 
-  static MaterialColor get appPrimaryColor {
+  static List<Color> get appColors {
     switch (appFlavor) {
       case Flavor.orderappTest:
-        return Colors.green;
+        return [
+          Color(0xFF2288FF),
+          Color(0xFF004411),
+          Color(0xFF991111),
+          Color(0xFFDDaa00),
+          Color(0xFFFFF3B0),
+        ];
       case Flavor.ilmolino:
-        return Colors.brown;
+        return [
+          Color(0xFF9E2A2B),
+          Color(0xFFE09F3E),
+          Color(0xFF540B0E),
+          Color(0xFF335C67),
+          Color(0xFFFFF3B0),
+        ];
       case Flavor.chiangmai:
-        return Colors.brown;
+        return [
+          Color(0xFFAA0000),
+          Color(0xFFFF9933),
+          Color(0xFF540B0E),
+          Color(0xFF0080AA),
+          Color(0xFFFFFF00),
+        ];
       default:
-        return Colors.blue;
+        return [
+          Color(0xFF9E2A2B),
+          Color(0xFFE09F3E),
+          Color(0xFF540B0E),
+          Color(0xFF335C67),
+          Color(0xFFFFF3B0),
+        ];
     }
   }
 
-  static MaterialColor get appSecondaryColor {
-    switch (appFlavor) {
-      case Flavor.orderappTest:
-        return Colors.lightGreen;
-      case Flavor.ilmolino:
-        return Colors.yellow;
-      case Flavor.chiangmai:
-        return Colors.yellow;
-      default:
-        return Colors.lightBlue;
-    }
-  }
+  // static Color get appPrimaryColor {
+  //   switch (appFlavor) {
+  //     case Flavor.orderappTest:
+  //       return Colors.green;
+  //     case Flavor.ilmolino:
+  //       return Colors.brown;
+  //     case Flavor.chiangmai:
+  //       return Color(0xFF9E2A2B);
+  //     default:
+  //       return Colors.blue;
+  //   }
+  // }
+
+  // static Color get appSecondaryColor {
+  //   switch (appFlavor) {
+  //     case Flavor.orderappTest:
+  //       return Colors.lightGreen;
+  //     case Flavor.ilmolino:
+  //       return Colors.yellow;
+  //     case Flavor.chiangmai:
+  //       return Color(0xFFE09F3E);
+  //     default:
+  //       return Colors.lightBlue;
+  //   }
+  // }
 
   static String get appIconPathLight {
     switch (appFlavor) {

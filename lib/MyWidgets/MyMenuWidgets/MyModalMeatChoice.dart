@@ -92,7 +92,7 @@ class _MyModalMeatChoiceState extends State<MyModalMeatChoice> {
                   ),
                   Card(
                       margin: EdgeInsets.zero,
-                      color: F.appSecondaryColor[900],
+                      color: Colors.orange,
                       child: Container(
                         height: 60,
                         width: 60,
@@ -198,9 +198,10 @@ class _MyModalMeatChoiceState extends State<MyModalMeatChoice> {
           padding: EdgeInsets.all(20),
           width: double.infinity,
           child: ElevatedButton(
-              // style: ElevatedButton.styleFrom(
-              //   padding: EdgeInsets.all(15)
-              // ),
+              style: ElevatedButton.styleFrom(
+                // padding: EdgeInsets.all(15),
+                primary: F.appColors[3],
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },

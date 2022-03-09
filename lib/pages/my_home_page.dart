@@ -73,10 +73,15 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: F.appPrimaryColor[900],
+          selectedItemColor: F.appColors[3],
           unselectedItemColor: Colors.grey,
           currentIndex: pageIndex,
-          items: [BottomNavigationBarItem(label: 'Menu', icon: Icon(Icons.home)), BottomNavigationBarItem(label: 'Kurv', icon: Icon(Icons.shopping_basket)), BottomNavigationBarItem(label: 'Ordrer', icon: Icon(Icons.receipt)), BottomNavigationBarItem(label: 'Info', icon: Icon(Icons.info))],
+          items: [
+            BottomNavigationBarItem(label: 'Menu', icon: Icon(Icons.home)),
+            BottomNavigationBarItem(label: 'Kurv', icon: Icon(Icons.shopping_basket)),
+            BottomNavigationBarItem(label: 'Ordrer', icon: Icon(Icons.receipt)),
+            BottomNavigationBarItem(label: 'Info', icon: Icon(Icons.info))
+          ],
           onTap: (index) async {
             setState(() {
               pageIndex = index;

@@ -61,7 +61,11 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 MyIconGridButton(title: 'Website', url: F.companyWebsite, icon: Icon(Icons.web), subtitle: F.companyWebsite),
                 MyIconGridButton(title: 'Phone', url: 'tel:${F.companyPhone.replaceAll(' ', '')}', icon: Icon(Icons.phone), subtitle: F.companyPhone),
-                MyIconGridButton(title: 'Address', url: 'https://www.google.com/maps/place/${F.companyAddress.replaceAll(' ', '+')}', icon: Icon(Icons.pin_drop), subtitle: F.companyAddress),
+                MyIconGridButton(
+                    title: 'Address',
+                    url: 'https://google.com/maps/place/${F.companyAddress.replaceAll(' ', '+')}',
+                    icon: Icon(Icons.pin_drop),
+                    subtitle: F.companyAddress),
                 MyIconGridButton(title: 'Privacy Policy', url: F.privacyPolicyURL, icon: Icon(Icons.privacy_tip)),
               ],
             ),
@@ -70,7 +74,7 @@ class _SettingsPageState extends State<SettingsPage> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             width: double.infinity,
             child: Card(
-                color: F.appSecondaryColor[900],
+                color: F.appColors[3],
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 elevation: 0,
                 child: Padding(
@@ -206,7 +210,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   goToPage() {
     print('Sign in');
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Scaffold(appBar: MyAppBar('Login'), body: CheckLoginPage(NextPage.SettingsPage, 'Login', []))));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => Scaffold(appBar: MyAppBar('Login'), body: CheckLoginPage(NextPage.SettingsPage, 'Login', []))));
     // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage())).then((value) {
     //   setState(() {});
     // });
@@ -255,7 +260,8 @@ class _SettingsPageState extends State<SettingsPage> {
               Icons.person,
               color: Colors.white,
             ),
-            subtitle: '${myUser?.email ?? 'E-mail'}                                                                                                               ',
+            subtitle:
+                '${myUser?.email ?? 'E-mail'}                                                                                                               ',
             canTap: false,
             trailing: IconButton(onPressed: () => _buildLogOutDialog(), icon: Icon(Icons.logout, color: Colors.black)),
           ),
@@ -274,7 +280,7 @@ class _SettingsPageState extends State<SettingsPage> {
       height: 70,
       child: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
-          primary: F.appSecondaryColor[900],
+          primary: F.appColors[3],
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           elevation: 0,
         ),
@@ -286,7 +292,11 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void createOpenHours() {
-    ApplicationData appDataTemp = ApplicationData(closingHours: [2100, 2100, 2100, 2100, 2100, 2100, 2100], openingHours: [1100, 1100, 1100, 1100, 1100, 1100, 1100], versionId: 1, deviceToken: '123');
+    ApplicationData appDataTemp = ApplicationData(
+        closingHours: [2100, 2100, 2100, 2100, 2100, 2100, 2100],
+        openingHours: [1100, 1100, 1100, 1100, 1100, 1100, 1100],
+        versionId: 1,
+        deviceToken: '123');
     _firestore.doc('${F.firestoreCollection}').set(appDataTemp.toJson());
   }
 

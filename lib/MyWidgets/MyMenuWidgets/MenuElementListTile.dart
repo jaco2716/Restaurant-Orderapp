@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:restaurantorderapp/Logic/MenuLogic.dart';
-
-import '../../flavors.dart';
 import 'AddAndRemoveButton.dart';
 
 class MenuElementListTile extends StatelessWidget {
@@ -49,7 +47,7 @@ class MenuElementListTile extends StatelessWidget {
         ),
         element.amount != 0
             ? Card(
-                color: F.appSecondaryColor[900],
+                color: Colors.orange,
                 child: Center(
                     child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),

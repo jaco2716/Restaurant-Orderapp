@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../flavors.dart';
+
 class MyRoundedButton extends StatelessWidget {
   final String title;
   final void Function() myOnPressed;
@@ -11,16 +13,17 @@ class MyRoundedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 90, vertical: 7),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
       width: double.infinity,
-      height: 73,
+      height: 67,
       child: ElevatedButton(
         onPressed: () => myOnPressed(),
         child: Text(title),
         style: ElevatedButton.styleFrom(
+          primary: F.appColors[3],
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(10),
           ),
         ),
       ),

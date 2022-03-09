@@ -56,14 +56,14 @@ class _CartPageState extends State<CartPage> {
         // ),
         Container(
           decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 10,
-                      color: Colors.black12,
-                    )
-                  ],
-                  color: Colors.white,
-                ),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 10,
+                color: Colors.black12,
+              )
+            ],
+            color: Colors.white,
+          ),
           child: Column(
             children: [
               Padding(
@@ -83,10 +83,17 @@ class _CartPageState extends State<CartPage> {
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 width: double.infinity,
                 child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: F.appColors[3],
+                    ),
                     onPressed: cartItems.isEmpty
                         ? null
                         : () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => Scaffold(appBar: MyAppBar(''), body:CheckLoginPage(NextPage.OrderPage, 'OrderPage', cartItems))));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        Scaffold(appBar: MyAppBar(''), body: CheckLoginPage(NextPage.OrderPage, 'OrderPage', cartItems))));
                           },
                     child: Text('Gå til bestilling')),
               ),
@@ -183,7 +190,7 @@ class _CartPageState extends State<CartPage> {
                     ),
               leading: FittedBox(
                 child: Card(
-                    color: F.appSecondaryColor[900],
+                    color: Colors.orange,
                     child: Center(
                         child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
